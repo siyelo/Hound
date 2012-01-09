@@ -5,7 +5,9 @@ class ProcessMailWorker
   # email credits to send an email
 
   @queue = :process_queue
-  def self.perform(mail)
+
+  def self.perform(reminder_id)
+    mail = Reminder.find_by_id(reminder_id)
     Resque.enqueue(SendMailWorker, mail)
   end
 end
