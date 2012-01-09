@@ -6,8 +6,6 @@ class ProcessMailWorker
 
   @queue = :process_queue
   def self.perform(mail)
-    debugger
     Resque.enqueue(SendMailWorker, mail)
-
   end
 end

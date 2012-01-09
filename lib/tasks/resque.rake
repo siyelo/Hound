@@ -2,7 +2,7 @@ require "resque/tasks"
 require 'resque_scheduler'
 require 'resque/scheduler'
 require 'resque_scheduler/tasks'
-require 'jobs'
+#require 'jobs'
 #namespace :resque do
   #task :setup do
     #require 'resque'
