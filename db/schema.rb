@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120106132112) do
+ActiveRecord::Schema.define(:version => 20120109110139) do
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
     t.string   "subject"
-    t.string   "body"
+    t.text     "body",       :limit => 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
