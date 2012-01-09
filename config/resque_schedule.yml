@@ -1,5 +1,5 @@
 fetchmail:
-  cron: 0 8 * * *
+  cron: "* * * * *"
   class: FetchMailWorker
   description: Fetch Mail
   queue: fetch_queue
