@@ -2,3 +2,4 @@ fetchmail:
   cron: 0 8 * * *
   class: Reminder
   description: Fetch Mail
+  queue: fetch_queue
