@@ -7,7 +7,6 @@ class ProcessMailWorker
   @queue = :process_queue
 
   def self.perform(reminder_id)
-    mail = Reminder.find_by_id(reminder_id)
-    Resque.enqueue(SendMailWorker, mail)
+    Resque.enqueue(SendMailWorker, reminder_id)
   end
 end
