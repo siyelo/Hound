@@ -3,3 +3,8 @@ fetchmail:
   class: FetchMailWorker
   description: Fetch Mail
   queue: fetch_queue
+queuemail:
+  cron: "* * * * *"
+  class: QueueMailWorker
+  description: Queue Mail for Sending
+  queue: queue_queue
