@@ -5,6 +5,7 @@ class SendMailWorker
   @queue = :send_queue
 
   def self.perform(reminder_id)
+    puts "in sendmailworker"
     mail = Reminder.find_by_id(reminder_id)
     UserMailer.send_reminder(mail).deliver
   end
