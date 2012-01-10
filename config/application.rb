@@ -47,6 +47,7 @@ module RadMeet
 
     config.generators do |g|
       g.test_framework :mini_test, :spec => true, :fixture => true
+      g.template_engine :haml
     end
   end
 end
