@@ -7,6 +7,8 @@ gem 'resque-scheduler', :require => "resque/server"
 gem 'mail'
 gem 'chronic'
 gem 'jquery-rails'
+gem 'devise', '~> 1.5.3'
+gem 'haml', '~> 3.1.4'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -30,5 +32,9 @@ group :test do
   gem "capybara"
   gem "guard-rspec"
   gem 'shoulda'
+<<<<<<< HEAD
   gem 'timecop'
+=======
+  gem 'database_cleaner'
+>>>>>>> fd5f4ff25cbe15e6f8622d5b2b66747a75a7bc5b
 end
