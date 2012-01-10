@@ -20,7 +20,6 @@ end
 
 group :development do
   gem "rspec-rails"
-  gem 'guard-spork'
   gem 'ruby-debug19'
 end
 

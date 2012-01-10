@@ -1,9 +1,11 @@
 class Reminder < ActiveRecord::Base
+  ### Associations
   belongs_to :user
 
+  # Validations
   validates_presence_of :email, :subject
 
-
+  # Class Methods
   def self.parse_email(email)
     regex = /((\d+)([a-z]+))/
     result = email.scan regex

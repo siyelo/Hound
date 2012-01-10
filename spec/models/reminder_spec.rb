@@ -41,7 +41,5 @@ describe Reminder do
       Reminder.parse_email(email).should == (2.years + 3.months + 12.days +
                                              23.hours + 1.minute).from_now
     end
-
   end
-
 end
