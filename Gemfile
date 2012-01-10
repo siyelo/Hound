@@ -19,7 +19,6 @@ end
 gem 'jquery-rails'
 
 group :development do
-  gem "rspec-rails"
   gem 'guard-spork'
   gem 'ruby-debug19'
 end
@@ -27,10 +26,10 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn', '0.8.2', :require => false
-  gem "rspec-rails"
   gem "factory_girl_rails"
-  gem "capybara"
   gem "guard-rspec"
   gem 'shoulda'
   gem 'database_cleaner'
+  gem 'steak'
+  gem 'email_spec'
 end
