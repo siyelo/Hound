@@ -14,13 +14,13 @@ describe User do
       it { should validate_uniqueness_of(:email).case_insensitive }
     end
 
-    context "password & confirmation don't match" do
+    it "password & confirmation don't match" do
       user = Factory.build(:user, :password => '123456', :password_confirmation => '123')
       user.save
       user.errors.get(:password).should == ["doesn't match confirmation"]
     end
 
-    context "password confirmation is blank" do
+    it "password confirmation is blank" do
       user = Factory.build(:user, :password => '123456', :password_confirmation => '')
       user.save
       user.errors.get(:password).should == ["doesn't match confirmation"]

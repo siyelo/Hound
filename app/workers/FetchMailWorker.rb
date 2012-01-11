@@ -10,6 +10,7 @@ class FetchMailWorker
     emails = Mail.all
     puts emails.count
     emails.each do |e|
+      user = User.find_or_invite(e.from.first.to_s)
       reminder_time = EmailParser::Parser.parse_email(e.to.first.to_s)
       puts "reminder time"
       reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
