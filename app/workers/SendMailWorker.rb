@@ -1,12 +1,11 @@
 class SendMailWorker
   # This class is responsible for sending
   # the mails once they have been processed
-
   @queue = :send_queue
 
   def self.perform(reminder_id)
     puts "in sendmailworker"
-    mail = Reminder.find_by_id(reminder_id)
-    UserMailer.send_reminder(mail).deliver
+    reminder = Reminder.find_by_id(reminder_id)
+    reminder.send_reminder_email
   end
 end

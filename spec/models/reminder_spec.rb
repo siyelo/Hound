@@ -5,6 +5,7 @@ describe Reminder do
     it { should validate_presence_of :email }
     it { should validate_presence_of :subject }
     it { should validate_presence_of :reminder_time }
+    it { should validate_presence_of :user }
   end
   context "workers" do
     describe "fetch_reminders" do
@@ -12,6 +13,8 @@ describe Reminder do
         Timecop.freeze(Time.now)
         correct_reminder = Factory :reminder, reminder_time: Time.now
         incorrect_reminer = Factory :reminder, reminder_time: Time.now + 1.hour
+        incorrect_reminer2 = Factory :reminder, reminder_time: Time.now + 1.hour, delivered: true
+        incorrect_reminder3 = Factory :reminder, reminder_time: Time.now, delivered: true
         reminders = Reminder.fetch_reminders
         reminders.size.should == 1
         reminders.first.id.should == correct_reminder.id
