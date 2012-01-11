@@ -34,4 +34,5 @@ group :test do
   gem 'database_cleaner'
   gem 'steak'
   gem 'email_spec'
+  gem 'resque_spec'
 end

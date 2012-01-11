@@ -5,16 +5,11 @@ class QueueMailWorker
   @queue = :process_queue
 
   def self.perform
-    time = Time.now.change(sec: 0)
-    last_time = time + 59.seconds
-
-    #only select ids
-    reminders = Reminder.where("reminder_time >= ? AND reminder_time <= ?",
-                  time, last_time)
+    reminders = Reminder.fetch_reminders
 
     reminders.each do |r|
       puts "in processmailworker"
-      Resque.enqueue(SendMailWorker, r.id)
+      r.add_to_send_queue
     end
   end
 end

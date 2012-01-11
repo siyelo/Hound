@@ -8,10 +8,11 @@ class FetchMailWorker
   def self.perform
     puts "in fetchmailworker"
     emails = Mail.all
-
+    puts emails.count
     emails.each do |e|
-      reminder_time = EmailParser::Parser.parse_email(e.to)
-      reminder = Reminder.create!(email: e.from, subject: e.subject,
+      reminder_time = EmailParser::Parser.parse_email(e.to.first.to_s)
+      puts "reminder time"
+      reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
                   body: e.body.to_s, :reminder_time => reminder_time)
     end
   end
