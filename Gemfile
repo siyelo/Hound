@@ -9,6 +9,7 @@ gem 'chronic'
 gem 'jquery-rails'
 gem 'devise', '~> 1.5.3'
 gem 'haml', '~> 3.1.4'
+gem "devise_invitable", "~> 0.6.1"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -35,4 +36,5 @@ group :test do
   gem 'steak'
   gem 'email_spec'
   gem 'resque_spec'
+  gem 'rspec-mocks'
 end
