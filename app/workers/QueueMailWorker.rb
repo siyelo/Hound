@@ -7,7 +7,7 @@ class QueueMailWorker
   def self.perform
     reminders = Reminder.fetch_reminders
 
-    reminders.each do |r|
+    reminders.select{ |rem| rem.user.active? }.each do |r|
       puts "in processmailworker"
       r.add_to_send_queue
     end
