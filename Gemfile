@@ -26,11 +26,11 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn', '0.8.2', :require => false
-  gem "rspec-rails"
   gem "factory_girl_rails"
-  gem "capybara"
   gem "guard-rspec"
   gem 'shoulda'
   gem 'timecop'
   gem 'database_cleaner'
+  gem 'steak'
+  gem 'email_spec'
 end

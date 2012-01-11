@@ -4,4 +4,15 @@ class FetchMailWorker
 
   @queue = :fetch_queue
 
+  def self.perform
+    puts "in fetchmailworker"
+    emails = Mail.all
+
+    emails.each do |e|
+      reminder_time = Reminder.parse_email(e.to)
+      reminder = Reminder.create!(email: e.from, subject: e.subject,
+                  body: e.body.to_s, :reminder_time => reminder_time)
+    end
+  end
+
 end

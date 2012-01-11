@@ -32,6 +32,8 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   config.include Devise::TestHelpers, :type => :controller
   config.extend ControllerHelper, :type => :controller
+  config.include EmailSpec::Helpers
+  #config.include EmailSpec::Matcher
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
