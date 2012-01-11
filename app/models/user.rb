@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   def self.find_or_invite(email)
     user = User.find_by_email(email) || User.invite!(email: email)
   end
+
+  def active?
+    return true if !invitation_token || invitation_accepted_at
+  end
 end

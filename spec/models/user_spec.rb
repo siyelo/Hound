@@ -26,4 +26,24 @@ describe User do
       user.errors.get(:password).should == ["doesn't match confirmation"]
     end
   end
+
+  describe "account status" do
+    it "should return false if invitation has not been accepted" do
+      user = User.invite!(email: 'a@b.com')
+      user.active?.should be_false
+    end
+
+    it "should return true if invitation has been accepted" do
+      user = User.invite!(email: 'a@b.com')
+      User.accept_invitation!(:invitation_token => user.invitation_token,
+                              :password => "password")
+      user.reload
+      user.active?.should be_true
+    end
+
+    it "should return true if user signed-up (was not invited)" do
+      user = Factory(:user)
+      user.active?.should be_true
+    end
+  end
 end
