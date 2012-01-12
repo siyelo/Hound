@@ -10,6 +10,7 @@ gem 'jquery-rails'
 gem 'devise', '~> 1.5.3'
 gem 'haml', '~> 3.1.4'
 gem "devise_invitable", "~> 0.6.1"
+gem 'unicorn'
 
 # Gems used only for assets and not required
 # in production environments by default.
