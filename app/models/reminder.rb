@@ -21,13 +21,6 @@ class Reminder < ActiveRecord::Base
     Resque.enqueue(SendMailWorker, self.id)
   end
 
-  def email_to_reminder(e)
-    reminder_time = EmailParser::Parser.parse_email(e.to.first.to_s)
-    user = find_or_invite_user(e.from.first.to_s)
-    reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                body: e.body.to_s, reminder_time: reminder_time, user: user)
-  end
-
   def send_reminder_email
     puts "in sendmailworker"
     # this is necessary because we may have more than one worker polling
@@ -36,11 +29,5 @@ class Reminder < ActiveRecord::Base
       self.delivered = true
       self.save!
     end
-  end
-
-  private
-
-  def find_or_invite_user(email)
-    User.find_or_invite(email)
   end
 end
