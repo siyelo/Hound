@@ -4,7 +4,7 @@ if Rails.env == "production"
 
   ActionMailer::Base.smtp_settings = {
     :user_name => "petersiyelo",
-    :password => "sendgridpassword",
+    :password => "dkObxYKEi94YKq",
     :domain => "sorad.cc",
     :address => "smtp.sendgrid.net",
     :port => 587,
