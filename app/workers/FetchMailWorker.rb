@@ -6,7 +6,6 @@ class FetchMailWorker
   @queue = :fetch_queue
 
   def self.perform
-    puts "in fetchmailworker"
     emails = Mail.all
     emails.each do |e|
       user = User.find_or_invite(e.from.first.to_s)

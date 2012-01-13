@@ -22,7 +22,6 @@ class Reminder < ActiveRecord::Base
   end
 
   def send_reminder_email
-    puts "in sendmailworker"
     # this is necessary because we may have more than one worker polling
     unless delivered?
       UserMailer.send_reminder(self).deliver
