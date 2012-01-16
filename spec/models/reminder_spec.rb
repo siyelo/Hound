@@ -26,8 +26,19 @@ describe Reminder do
         reminder = Factory :reminder
         reminder.add_to_send_queue
         SendMailWorker.should have_queue_size_of(1)
-        SendMailWorker.perform(reminder.id)
+        email = SendMailWorker.perform(reminder.id)
         reminder.reload.delivered?.should be_true
+      end
+    end
+
+    describe "send emails" do
+      before :each do
+        email = Factory :reminder, subject: "mehpants"
+        @email = UserMailer.send_reminder(email)
+      end
+
+      it "should append 'RE: ' before the emails subject" do
+          @email.should have_subject(/RE: mehpants/)
       end
     end
   end

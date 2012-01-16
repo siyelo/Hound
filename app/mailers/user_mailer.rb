@@ -3,6 +3,6 @@ class UserMailer < ActionMailer::Base
 
   def send_reminder(email)
     @email = email
-    mail(:to => email.email, :subject => email.subject)
+    mail(:to => email.email, :subject => "RE: #{email.subject}")
   end
 end
