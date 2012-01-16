@@ -26,6 +26,8 @@ describe Reminder do
         reminder = Factory :reminder
         reminder.add_to_send_queue
         SendMailWorker.should have_queue_size_of(1)
+        SendMailWorker.perform(reminder.id)
+        reminder.reload.delivered?.should be_true
       end
     end
   end
