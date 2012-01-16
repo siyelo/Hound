@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
+  %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
+    %table{:style => "600px"}
+      %tr
+        %td{:colspan => "2"}
+          %strong Here is your reminder
+          %hr
+      %tr
+        %td{:style => "width:50%"}
+          %h2 Subject: #{@email.subject}
+          %h2 Date Sent: #{@email.created_at.strftime('%d-%b-%Y')}
+        %td{:style => "width:50%"}
+          %p Snooze for:
+      %tr
+        %td{:colspan => "2"}
+          %hr
+          = @email.body.html_safe
