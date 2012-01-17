@@ -10,11 +10,13 @@
           %hr
       %tr
         %td{:style => "width:50%"}
-          %h2 Subject: #{@email.subject}
-          %h2 Date Sent: #{@email.created_at.strftime('%d-%b-%Y')}
+          %h2 Subject:
+          %p{:style => "font-size:16px"}#{@reminder.subject}
+          %h2 Date Sent:
+          %p{:style => "font-size:16px"}#{@reminder.created_at.strftime('%d-%b-%Y')}
         %td{:style => "width:50%"}
-          %p Snooze for:
+          = render 'snooze_box'
       %tr
         %td{:colspan => "2"}
           %hr
-          = @email.body.html_safe
+          = @reminder.body.html_safe

@@ -5,6 +5,7 @@ RadMeet::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
+  match 'reminders/:id/snooze' => 'snooze#snooze_reminder', :as => :snooze_reminder
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

@@ -7,6 +7,14 @@ module EmailHelper
     end
   end
 
+  def self.snooze_options(values, type, short_type)
+    options = []
+    values.each do |value|
+      options << ["#{value}#{type}","#{value}#{short_type}"]
+    end
+    options
+  end
+
   private
 
   def self.extract_text(email)
