@@ -2,7 +2,11 @@ module EmailParser
   class Parser
     require 'active_support/all'
 
-    def self.parse_email(email)
+    def self.parse_email(email, start_date = nil)
+      start_date? ? start_date + self.reminder_time(email) : self.reminder_time(email).from_now
+    end
+
+    def self.reminder_time(email)
       (self.scan_minutes(email) + self.scan_hours(email) +
       self.scan_days(email) + self.scan_weeks(email) +
       self.scan_months(email) +  self.scan_years(email)).from_now

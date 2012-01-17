@@ -25,6 +25,7 @@ group :development do
   gem "rspec-rails"
   gem 'guard-spork'
   gem 'ruby-debug19'
+  gem 'mailcatcher'
 end
 
 group :test do

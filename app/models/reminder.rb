@@ -7,6 +7,11 @@ class Reminder < ActiveRecord::Base
   # Validations
   validates_presence_of :email, :subject, :reminder_time, :user
 
+  # Callbacks
+  #before_create :generate_snooze_token
+
+  before_save :generate_snooze_token
+
   ### Class methods
   def self.fetch_reminders
     time = Time.now.change(sec: 0)
@@ -29,4 +34,21 @@ class Reminder < ActiveRecord::Base
       self.save!
     end
   end
+
+  def snooze_for(duration, token)
+    if snooze_token == token
+      self.reminder_time = EmailParser::Parser.parse_email(duration, reminder_time)
+      self.delivered = false
+      self.save!
+    end
+  end
+
+  private
+
+  def generate_snooze_token
+    if new_record? || reminder_time_changed?
+      self.snooze_token = rand(36**8).to_s(36)
+    end
+  end
+
 end

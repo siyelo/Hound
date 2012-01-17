@@ -11,7 +11,7 @@ class FetchMailWorker
       user = User.find_or_invite(e.from.first.to_s)
       reminder_time = EmailParser::Parser.parse_email(e.to.first.to_s)
       reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                  body: e.body.to_s, reminder_time: reminder_time, user: user)
+                  body: EmailHelper.extract_html_or_text(e), reminder_time: reminder_time, user: user)
     end
   end
 

@@ -9,7 +9,7 @@ describe Reminder do
   end
   context "workers" do
     describe "fetch_reminders" do
-      it "should only get methods for the current minute" do
+      it "should only get reminders for the current minute" do
         Timecop.freeze(Time.now)
         correct_reminder = Factory :reminder, reminder_time: Time.now
         incorrect_reminer = Factory :reminder, reminder_time: Time.now + 1.hour
@@ -38,7 +38,40 @@ describe Reminder do
       end
 
       it "should append 'RE: ' before the emails subject" do
-          @email.should have_subject(/RE: mehpants/)
+        @email.should have_subject(/RE: mehpants/)
+      end
+    end
+
+    describe "snoozing" do
+      before :each do
+        @reminder = Factory.build :reminder
+      end
+
+      it "should generate a snooze token when creating a reminder" do
+        @reminder.snooze_token.should be_nil
+        @reminder.save
+        @reminder.snooze_token.should_not be_nil
+      end
+
+      it "should regenerate the snooze token after a reminder has been snoozed" do
+        @reminder.save
+        old_token = @reminder.snooze_token
+        @reminder.snooze_for("2days", old_token)
+        @reminder.snooze_token.should_not == old_token
+      end
+
+      it "should snooze a reminder for a specified duration" do
+        @reminder.reminder_time = Time.now
+        @reminder.snooze_for('2days', @reminder.snooze_token)
+        @reminder.reminder_time.should == Time.now + 2.days
+      end
+
+      it "should mark a snoozed reminder as undelivered" do
+        @reminder.save
+        @reminder.send_reminder_email
+        @reminder.delivered?.should == true
+        @reminder.snooze_for('2months', @reminder.snooze_token)
+        @reminder.delivered?.should == false
       end
     end
   end
