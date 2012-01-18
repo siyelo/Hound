@@ -11,4 +11,5 @@ Factory.define :user do |f|
   f.sequence(:email) { |n| "somedude#{n}@sorad.com" }
   f.password "testing"
   f.password_confirmation "testing"
+  f.timezone "Sofia"
 end
