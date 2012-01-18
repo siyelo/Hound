@@ -8,8 +8,6 @@ class Reminder < ActiveRecord::Base
   validates_presence_of :email, :subject, :reminder_time, :user
 
   # Callbacks
-  #before_create :generate_snooze_token
-
   before_save :generate_snooze_token
 
   ### Class methods

@@ -1,7 +1,7 @@
 Mail.defaults do
   retriever_method :pop3, :address    => "pop.gmail.com",
                           :port       => 995,
-                          :user_name  => 'radmeet@siyelo.com',
-                          :password   => 'i4msoc00l',
+                          :user_name  => 'radmeet@mailshotbot.com',
+                          :password   => 'si@yelo321',
                           :enable_ssl => true
 end

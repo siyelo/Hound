@@ -1,2 +1,8 @@
 %h1 Your reminder could not be snoozed
-%p Please use the links in the reminder email to snooze the reminder
+-if @reminder.snooze_token != @token
+  The snooze token is no longer valid (we change it everytime you snooze a reminder to prevent accidental snoozing).
+  %br
+  Please login to manage your reminders.
+- else
+  Please use the links in the reminder email to snooze the reminder
+
