@@ -1,0 +1,4 @@
+%td
+  - options.map{ |i| i + type }.each do |format|
+    = link_to format, snooze_reminder_url(@reminder, :duration => format, :token => @reminder.snooze_token)
+
