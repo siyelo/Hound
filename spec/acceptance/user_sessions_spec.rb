@@ -52,7 +52,7 @@ feature 'User sessions' do
     fill_in "user[email]", :with => 'testing@test.com'
     fill_in "user[password]", :with=>"password"
     fill_in "user[password_confirmation]", :with=>"password"
-
+    select "Sofia", :from => "user_timezone"
     click_button 'Sign up'
     within('body') do
       page.should have_content('signed up successfully')

@@ -30,12 +30,12 @@ describe User do
 
   describe "account status" do
     it "should return false if invitation has not been accepted" do
-      user = User.invite!(email: 'a@b.com')
+      user = User.invite!(email: 'a@b.com', timezone: "+02:00")
       user.active?.should be_false
     end
 
     it "should return true if invitation has been accepted" do
-      user = User.invite!(email: 'a@b.com')
+      user = User.invite!(email: 'a@b.com', timezone: "+02:00")
       User.accept_invitation!(:invitation_token => user.invitation_token,
                               :password => "password")
       user.reload
@@ -53,13 +53,14 @@ describe User do
       reset_mailer
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
                                            to: '2days@radmeet.cc',
-                                           subject: 'test')])
+                                           subject: 'test', date: DateTime.now)])
     end
 
     it "should be sent to user who isn't already registered" do
       FetchMailWorker.perform
       Reminder.all.count.should == 1
       User.all.count.should == 1
+      #User.first.timezone.should == "+02:00"
       unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(1)
     end
 

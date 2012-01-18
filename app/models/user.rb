@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
 
 
   def self.find_or_invite(email)
-    user = User.find_by_email(email) || User.invite!(email: email)
+    debugger
+    user = User.find_by_email(email.from.first.to_s) || User.invite!(email: email.from.first.to_s)
   end
 
   def active?
