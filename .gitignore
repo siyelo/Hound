@@ -16,3 +16,6 @@
 
 #other random files
 .DS_Store
+
+#bundler binstubs
+bin/
