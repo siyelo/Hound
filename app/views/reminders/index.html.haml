@@ -1,0 +1,12 @@
+%table
+  %tr
+    %th Subject
+    %th Reminder Time
+    %th Delivered?
+  - @reminders.each do |r|
+    %tr
+      %td= r.subject
+      %td= r.reminder_time
+      %td= r.delivered?
+
+
