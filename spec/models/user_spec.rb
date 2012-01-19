@@ -60,7 +60,7 @@ describe User do
       FetchMailWorker.perform
       Reminder.all.count.should == 1
       User.all.count.should == 1
-      #User.first.timezone.should == "+02:00"
+      User.first.timezone.should == "+02:00"
       unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(1)
     end
 
