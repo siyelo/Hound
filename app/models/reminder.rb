@@ -9,6 +9,7 @@ class Reminder < ActiveRecord::Base
 
   # Callbacks
   before_save :generate_snooze_token
+  after_create :queue_confirmation_email
 
   ### Class methods
   def self.fetch_reminders
@@ -21,7 +22,11 @@ class Reminder < ActiveRecord::Base
 
   ### Instance methods
   def add_to_send_queue
-    Resque.enqueue(SendMailWorker, self.id)
+    Resque.enqueue(SendReminderWorker, self.id)
+  end
+
+  def send_confirmation_email
+    UserMailer.send_confirmation(self).deliver
   end
 
   def send_reminder_email
@@ -43,6 +48,10 @@ class Reminder < ActiveRecord::Base
   end
 
   private
+
+  def queue_confirmation_email
+    Resque.enqueue(SendConfirmationWorker, self.id)
+  end
 
   def generate_snooze_token
     if new_record? || reminder_time_changed?

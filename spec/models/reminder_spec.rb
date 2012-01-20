@@ -22,11 +22,15 @@ describe Reminder do
     end
 
     describe "queueing" do
+      before :each do
+        ResqueSpec.reset!
+      end
       it "should properly queue" do
         reminder = Factory :reminder
+        SendConfirmationWorker.should have_queue_size_of(1)
         reminder.add_to_send_queue
-        SendMailWorker.should have_queue_size_of(1)
-        email = SendMailWorker.perform(reminder.id)
+        SendReminderWorker.should have_queue_size_of(1)
+        email = SendReminderWorker.perform(reminder.id)
         reminder.reload.delivered?.should be_true
       end
     end

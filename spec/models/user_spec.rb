@@ -48,6 +48,24 @@ describe User do
     end
   end
 
+  describe "confirmation emails" do
+    before(:each) do
+      reset_mailer
+      Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
+                                           to: '2days@radmeet.cc',
+                                           subject: 'test', date: DateTime.now)])
+    end
+
+    it "should confirm that a reminder has been processed" do
+      FetchMailWorker.perform
+      Reminder.all.count.should == 1
+      SendConfirmationWorker.perform(Reminder.last.id)
+      User.all.count.should == 1
+      User.first.timezone.should == "+02:00"
+      unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(2)
+    end
+  end
+
   describe 'invitation emails' do
     before(:each) do
       reset_mailer

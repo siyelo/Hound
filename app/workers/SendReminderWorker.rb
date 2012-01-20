@@ -1,4 +1,4 @@
-class SendMailWorker
+class SendReminderWorker
   # This class is responsible for sending
   # the mails once they have been processed
   @queue = :send_queue

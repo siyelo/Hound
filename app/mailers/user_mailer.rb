@@ -5,4 +5,9 @@ class UserMailer < ActionMailer::Base
     @reminder = reminder
     mail(:to => reminder.email, :subject => "RE: #{reminder.subject}")
   end
+
+  def send_confirmation(reminder)
+    @reminder = reminder
+    mail(:to => reminder.email, :subject => "Confirmation: #{reminder.subject}")
+  end
 end
