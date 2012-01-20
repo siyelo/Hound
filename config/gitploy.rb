@@ -26,10 +26,10 @@ deploy do
     run "source /var/lib/jenkins/.rvm/scripts/rvm"
     run "source #{config.path}/.rvmrc"
     run "rvm use 1.9.2@RadMeet"
-
     run "ruby -v"
     run "git reset --hard"
     run "bundle install"
+    run "rake db:migrate"
     run "sudo restart radmeet"
     run "sudo service radmeet_unicorn restart"
     #run "touch tmp/restart.txt"
