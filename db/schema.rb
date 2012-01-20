@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120118092743) do
+ActiveRecord::Schema.define(:version => 20120120093519) do
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20120118092743) do
     t.integer  "user_id"
     t.boolean  "delivered",                    :default => false
     t.string   "snooze_token"
+    t.integer  "snooze_count",                 :default => 0
   end
 
   create_table "users", :force => true do |t|

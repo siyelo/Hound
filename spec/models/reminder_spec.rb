@@ -73,6 +73,13 @@ describe Reminder do
         @reminder.snooze_for('2months', @reminder.snooze_token)
         @reminder.delivered?.should == false
       end
+
+      it "should increment the snooze count as the user snoozes" do
+        @reminder.snooze_count.should == 0 #sanity
+        @reminder.save
+        @reminder.snooze_for('2months', @reminder.snooze_token)
+        @reminder.snooze_count.should == 1
+      end
     end
   end
 end
