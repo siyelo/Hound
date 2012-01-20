@@ -50,7 +50,7 @@ class Reminder < ActiveRecord::Base
   private
 
   def queue_confirmation_email
-    Resque.enqueue(SendConfirmationWorker, self.id)
+    Resque.enqueue(SendConfirmationWorker, self.id) if user.confirmation_email?
   end
 
   def generate_snooze_token

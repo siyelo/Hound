@@ -50,20 +50,49 @@ describe User do
 
   describe "confirmation emails" do
     before(:each) do
+      ResqueSpec.reset!
       reset_mailer
-      Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: '2days@radmeet.cc',
-                                           subject: 'test', date: DateTime.now)])
     end
 
-    it "should confirm that a reminder has been processed" do
-      FetchMailWorker.perform
-      Reminder.all.count.should == 1
-      SendConfirmationWorker.perform(Reminder.last.id)
-      User.all.count.should == 1
-      User.first.timezone.should == "+02:00"
-      unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(2)
+    context "new users" do
+      before :each do
+        Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
+                                             to: '2days@radmeet.cc',
+                                             subject: 'test', date: DateTime.now)])
+        FetchMailWorker.perform
+      end
+
+      it "should get confirmation that a reminder has been processed (new users receive them automatically)" do
+        Reminder.all.count.should == 1 #sanity
+        SendConfirmationWorker.should have_queue_size_of(1)
+        SendConfirmationWorker.perform(Reminder.last.id)
+        User.all.count.should == 1
+        User.first.timezone.should == "+02:00"
+
+        #only 2 because one is confirmation signup email and the other is the confirmation
+        #email - the reminder email is not included in this test
+        unread_emails_for('pimp@macdaddy.yo').size.should >= parse_email_count(2)
+      end
     end
+
+    context "existing users" do
+      before :each do
+        user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
+        Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
+                                             to: '2days@radmeet.cc',
+                                             subject: 'test', date: DateTime.now)])
+        FetchMailWorker.perform
+      end
+
+      it "should not receive an email if the user has disabled that in their settings" do
+        Reminder.all.count.should == 1 #sanity
+        SendConfirmationWorker.should have_queue_size_of(0)
+        #0 emails because there is no confirmation signup email nor is there a confirmation reminder
+        #email - the reminder email is not included in this test
+        unread_emails_for('pimp@macdaddy.yo').size.should >= parse_email_count(0)
+      end
+    end
+
   end
 
   describe 'invitation emails' do

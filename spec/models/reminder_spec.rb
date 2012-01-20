@@ -25,6 +25,7 @@ describe Reminder do
       before :each do
         ResqueSpec.reset!
       end
+
       it "should properly queue" do
         reminder = Factory :reminder
         SendConfirmationWorker.should have_queue_size_of(1)

@@ -58,4 +58,23 @@ feature 'User sessions' do
       page.should have_content('signed up successfully')
     end
   end
+
+  scenario 'user should be able to edit their details' do
+    visit '/users/sign_in'
+    fill_in "user[email]", :with => @user.email
+    fill_in "user[password]", :with=> 'testing'
+    click_button 'Sign in'
+
+    visit '/users/edit'
+    within('body') do
+      page.should have_content('Edit User')
+    end
+    fill_in "user[current_password]", with: 'testing'
+
+    find(:css, "#user_confirmation_email").set(true)
+    click_button 'Update'
+    within('body') do
+      page.should have_content('You updated your account successfully.')
+    end
+  end
 end
