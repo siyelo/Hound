@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120120135541) do
+ActiveRecord::Schema.define(:version => 20120123093900) do
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20120120135541) do
     t.integer  "total_emails",                          :default => 0
     t.string   "timezone"
     t.boolean  "confirmation_email",                    :default => true
+    t.string   "modify_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

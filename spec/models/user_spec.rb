@@ -77,7 +77,7 @@ describe User do
 
     context "existing users" do
       before :each do
-        user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
+        @user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
         Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
                                              to: '2days@radmeet.cc',
                                              subject: 'test', date: DateTime.now)])
@@ -116,6 +116,30 @@ describe User do
       FetchMailWorker.perform
       Reminder.all.count.should == 1
       unread_emails_for('sachin@siyelo.com').size.should == parse_email_count(0)
+    end
+  end
+
+  describe 'modify_token' do
+    before :each do
+      @user = Factory :user
+    end
+
+    it "exists when user is created" do
+      @user.modify_token.should_not be_nil
+    end
+
+    it "should be removed after clicking the link to remove email notifications" do
+      @user.toggle_confirmation_email(@user.modify_token)
+      @user.modify_token.should be_nil
+    end
+
+    it "should be regenerated when confirmation email is set to true" do
+      u = Factory :user, confirmation_email: false
+      u.modify_token = nil; u.save
+      u.confirmation_email = true
+      u.save
+      u.reload
+      u.modify_token.should_not be_nil
     end
   end
 end
