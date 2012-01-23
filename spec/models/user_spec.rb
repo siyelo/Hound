@@ -52,7 +52,7 @@ describe User do
     before(:each) do
       reset_mailer
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: '2days@radmeet.cc',
+                                           to: '2days@mailshotbot.com',
                                            subject: 'test', date: DateTime.now)])
     end
 

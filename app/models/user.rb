@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
 
 
   def self.find_or_invite(email)
-    debugger
     user = User.find_by_email(email.from.first.to_s) || User.invite!(email: email.from.first.to_s)
   end
 
