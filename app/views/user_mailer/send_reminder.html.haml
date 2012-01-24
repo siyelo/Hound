@@ -17,7 +17,10 @@
           %h2 Snooze Count:
           %p{:style => "font-size:16px"}#{@reminder.snooze_count}
         %td{:style => "width:50%"}
-          = render 'snooze_box'
+          - if @reminder.email == @recipient
+            = render 'snooze_box'
+          - else
+            = render 'cc_box'
       %tr
         %td{:colspan => "2"}
           %hr

@@ -1,9 +1,10 @@
 class UserMailer < ActionMailer::Base
   default from: "reminder@mailshotbot.com"
 
-  def send_reminder(reminder)
+  def send_reminder(reminder, recipient)
     @reminder = reminder
-    mail(:to => reminder.email, :subject => "RE: #{reminder.subject}")
+    @recipient = recipient
+    mail(:bcc => recipient, :subject => "RE: #{reminder.subject}")
   end
 
   def send_confirmation(reminder)

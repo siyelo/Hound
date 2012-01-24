@@ -49,8 +49,8 @@ describe Reminder do
 
     describe "send emails" do
       before :each do
-        email = Factory :reminder, subject: "mehpants"
-        @email = UserMailer.send_reminder(email)
+        reminder = Factory :reminder, subject: "mehpants"
+        @email = UserMailer.send_reminder(reminder, reminder.email)
       end
 
       it "should append 'RE: ' before the emails subject" do
@@ -95,6 +95,14 @@ describe Reminder do
         @reminder.save
         @reminder.snooze_for('2months', @reminder.snooze_token)
         @reminder.snooze_count.should == 1
+      end
+    end
+
+    describe "cc'ed recipients" do
+      it "should not include the snooze links for cc'ed users" do
+        reminder = Factory :reminder, subject: "mehpants", cc: "wat@wiggle.com"
+        @email = UserMailer.send_reminder(reminder, reminder.cc.first)
+        @email.should_not have_body_text('/Snooze for:/')
       end
     end
   end

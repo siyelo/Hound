@@ -17,17 +17,17 @@ class Reminder < ActiveRecord::Base
     last_time = time + 59.seconds
 
     self.select("id, user_id").where("reminder_time >= ? AND reminder_time <= ? AND delivered = ?",
-      time, last_time, false).includes(:user)
+                                     time, last_time, false).includes(:user)
   end
 
   ### Instance methods
 
   def cc
-    YAML::load(read_attribute(:cc))
+    read_attribute(:cc) ? YAML::load(read_attribute(:cc)) : []
   end
 
   def cc=(cc)
-    write_attribute(:cc,cc.to_yaml)
+    write_attribute(:cc, cc.class == Array ? cc.to_yaml : [cc].to_yaml)
   end
 
   def add_to_send_queue
@@ -41,7 +41,9 @@ class Reminder < ActiveRecord::Base
   def send_reminder_email
     # this is necessary because we may have more than one worker polling
     unless delivered?
-      UserMailer.send_reminder(self).deliver
+      [self.cc, self.email].each do |recipient|
+        UserMailer.send_reminder(self,recipient).deliver
+      end
       self.delivered = true
       self.save!
     end
