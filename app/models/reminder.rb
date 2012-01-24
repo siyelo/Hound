@@ -41,7 +41,7 @@ class Reminder < ActiveRecord::Base
   def send_reminder_email
     # this is necessary because we may have more than one worker polling
     unless delivered?
-      [self.cc, self.email].each do |recipient|
+      (self.cc << self.email).each do |recipient|
         UserMailer.send_reminder(self,recipient).deliver
       end
       self.delivered = true
