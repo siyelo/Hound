@@ -8,7 +8,7 @@ class Reminder < ActiveRecord::Base
   validates_presence_of :email, :subject, :reminder_time, :user
 
   # Callbacks
-  before_save :generate_snooze_token
+  before_create :generate_snooze_token
   after_create :queue_confirmation_email
 
   ### Class methods
@@ -41,7 +41,7 @@ class Reminder < ActiveRecord::Base
   def send_reminder_email
     # this is necessary because we may have more than one worker polling
     unless delivered?
-      [self.cc, self.email].each do |recipient|
+      (self.cc << self.email).each do |recipient|
         UserMailer.send_reminder(self,recipient).deliver
       end
       self.delivered = true
@@ -65,9 +65,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def generate_snooze_token
-    if new_record? || reminder_time_changed?
-      self.snooze_token = rand(36**8).to_s(36)
-    end
+    self.snooze_token = rand(36**8).to_s(36)
   end
 
 end

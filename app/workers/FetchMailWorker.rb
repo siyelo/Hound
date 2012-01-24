@@ -19,7 +19,7 @@ class FetchMailWorker
         reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
                                     body: EmailHelper.extract_html_or_text(e),
                                     reminder_time: reminder_time, user: user,
-                                    cc: not_to_us)
+                                    cc: not_to_us, message_id: e.message_id)
       end
     end
   end

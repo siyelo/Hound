@@ -1,5 +1,5 @@
 %h1 Your reminder could not be snoozed
--if @reminder.snooze_token != @token
+-if @reminder.snooze_token != params[:token]
   The snooze token is no longer valid (we change it everytime you snooze a reminder to prevent accidental snoozing).
   %br
   Please login to manage your reminders.

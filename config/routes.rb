@@ -5,6 +5,6 @@ RadMeet::Application.routes.draw do
 
   resources :reminders, only: [:index]
   resources :notifications, only: [:edit]
-  resources :snooze, only: [:update]
+  resources :snooze, only: [:edit]
   root :to => 'static_page#index'
 end
