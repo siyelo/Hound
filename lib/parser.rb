@@ -22,8 +22,7 @@ module EmailParser
     private
 
       def self.reminder_time(email)
-        [:minutes, :hours, :days, :weeks,
-         :months, :years].inject(0.seconds) do |result, m|
+        MEASUREMENT.keys.inject(0.seconds) do |result, m|
           result += self.scan_time(email, m)
         end
       end
