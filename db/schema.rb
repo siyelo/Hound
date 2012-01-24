@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(:version => 20120123095443) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.integer  "available_emails",                      :default => 0
+    t.integer  "total_emails",                          :default => 0
     t.string   "timezone"
     t.boolean  "confirmation_email",                    :default => true
     t.string   "modify_token"

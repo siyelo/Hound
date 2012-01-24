@@ -57,7 +57,7 @@ describe User do
     context "new users" do
       before :each do
         Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
-                                             to: '2days@radmeet.cc',
+                                             to: '2days@mailshotbot.com',
                                              subject: 'test', date: DateTime.now)])
         FetchMailWorker.perform
       end
@@ -79,7 +79,7 @@ describe User do
       before :each do
         @user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
         Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
-                                             to: '2days@radmeet.cc',
+                                             to: '2days@mailshotbot.com',
                                              subject: 'test', date: DateTime.now)])
         FetchMailWorker.perform
       end

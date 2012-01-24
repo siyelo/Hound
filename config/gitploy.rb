@@ -18,6 +18,12 @@ setup do
   end
 end
 
+clear_database do
+  remote do
+    run "rake db:drop && rake db:create && rake db:migrate"
+  end
+end
+
 deploy do
   push!
   remote do
