@@ -52,6 +52,7 @@ describe User do
     before(:each) do
       ResqueSpec.reset!
       reset_mailer
+      Timecop.return
     end
 
     context "new users" do
@@ -67,7 +68,7 @@ describe User do
         SendConfirmationWorker.should have_queue_size_of(1)
         SendConfirmationWorker.perform(Reminder.last.id)
         User.all.count.should == 1
-        User.first.timezone.should == "+02:00"
+        ActiveSupport::TimeZone[User.first.timezone].formatted_offset.should == DateTime.now.zone
 
         #only 2 because one is confirmation signup email and the other is the confirmation
         #email - the reminder email is not included in this test
@@ -98,6 +99,7 @@ describe User do
   describe 'invitation emails' do
     before(:each) do
       reset_mailer
+      Timecop.return
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
                                            to: '2days@mailshotbot.com',
                                            subject: 'test', date: DateTime.now)])
@@ -107,7 +109,7 @@ describe User do
       FetchMailWorker.perform
       Reminder.all.count.should == 1
       User.all.count.should == 1
-      User.first.timezone.should == "+02:00"
+      ActiveSupport::TimeZone[User.first.timezone].formatted_offset.should == DateTime.now.zone
       unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(1)
     end
 

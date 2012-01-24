@@ -54,7 +54,7 @@ describe Reminder do
       end
 
       it "should append 'RE: ' before the emails subject" do
-        @email.should have_subject(/RE: mehpants/)
+        @email.should have_subject(/Re: mehpants/)
       end
     end
 
@@ -69,11 +69,11 @@ describe Reminder do
         @reminder.snooze_token.should_not be_nil
       end
 
-      it "should regenerate the snooze token after a reminder has been snoozed" do
+      it "should not regenerate the snooze token after a reminder has been snoozed" do
         @reminder.save
         old_token = @reminder.snooze_token
         @reminder.snooze_for("2days", old_token)
-        @reminder.snooze_token.should_not == old_token
+        @reminder.snooze_token.should == old_token
       end
 
       it "should snooze a reminder for a specified duration" do

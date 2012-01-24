@@ -16,8 +16,9 @@ class User < ActiveRecord::Base
 
   ### Class methods
   def self.find_or_invite(email)
-    user = User.find_by_email(email.from.first.to_s) || User.invite!(email: email.from.first.to_s,
-                                                                     timezone: email.date.zone)
+    user = User.find_by_email(email.from.first.to_s) ||
+      User.invite!(email: email.from.first.to_s,
+                   timezone: ActiveSupport::TimeZone[email.date.zone.to_i].name)
   end
 
   ### Instance methods
