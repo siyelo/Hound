@@ -8,12 +8,19 @@ class FetchMailWorker
   def self.perform
     emails = Mail.all
     emails.each do |e|
-      #user = User.find_or_invite(e.from.first.to_s)
       user = User.find_or_invite(e)
-      reminder_time = EmailParser::Parser.parse_email(e.to.first.to_s)
-      reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                  body: EmailHelper.extract_html_or_text(e),
-                  reminder_time: reminder_time, user: user)
+
+      e.cc ||= []
+      to_us = (e.to + e.cc).select{ |t| t.include?('@mailshotbot.com') }
+      not_to_us = (e.to + e.cc) - to_us
+
+      to_us.each do |to|
+        reminder_time = EmailParser::Parser.parse_email(to)
+        reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
+                                    body: EmailHelper.extract_html_or_text(e),
+                                    reminder_time: reminder_time, user: user,
+                                    cc: not_to_us)
+      end
     end
   end
 

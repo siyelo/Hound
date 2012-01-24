@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "coold00dette@sorad.cc"
+  default from: "reminder@mailshotbot.com"
 
   def send_reminder(reminder)
     @reminder = reminder

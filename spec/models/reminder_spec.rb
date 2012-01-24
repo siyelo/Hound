@@ -7,6 +7,17 @@ describe Reminder do
     it { should validate_presence_of :reminder_time }
     it { should validate_presence_of :user }
   end
+
+  context "overwritten accessors" do
+    describe "cc" do
+      reminder = Factory :reminder
+      reminder.cc = ['cc@example.com']
+      reminder.save
+      reminder.reload
+      reminder.cc.should == ['cc@example.com']
+    end
+  end
+
   context "workers" do
     describe "fetch_reminders" do
       it "should only get reminders for the current minute" do

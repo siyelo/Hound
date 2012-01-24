@@ -21,6 +21,15 @@ class Reminder < ActiveRecord::Base
   end
 
   ### Instance methods
+
+  def cc
+    YAML::load(read_attribute(:cc))
+  end
+
+  def cc=(cc)
+    write_attribute(:cc,cc.to_yaml)
+  end
+
   def add_to_send_queue
     Resque.enqueue(SendReminderWorker, self.id)
   end
