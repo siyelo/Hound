@@ -5,7 +5,8 @@ class UserMailer < ActionMailer::Base
     @reminder = reminder
     @recipient = recipient
     reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
-    mail(to: recipient, subject: "RE: #{reminder.subject}", reply_to: reply_to)
+    mail(to: recipient, subject: "RE: #{reminder.subject}",
+         reply_to: reply_to, in_reply_to: reminder.message_id)
   end
 
   def send_confirmation(reminder)
