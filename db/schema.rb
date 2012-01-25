@@ -19,12 +19,12 @@ ActiveRecord::Schema.define(:version => 20120124121146) do
     t.text     "body",          :limit => 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
     t.datetime "reminder_time"
+    t.integer  "user_id"
     t.boolean  "delivered",                    :default => false
     t.string   "snooze_token"
-    t.string   "cc"
     t.integer  "snooze_count",                 :default => 0
+    t.string   "cc"
     t.string   "message_id"
   end
 
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(:version => 20120124121146) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.integer  "available_emails",                      :default => 0
+    t.integer  "total_emails",                          :default => 0
     t.string   "timezone"
     t.boolean  "confirmation_email",                    :default => true
     t.string   "modify_token"

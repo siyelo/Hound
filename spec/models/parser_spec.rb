@@ -13,9 +13,17 @@ describe EmailParser::Parser do
       end
     end
 
-    context "nextday" do
+    context "next{day}" do
       it "should return the next day (mon tues ect)" do
         email = "nextmonday@sorad.cc"
+        EmailParser::Parser.parse_email(email).wday.should == 1
+        EmailParser::Parser.parse_email(email).hour.should == 8
+      end
+    end
+
+    context "{day}" do
+      it "should return the next day (mon tues ect)" do
+        email = "monday@sorad.cc"
         EmailParser::Parser.parse_email(email).wday.should == 1
         EmailParser::Parser.parse_email(email).hour.should == 8
       end

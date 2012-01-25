@@ -5,19 +5,33 @@ module EmailParser
 
     ### Constants
 
+    STARTOFDAY = 8
+    ENDOFDAY = 17
+
+    DAYSOFWEEK = [:monday, :tuesday, :wednesday,
+                  :thursday, :friday, :saturday, :sunday]
+
     TIME = {
       tomorrow: /tomorrow/,
       endofday: /endofday/,
       endofmonth: /endofmonth/,
       #make this regex match the day
       nextmonday: /nextmonday/,
+      monday: /monday/,
       nexttuesday: /nexttuesday/,
+      tuesday: /tuesday/,
       nextwednesday: /nextwednesday/,
+      wednesday: /wednesday/,
       nextthursday: /nextthursday/,
+      thursday: /thursday/,
       nextfriday: /nextfriday/,
+      friday: /friday/,
       nextsaturday: /nextsaturday/,
+      saturday: /saturday/,
       nextsunday: /nextsunday/,
+      sunday: /sunday/,
       nextweek: /nextweek/
+
     }
 
     INCREMENTS = {
@@ -42,73 +56,57 @@ module EmailParser
 
     private
 
-    def self.match_time_words(email)
-      TIME.keys.inject([]) { |result, m| result << email.scan(TIME[m]) }.flatten
-    end
 
-    def self.reminder_time(email)
-      INCREMENTS.keys.inject(0.seconds) do |result, m|
-        result += self.scan_increments(email, m)
+    class << self
+      def match_time_words(email)
+        TIME.keys.inject([]) { |result, m| result << email.scan(TIME[m]) }.flatten
+      end
+
+      def reminder_time(email)
+        INCREMENTS.keys.inject(0.seconds) do |result, m|
+          result += self.scan_increments(email, m)
+        end
+      end
+
+      def scan_increments(email, unit)
+        time = email.scan INCREMENTS[unit]
+        time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
+      end
+
+      def tomorrow
+        1.day.from_now.change hour: STARTOFDAY
+      end
+
+      def endofday
+        Time.now.change hour: ENDOFDAY
+      end
+
+      def endofmonth
+        Time.now.end_of_month.change hour: STARTOFDAY
+      end
+
+      DAYSOFWEEK.each do |d|
+        define_method d do
+          date_of_next(d.to_s)
+        end
+      end
+
+      DAYSOFWEEK.each do |d|
+        define_method "next#{d}" do
+          date_of_next(d.to_s)
+        end
+      end
+
+      def date_of_next(day)
+        date  = DateTime.parse(day)
+        delta = date > Date.today ? 0 : 7
+        (date + delta).change hour: STARTOFDAY
+      end
+
+      def nextweek
+        Time.now.next_week.change hour: STARTOFDAY
       end
     end
-
-    def self.scan_increments(email, unit)
-      time = email.scan INCREMENTS[unit]
-      time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
-    end
-
-    def self.tomorrow
-      1.day.from_now.change hour: 8
-    end
-
-    def self.endofday
-      Time.now.change hour: 17
-    end
-
-    def self.endofmonth
-      Time.now.end_of_month.change hour: 8
-    end
-
-
-    def self.date_of_next(day)
-      date  = DateTime.parse(day)
-      delta = date > Date.today ? 0 : 7
-      (date + delta).change hour: 8
-    end
-
-    def self.nextmonday
-      date_of_next("monday")
-    end
-
-    def self.nexttuesday
-      date_of_next("tuesday")
-    end
-
-    def self.nextwednesday
-      date_of_next("wednesday")
-    end
-
-    def self.nextthursday
-      date_of_next("thursday")
-    end
-
-    def self.nextfriday
-      date_of_next("friday")
-    end
-
-    def self.nextsaturday
-      date_of_next("saturday")
-    end
-
-    def self.nextsunday
-      date_of_next("sunday")
-    end
-
-    def self.nextweek
-      Time.now.next_week.change hour: 8
-    end
-
-
   end
 end
 
