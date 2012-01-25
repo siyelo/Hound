@@ -26,7 +26,6 @@
           %hr
           = @reminder.body.html_safe
 
-    %p= link_to "Click Here", edit_notification_url(@reminder.user.id,
-                                                    token: @reminder.user.modify_token)
-      to turn off email confirmations
+    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
+    to turn off email confirmations
 
