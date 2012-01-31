@@ -1,12 +1,21 @@
-%table
-  %tr
-    %th Subject
-    %th Reminder Time
-    %th Delivered?
-  - @reminders.each do |r|
+%h2
+  Your Reminders
+
+.sidebar_left
+  %ul
+    %li  Upcoming
+    %li  Sent / Completed
+    %li  Due Today
+    %li  Not Delivered
+
+.content_right
+  %table{class: 'modern'}
     %tr
-      %td= r.subject
-      %td= r.reminder_time
-      %td= r.delivered?
-
-
+      %th Subject
+      %th Reminder Time
+      %th Delivered?
+    - @reminders.each do |r|
+      %tr
+        %td= r.subject
+        %td= r.formatted_reminder_time
+        %td= r.delivered?

@@ -58,6 +58,10 @@ class Reminder < ActiveRecord::Base
     end
   end
 
+  def formatted_reminder_time
+    reminder_time.in_time_zone(user.timezone).to_formatted_s(:short_with_day)
+  end
+
   private
 
   def queue_confirmation_email
