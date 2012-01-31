@@ -13,4 +13,12 @@ class UserMailer < ActionMailer::Base
     @reminder = reminder
     mail(:to => reminder.email, subject: "Confirmation: #{reminder.subject}")
   end
+
+  def send_notification_snooze(reminder, recipient)
+    @reminder = reminder
+    @recipient = recipient
+    reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
+    mail(to: recipient, subject: "Re: #{reminder.subject}",
+         reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
+  end
 end

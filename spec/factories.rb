@@ -5,6 +5,7 @@ Factory.define :reminder do |f|
   f.reminder_time Time.now
   f.delivered false
   f.user { Factory(:user)}
+  f.cc []
  end
 
 Factory.define :user do |f|

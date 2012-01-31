@@ -12,4 +12,10 @@ class SnoozeController < ApplicationController
     end
   end
 
+  # used to snooze reminders for other
+  def show
+    reminder = Reminder.find(params[:id])
+    reminder.add_to_snooze_email_queue
+    render action: 'informed_of_snooze'
+  end
 end

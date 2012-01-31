@@ -5,7 +5,7 @@ RadMeet::Application.routes.draw do
 
   resources :reminders, only: [:index]
   resources :notifications, only: [:edit]
-  resources :snooze, only: [:edit]
+  resources :snooze, only: [:show, :edit]
 
   authenticated :user do
     root :to => "reminders#index"

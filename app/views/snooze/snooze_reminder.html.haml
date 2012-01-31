@@ -1,3 +1,7 @@
 %h1 We have snoozed '#{ @reminder.subject }'
 %h3 The new reminder time is #{ @reminder.reminder_time }
 %h3= "That's #{distance_of_time_in_words_to_now(@reminder.reminder_time, true)} from now"
+%p Would you like to snooze the reminder for the others involved?
+%p= link_to 'Yes', snooze_url(@reminder)
+
+
