@@ -1,6 +1,7 @@
 class RemindersController < ApplicationController
+  include RemindersHelper
 
   def index
-    @reminders = current_user.reminders
+    @reminders = Reminder.upcoming_reminders_for(current_user)
   end
 end

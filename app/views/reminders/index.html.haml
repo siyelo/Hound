@@ -1,21 +1,27 @@
+- groups = group_reminders(@reminders)
+
 %h2
   Your Reminders
 
 .sidebar_left
   %ul
-    %li  Upcoming
+    %li
+      %b Upcoming
     %li  Sent / Completed
     %li  Due Today
     %li  Not Delivered
 
 .content_right
-  %table{class: 'modern'}
-    %tr
-      %th Subject
-      %th Reminder Time
-      %th Delivered?
-    - @reminders.each do |r|
-      %tr
-        %td= r.subject
-        %td= r.formatted_reminder_time
-        %td= r.delivered?
+  %b= "You have #{pluralize(@reminders.count, 'upcoming reminder')}"
+  %br
+  %br
+  - RemindersHelper::LAYERS.keys.each do |layer|
+    - if groups[layer].count > 0
+      = layer.to_s.titleize
+
+      %table{class: 'modern'}
+        - groups[layer].each do |r|
+          %tr
+            %td= r.subject
+            %td= r.formatted_reminder_time
+            %td= r.delivered?
