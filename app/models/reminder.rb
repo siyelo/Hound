@@ -37,7 +37,6 @@ class Reminder < ActiveRecord::Base
 
   # sends emails to the people cc'd on an email when the main one is snoozed
   def add_to_snooze_email_queue
-    debugger
     Resque.enqueue(SnoozeNotificationWorker, id) unless self.cc.empty?
   end
 
