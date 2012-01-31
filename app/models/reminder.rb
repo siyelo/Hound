@@ -21,6 +21,10 @@ class Reminder < ActiveRecord::Base
                                      time, last_time, false).includes(:user)
   end
 
+  def self.upcoming_reminders_for(user)
+    self.where("reminder_time >= ? AND delivered = ? AND user_id = ?", Time.now, false, user.id)
+  end
+
   ### Instance methods
 
   def cc
