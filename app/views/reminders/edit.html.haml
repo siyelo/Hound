@@ -10,5 +10,8 @@
     %li  Not Delivered
 
 .content_right
-  - form_for @reminder do |f|
+  = form_for @reminder do |f|
     = f.text_field :subject
+    = f.text_area :body
+    = f.datetime_select :reminder_time
+    = f.submit :submit

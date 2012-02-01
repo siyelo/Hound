@@ -14,7 +14,7 @@ class RemindersController < ApplicationController
     respond_to do |format|
       if @reminder.update_attributes(params[:reminder])
         format.json { render :json => { :success => :true } }
-        format.html { render :action => "index" }
+        format.html { redirect_to reminders_path }
       else
         format.html { render :action => "edit" }
         format.js  { render :json => @reminder.errors,
