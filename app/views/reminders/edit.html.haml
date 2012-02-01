@@ -1,0 +1,14 @@
+%h2
+  = @reminder.subject
+
+.sidebar_left
+  %ul
+    %li
+      %b Upcoming
+    %li  Sent / Completed
+    %li  Due Today
+    %li  Not Delivered
+
+.content_right
+  - form_for @reminder do |f|
+    = f.text_field :subject

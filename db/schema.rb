@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20120124121146) do
     t.string   "email"
     t.string   "subject"
     t.text     "body",          :limit => 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.datetime "reminder_time"
     t.integer  "user_id"
     t.boolean  "delivered",                    :default => false
@@ -39,16 +39,14 @@ ActiveRecord::Schema.define(:version => 20120124121146) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.integer  "available_emails",                      :default => 0
-    t.integer  "total_emails",                          :default => 0
     t.string   "timezone"
     t.boolean  "confirmation_email",                    :default => true
     t.string   "modify_token"

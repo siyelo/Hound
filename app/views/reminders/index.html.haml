@@ -27,7 +27,7 @@
         - groups[layer].each do |r|
           %tr
             = form_for r, url: reminder_url(r), remote: true do |f|
-              %td.large= r.subject
+              %td.large= link_to r.subject, edit_reminders_path(r)
               %td.large= r.formatted_reminder_time
               %td.small= f.check_box :delivered?, class: 'mark_as_complete'
 

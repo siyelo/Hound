@@ -1,10 +1,10 @@
 fetchmail:
-  cron: "*/12 * * * *"
+  cron: "* * * * *"
   class: FetchMailWorker
   description: Fetch Mail
   queue: fetch_queue
 queuemail:
-  cron: "*/12 * * * *"
+  cron: "* * * * *"
   class: QueueMailWorker
   description: Queue Mail for Sending
-  queue: queue_queue
+  queue: process_queue

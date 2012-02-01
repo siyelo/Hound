@@ -21,9 +21,9 @@ class Reminder < ActiveRecord::Base
                                      time, last_time, false).includes(:user)
   end
 
-  def self.upcoming_reminders_for(user)
-    self.where("reminder_time >= ? AND delivered = ? AND user_id = ?", Time.now, false, user.id)
-  end
+  ### Scopes
+
+  scope :upcoming_reminders, where("reminder_time >= ? AND delivered = ?", Time.now, false)
 
   ### Instance methods
 
