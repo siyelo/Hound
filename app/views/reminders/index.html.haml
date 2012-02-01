@@ -12,16 +12,23 @@
     %li  Not Delivered
 
 .content_right
-  %b= "You have #{pluralize(@reminders.count, 'upcoming reminder')}"
-  %br
-  %br
+  %table{class: 'modern'}
+    %tr
+      %th.large= "You have #{pluralize(@reminders.count, 'upcoming reminder')}"
+      %th.large Reminder Date
+      %th.small Mark as complete?
+
   - RemindersHelper::LAYERS.keys.each do |layer|
     - if groups[layer].count > 0
       = layer.to_s.titleize
 
       %table{class: 'modern'}
+        %tr
         - groups[layer].each do |r|
           %tr
-            %td= r.subject
-            %td= r.formatted_reminder_time
-            %td= r.delivered?
+            = form_for r, url: reminder_url(r), remote: true do |f|
+              %td.large= r.subject
+              %td.large= r.formatted_reminder_time
+              %td.small= f.check_box :delivered?, class: 'mark_as_complete'
+
+  .status

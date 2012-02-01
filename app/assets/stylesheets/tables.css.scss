@@ -14,4 +14,17 @@
   th{
     padding: 0px 0px 8px;
   }
+
+  .completed_row td{
+    text-decoration: line-through;
+  }
+
+  .large{
+      width: 45%
+    }
+
+  .small{
+      width: 10%
+    }
+
 }
