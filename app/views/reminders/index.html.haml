@@ -18,17 +18,16 @@
       %th.large Reminder Date
       %th.small Mark as complete?
 
-  - RemindersHelper::LAYERS.keys.each do |layer|
-    - if groups[layer].count > 0
-      = layer.to_s.titleize
+  - groups.each_pair do |key, values|
+    - if values.count > 0
+      = key.to_s.titleize
 
       %table{class: 'modern'}
         %tr
-        - groups[layer].each do |r|
+        - values.each do |r|
           %tr
             = form_for r, url: reminder_url(r), remote: true do |f|
               %td.large= link_to r.subject, edit_reminder_path(r)
               %td.large= r.formatted_reminder_time
               %td.small= f.check_box :delivered?, class: 'mark_as_complete'
-
   .status
