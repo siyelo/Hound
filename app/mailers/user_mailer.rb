@@ -21,4 +21,12 @@ class UserMailer < ActionMailer::Base
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
   end
+
+  def send_notification_of_change(reminder, recipient)
+    @reminder = reminder
+    @recipient = recipient
+    reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
+    mail(to: recipient, subject: "Re: #{reminder.subject}",
+         reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
+  end
 end

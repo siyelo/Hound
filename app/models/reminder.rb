@@ -1,6 +1,6 @@
 class Reminder < ActiveRecord::Base
   require 'parser'
-  require 'SnoozeNotificationWorker' #don't know why this isn't being auto loaded
+  require 'NotificationWorker' #don't know why this isn't being auto loaded
 
   ### Associations
   belongs_to :user
@@ -40,13 +40,26 @@ class Reminder < ActiveRecord::Base
   end
 
   # sends emails to the people cc'd on an email when the main one is snoozed
-  def add_to_snooze_email_queue
-    Resque.enqueue(SnoozeNotificationWorker, id) unless self.cc.empty?
+  def add_to_snooze_to_notification_queue
+    Resque.enqueue(NotificationWorker, id, :snooze_notification_email) unless self.cc.empty?
   end
 
   def snooze_notification_email
     self.cc.each do |recipient|
       UserMailer.send_notification_snooze(self, recipient).deliver
+    end
+  end
+
+  # when a reminder is changed it adds an email to the recipients to the notification
+  # queue to inform them of this change
+  def add_change_reminder_to_notification_queue
+    Resque.enqueue(NotificationWorker, id, :inform_other_recipients) unless self.cc.empty?
+  end
+
+  #informs the cc'd users of a change to the reminder
+  def inform_other_recipients
+    self.cc.each do |recipient|
+      UserMailer.send_notification_of_change(self, recipient).deliver
     end
   end
 

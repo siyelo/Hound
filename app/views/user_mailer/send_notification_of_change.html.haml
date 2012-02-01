@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
+  %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
+    %table{:style => "600px"}
+      %tr
+        %td{:colspan => "2"}
+          %strong Sup yo! Your previous reminder has undergone revisions
+          %hr
+      %tr
+        %td{:style => "width:50%"}
+          %h2 Subject:
+          %p{:style => "font-size:16px"}#{@reminder.subject}
+          %h2 Date Sent:
+          %p{:style => "font-size:16px"}#{@reminder.created_at.strftime('%d-%b-%Y')}
+          %h2 Snooze Count:
+          %p{:style => "font-size:16px"}#{@reminder.snooze_count}
+        %td{:style => "width:50%"}
+          - if @reminder.email == @recipient
+            = render 'snooze_box'
+          - else
+            = render 'cc_box'
+      %tr
+        %td{:colspan => "2"}
+          %hr
+          = @reminder.body.html_safe
+
+    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
+    to turn off email confirmations
+

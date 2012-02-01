@@ -9,11 +9,12 @@ describe SnoozeController do
     end
 
     it "should inform the cc'd users that the reminder has been snoozed" do
+      method = :snooze_notification_email
       @reminder.cc = ["pimpchains@rus.com", "tapped@datass.yo"]; @reminder.save
       get :show, id: @reminder.id
-      SnoozeNotificationWorker.should have_queue_size_of(1)
+      NotificationWorker.should have_queue_size_of(1)
       response.should render_template('informed_of_snooze')
-      SnoozeNotificationWorker.perform(@reminder.id)
+      NotificationWorker.perform(@reminder.id, method)
       unread_emails_for('pimpchains@rus.com').size.should >= parse_email_count(1)
       unread_emails_for('tapped@datass.yo').size.should >= parse_email_count(1)
     end

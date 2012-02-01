@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Reminder do
+  before :each do
+    ResqueSpec.reset!
+  end
+
   describe "validations" do
     it { should validate_presence_of :email }
     it { should validate_presence_of :subject }
@@ -15,6 +19,21 @@ describe Reminder do
       reminder.save
       reminder.reload
       reminder.cc.should == ['cc@example.com']
+    end
+  end
+
+  describe "changed reminders" do
+    it "should inform the recipients that the contents of the reminder have been changed" do
+      method = :inform_other_recipients
+      u = Factory :user
+      r = Factory.build :reminder, user: u
+      r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
+      r.save
+      r.add_change_reminder_to_notification_queue
+      NotificationWorker.should have_queue_size_of(1)
+      NotificationWorker.perform(r.id, method)
+      unread_emails_for('snoopdawg@snoopy.com').size.should >= parse_email_count(1)
+      unread_emails_for('pimpboiwonder@vuvuzela.com').size.should >= parse_email_count(1)
     end
   end
 
@@ -33,9 +52,6 @@ describe Reminder do
     end
 
     describe "queueing" do
-      before :each do
-        ResqueSpec.reset!
-      end
 
       it "should properly queue" do
         reminder = Factory :reminder
