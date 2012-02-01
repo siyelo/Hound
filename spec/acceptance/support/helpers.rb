@@ -1,10 +1,10 @@
 module HelperMethods
 
   def log_in_with(user)
-    visit "/login"
-    fill_in "login_username", :with => user.username
-    fill_in "login_password", :with => "secret"
-    click_button "Login"
+    visit '/users/sign_in'
+    fill_in "user[email]", :with => @user.email
+    fill_in "user[password]", :with=> 'testing'
+    click_button 'Sign in'
   end
 
   [:notice, :error].each do |name|

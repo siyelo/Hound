@@ -21,3 +21,6 @@
 
 #bundler binstubs
 bin/
+
+#sass cache
+.sass-cache
