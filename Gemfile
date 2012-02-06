@@ -42,4 +42,5 @@ group :test do
   gem 'email_spec'
   gem 'resque_spec'
   gem 'rspec-mocks'
+  gem 'headless'
 end

@@ -42,7 +42,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     if example.metadata[:js]
+      require 'headless'
       Capybara.current_driver = :selenium
+      headless = Headless.new
+      headless.start
       DatabaseCleaner.strategy = :truncation
     else
       DatabaseCleaner.strategy = :transaction
