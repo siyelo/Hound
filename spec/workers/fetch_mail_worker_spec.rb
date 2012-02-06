@@ -9,7 +9,7 @@ describe FetchMailWorker do
 
     it "should create 1 reminder (to) " do
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: ['2days@mailshotbot.com'],
+                                           to: ['2days@hound.cc'],
                                            subject: 'test', date: DateTime.now)])
 
       Reminder.count.should == 0
@@ -21,7 +21,7 @@ describe FetchMailWorker do
     it "should create 1 reminder (cc) " do
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
                                            to: 'anyone@example.com',
-                                           cc: '2days@mailshotbot.com',
+                                           cc: '2days@hound.cc',
                                            subject: 'test', date: DateTime.now)])
 
       Reminder.count.should == 0
@@ -31,10 +31,10 @@ describe FetchMailWorker do
     end
 
 
-    it "should create multiple reminders if @mailshotbot is in the 'to' and/or 'cc' field multiple times" do
+    it "should create multiple reminders if @hound the 'to' and/or 'cc' field multiple times" do
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: ['2days@mailshotbot.com', '1min@mailshotbot.com' ],
-                                           cc: ['1hour@mailshotbot.com'],
+                                           to: ['2days@hound.cc', '1min@hound.cc' ],
+                                           cc: ['1hour@hound.cc'],
                                            subject: 'test', date: DateTime.now)])
 
       Reminder.count.should == 0
@@ -42,10 +42,10 @@ describe FetchMailWorker do
       Reminder.count.should == 3
     end
 
-    it "should not include @mailshotbot addresses in reminders' cc field" do
+    it "should not include @hound addresses in reminders' cc field" do
       Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: ['2days@mailshotbot.com'],
-                                           cc: ['1min@mailshotbot.com', 'cc@example.com'],
+                                           to: ['2days@hound.cc'],
+                                           cc: ['1min@hound.cc', 'cc@example.com'],
                                            subject: 'test', date: DateTime.now)])
 
       Reminder.count.should == 0

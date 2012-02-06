@@ -11,7 +11,7 @@ class FetchMailWorker
       user = User.find_or_invite(e)
 
       e.cc ||= []
-      to_us = (e.to + e.cc).select{ |t| t.include?('@mailshotbot.com') }
+      to_us = (e.to + e.cc).select{ |t| t.include?('@hound.cc') }
       not_to_us = (e.to + e.cc) - to_us
 
       to_us.each do |to|

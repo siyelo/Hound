@@ -1,10 +1,10 @@
 class UserMailer < ActionMailer::Base
-  default from: "reminder@mailshotbot.com"
+  default from: "reminder@hound.cc"
 
   def send_reminder(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
+    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
   end
@@ -17,7 +17,7 @@ class UserMailer < ActionMailer::Base
   def send_notification_snooze(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
+    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
   end
@@ -25,7 +25,7 @@ class UserMailer < ActionMailer::Base
   def send_notification_of_change(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@mailshotbot.com" : reminder.email
+    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
   end
