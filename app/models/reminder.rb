@@ -1,5 +1,4 @@
 class Reminder < ActiveRecord::Base
-  require 'parser'
   require 'NotificationWorker' #don't know why this isn't being auto loaded
 
   ### Associations
@@ -84,7 +83,7 @@ class Reminder < ActiveRecord::Base
 
   def snooze_for(duration, token)
     if snooze_token == token
-      self.reminder_time = EmailParser::Parser.parse_email(duration)
+      self.reminder_time = EmailParser::Dispatcher.parse_email(duration)
       self.snooze_count += 1
       self.delivered = false
       self.save!

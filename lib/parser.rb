@@ -11,7 +11,7 @@ module EmailParser
     DAYSOFWEEK = [:monday, :tuesday, :wednesday,
                   :thursday, :friday, :saturday, :sunday]
 
-    TIME = {
+    MATCHERS = {
       tomorrow: /tomorrow/,
       endofday: /endofday/,
       endofmonth: /endofmonth/,
@@ -34,23 +34,12 @@ module EmailParser
 
     }
 
-    INCREMENTS = {
-      minutes:  /(\d{1,2})(?!mo)m[a-zA-Z]*/,
-      hours:  /(\d{1,2})ho?u?r?s?/,
-      days:  /(\d{1,2})da?y?s?/,
-      weeks:  /(\d{1,2})we?e?k?s?/,
-      months:  /(\d{1,2})mo[a-zA-Z]*/,
-      years:  /(\d{1,2})ye?a?r?s?/
-    }
-
     ### Class methods
 
     def self.parse_email(email, start_date = nil)
       matches = self.match_time_words(email)
       unless matches.empty?
         self.send(matches.first)
-      else
-        start_date ? start_date + self.reminder_time(email) : self.reminder_time(email).from_now
       end
     end
 
@@ -59,18 +48,7 @@ module EmailParser
 
     class << self
       def match_time_words(email)
-        TIME.keys.inject([]) { |result, m| result << email.scan(TIME[m]) }.flatten
-      end
-
-      def reminder_time(email)
-        INCREMENTS.keys.inject(0.seconds) do |result, m|
-          result += self.scan_increments(email, m)
-        end
-      end
-
-      def scan_increments(email, unit)
-        time = email.scan INCREMENTS[unit]
-        time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
+        MATCHERS.keys.inject([]) { |result, m| result << email.scan(MATCHERS[m]) }.flatten
       end
 
       def tomorrow
@@ -109,11 +87,3 @@ module EmailParser
     end
   end
 end
-
-#year y
-#month mo
-#week w
-#day d
-#hour \d+h
-#minute \d+m
-#tomorrow
