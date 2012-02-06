@@ -30,6 +30,7 @@ deploy do
     run "git reset --hard"
     run "bundle install"
     run "rake db:migrate"
+    run "rake assets:precompile"
     run "sudo service radmeet_unicorn restart"
     run "sudo restart radmeet"
     #run "touch tmp/restart.txt"
