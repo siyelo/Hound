@@ -2,7 +2,7 @@ class RemindersController < ApplicationController
   include RemindersHelper
 
   def index
-    @reminders = current_user.reminders.upcoming_reminders
+    @reminders = filter_reminders(params[:filter])
   end
 
   def edit

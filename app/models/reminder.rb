@@ -23,7 +23,11 @@ class Reminder < ActiveRecord::Base
 
   ### Scopes
 
-  scope :upcoming_reminders, where("reminder_time >= ? AND delivered = ?", Time.now, false)
+  scope :upcoming, where("reminder_time >= ? AND delivered = ?", Time.now, false)
+  scope :completed, where("delivered = ?", true)
+  scope :due_today, where("reminder_time >= ? AND reminder_time < ? AND delivered = ?",
+                          Time.now, Date.tomorrow.to_datetime, false)
+  scope :undelivered, where("reminder_time < ? AND delivered = ?", Time.now, false)
 
   ### Instance methods
 

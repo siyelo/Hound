@@ -36,6 +36,16 @@ describe RemindersHelper do
       groups = helper.group_reminders([reminder])
       groups[:later].count.should == 1
     end
+  end
 
+  describe 'filters' do
+    it "should return upcoming for blank or unknown filters" do
+      controller.stub!(:params).and_return({filter: 'completed'})
+      current_filter.should == 'completed'
+      controller.stub!(:params).and_return({filter: 'thisisntright'})
+      current_filter.should == 'upcoming'
+      controller.stub!(:params).and_return({filter: nil})
+      current_filter.should == 'upcoming'
+    end
   end
 end

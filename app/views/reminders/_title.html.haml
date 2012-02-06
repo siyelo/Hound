@@ -1,0 +1,4 @@
+- if current_filter == 'due_today'
+  %th.large= "You have #{pluralize(@reminders.count, 'reminder')} #{current_filter.humanize.downcase}"
+- else
+  %th.large= "You have #{pluralize(@reminders.count, "#{current_filter} reminder")}"

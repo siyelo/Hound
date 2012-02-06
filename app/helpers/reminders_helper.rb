@@ -8,6 +8,8 @@ module RemindersHelper
     later:      '1000.years.from_now'
   }
 
+  FILTERS = %w(completed due_today undelivered)
+
   def group_reminders(reminders)
     groups = Hash.new{|hash, key| hash[key] = Array.new}
     reminders.each do |r|
@@ -16,5 +18,17 @@ module RemindersHelper
       end
     end
     return groups
+  end
+
+  def filter_reminders(filter)
+    if FILTERS.include?(filter)
+      current_user.reminders.send(filter)
+    else
+      current_user.reminders.upcoming
+    end
+  end
+
+  def current_filter
+    FILTERS.include?(params[:filter]) ? params[:filter] : 'upcoming'
   end
 end

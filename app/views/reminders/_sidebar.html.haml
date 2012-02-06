@@ -1,0 +1,4 @@
+.sidebar_left
+  %ul
+    - %w(upcoming completed due_today undelivered).each do |filter|
+      %li= current_filter == filter  ? filter.titleize : (link_to filter.titleize, reminders_path(filter: filter))

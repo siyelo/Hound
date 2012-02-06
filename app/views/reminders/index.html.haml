@@ -3,18 +3,12 @@
 %h2
   Your Reminders
 
-.sidebar_left
-  %ul
-    %li
-      %b Upcoming
-    %li  Sent / Completed
-    %li  Due Today
-    %li  Not Delivered
+=render 'sidebar'
 
 .content_right
   %table{class: 'modern'}
     %tr
-      %th.large= "You have #{pluralize(@reminders.count, 'upcoming reminder')}"
+      =render 'title'
       %th.large Reminder Date
       %th.small Mark as complete?
 
