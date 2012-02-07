@@ -18,3 +18,7 @@ $(".mark_as_complete").live "click", ->
         element.closest("tr").removeClass "completed_row"
       else
         element.closest("tr").addClass "completed_row"
+
+$ ->
+  CKEDITOR.replace "rich_text",
+    toolbar : 'Basic'
