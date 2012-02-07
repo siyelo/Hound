@@ -31,6 +31,7 @@ deploy do
     run "bundle install"
     run "rake db:migrate"
     run "rake assets:precompile"
+    run "rvmsudo foreman export upstart /etc/init -a radmeet -u deployer"
     run "sudo service radmeet_unicorn restart"
     run "sudo restart radmeet"
     #run "touch tmp/restart.txt"
