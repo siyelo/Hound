@@ -8,3 +8,8 @@
         %td{:colspan => "2"}
           %strong Sup yo! We have received your request and will remind you at
           = @reminder.reminder_time
+    %br
+    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
+    to turn off email confirmations
+
+

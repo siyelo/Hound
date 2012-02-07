@@ -25,7 +25,3 @@
         %td{:colspan => "2"}
           %hr
           = @reminder.body.html_safe
-
-    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
-    to turn off email confirmations
-
