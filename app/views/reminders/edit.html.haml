@@ -1,17 +1,15 @@
 %h2
-  = @reminder.subject
+  Edit Reminder
 
-.sidebar_left
-  %ul
-    %li
-      %b Upcoming
-    %li  Sent / Completed
-    %li  Due Today
-    %li  Not Delivered
-
-.content_right
-  = form_for @reminder do |f|
-    = f.text_field :subject
-    = f.text_area :body
-    = f.datetime_select :reminder_time
-    = f.submit :submit
+= form_for @reminder do |f|
+  = f.label 'Subject:'
+  = f.text_field :subject
+  %p
+  = f.label 'Reminder Date/Time:'
+  = f.datetime_select :reminder_time
+  = f.label Time.zone
+  %p
+  = f.text_area :body, name: 'rich_text', class:'rich_text'
+  %br
+  = f.submit :submit
+  = link_to 'cancel', root_path

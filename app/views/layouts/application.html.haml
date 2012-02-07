@@ -4,6 +4,7 @@
     %title RadMeet
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
+    = javascript_include_tag "ckeditor/ckeditor.js"
     = csrf_meta_tags
   %body
     .topbar
@@ -16,7 +17,8 @@
             = " | "
             =link_to 'Login', new_user_session_path
           - else
-            = "#{current_user.email} | "
+            =link_to current_user.email, edit_user_registration_path
+            =" | "
             =link_to 'Logout', destroy_user_session_path, :method => :delete
 
     .container-fluid
