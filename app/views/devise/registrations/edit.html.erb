@@ -16,10 +16,10 @@
   <%= f.password_field :current_password %></div>
 
   <div><%= f.label :timezone %><br />
-  <%= f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones, include_blank: true %></div>
+  <%= f.time_zone_select :timezone%></div>
 
-  <div><%= f.label :confirmation_email %><br />
-  <%= f.check_box :confirmation_email %></div>
+<div><%= f.check_box :confirmation_email %>
+<%= f.label "Receive confirmation emails?" %></div>
 
   <div><%= f.submit "Update" %></div>
 <% end %>
