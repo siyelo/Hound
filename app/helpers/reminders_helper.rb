@@ -22,9 +22,9 @@ module RemindersHelper
 
   def filter_reminders(filter)
     if FILTERS.include?(filter)
-      current_user.reminders.send(filter)
+      current_user.reminders.send(filter).sorted
     else
-      current_user.reminders.upcoming
+      current_user.reminders.upcoming.sorted
     end
   end
 

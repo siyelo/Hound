@@ -28,6 +28,7 @@ class Reminder < ActiveRecord::Base
   scope :due_today, where("reminder_time >= ? AND reminder_time < ? AND delivered = ?",
                           Time.now, Date.tomorrow.to_datetime, false)
   scope :undelivered, where("reminder_time < ? AND delivered = ?", Time.now, false)
+  scope :sorted, order("reminder_time ASC")
 
   ### Instance methods
 
