@@ -1,5 +1,6 @@
 class Reminder < ActiveRecord::Base
   require 'NotificationWorker' #don't know why this isn't being auto loaded
+  require 'SendConfirmationWorker'
 
   ### Associations
   belongs_to :user
