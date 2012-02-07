@@ -23,5 +23,5 @@
             = form_for r, url: reminder_path(r), remote: true do |f|
               %td.large= link_to r.subject, edit_reminder_path(r)
               %td.large= r.formatted_reminder_time
-              %td.small= f.check_box :delivered?, class: 'mark_as_complete'
+              %td.small= f.check_box :delivered?, class: 'mark_as_complete', disabled: allow_changes(r)
   .status

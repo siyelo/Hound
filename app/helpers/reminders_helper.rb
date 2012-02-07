@@ -31,4 +31,8 @@ module RemindersHelper
   def current_filter
     FILTERS.include?(params[:filter]) ? params[:filter] : 'upcoming'
   end
+
+  def allow_changes(reminder)
+    return true if reminder.reminder_time < DateTime.now && reminder.delivered
+  end
 end
