@@ -3,6 +3,12 @@ module EmailParser
     require 'active_support/all'
     # this is going to need a rewrite when we are done
 
+    attr_accessor :email
+
+    def initialize(email)
+      @email = email
+    end
+
     ### Constants
 
     MATCHERS = {
@@ -14,27 +20,23 @@ module EmailParser
       years:  /(\d{1,2})ye?a?r?s?/
     }
 
-    ### Class methods
+    ### Instance Methods
 
-    def self.parse_email(email, start_date = nil)
-      start_date ? start_date + self.reminder_time(email) : self.reminder_time(email).from_now
+    def reminder_time
+      match_and_return_time.from_now
     end
 
     private
 
-
-    class << self
-
-      def reminder_time(email)
-        MATCHERS.keys.inject(0.seconds) do |result, m|
-          result += self.scan_increments(email, m)
-        end
+    def match_and_return_time
+      MATCHERS.keys.inject(0.seconds) do |result, m|
+        result += scan_increments(m)
       end
+    end
 
-      def scan_increments(email, unit)
-        time = email.scan MATCHERS[unit]
-        time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
-      end
+    def scan_increments(unit)
+      time = email.scan MATCHERS[unit]
+      time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
     end
   end
 end

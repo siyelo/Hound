@@ -28,9 +28,9 @@ module EmailParser
 
       reminder_time = nil
       reminder_time = if local_part.match /(?!months)[a-z]{6,10}/
-                        EmailParser::Parser.parse_email(email)
+                        EmailParser::AdverbParser.new(email).reminder_time
                       elsif local_part.match /\d+[a-z]+/
-                        EmailParser::IncrementalTime.parse_email(email)
+                        EmailParser::IncrementalTime.new(email).reminder_time
                       end
     end
   end
