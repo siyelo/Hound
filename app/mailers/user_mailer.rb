@@ -29,4 +29,10 @@ class UserMailer < ActionMailer::Base
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
   end
+
+  def send_error_notification(email)
+    @email = email
+    mail(to: email.from, subject: "Error: #{email.subject}",
+         in_reply_to: "<#{email.message_id}>")
+  end
 end

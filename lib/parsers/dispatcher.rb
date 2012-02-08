@@ -9,29 +9,45 @@ module EmailParser
         not_to_us = (e.to + e.cc) - to_us
 
         to_us.each do |to|
-          reminder_time = self.parse_email(to)
+          reminder_time = self.parse_email(to, e)
           reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
                                       body: EmailHelper.extract_html_or_text(e),
                                       reminder_time: reminder_time, user: user,
-                                      cc: not_to_us, message_id: e.message_id)
+                                      cc: not_to_us, message_id: e.message_id) if reminder_time
         end
       end
     end
 
     private
 
-    ### Factory for dispatching emails to the correct parser
-    def self.parse_email(email)
-      # local part is the first part of the email
-      # we use this to determine when the email should be returned
-      local_part = email.split('@')[0] || email
+    class << self
+      ### Factory for dispatching emails to the correct parser
+      def parse_email(to, email = nil)
+        # local part is the first part of the email
+        # we use this to determine when the email should be returned
+        local_part = to.split('@')[0] || to
 
-      reminder_time = nil
-      reminder_time = if local_part.match /(?!months)[a-z]{6,10}/
-                        EmailParser::AdverbParser.new(email).reminder_time
-                      elsif local_part.match /\d+[a-z]+/
-                        EmailParser::IncrementalTime.new(email).reminder_time
-                      end
+        reminder_time = nil
+
+        reminder_time = if local_part.match /(?!months)[a-z]{6,10}/
+                          EmailParser::AdverbParser.new(to).reminder_time
+                        elsif local_part.match /\d+[a-z]+/
+                          EmailParser::IncrementalTime.new(to).reminder_time
+                        end
+
+
+        reminder_time ? reminder_time : self.calendar_date_parse(email, local_part)
+      end
+
+      #refactor me
+      def calendar_date_parse(email, local_part)
+        begin
+          DateTime.parse(local_part).change(hour: 8)
+        rescue ArgumentError
+          Resque.enqueue(ErrorNotificationWorker, email) if email
+          nil
+        end
+      end
     end
   end
 end
