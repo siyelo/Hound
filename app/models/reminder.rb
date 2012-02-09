@@ -33,11 +33,11 @@ class Reminder < ActiveRecord::Base
   ### Instance methods
 
   def cc
-    read_attribute(:cc) ? YAML::load(read_attribute(:cc)) : []
+    [*YAML::load(read_attribute(:cc))]
   end
 
   def cc=(cc)
-    write_attribute(:cc, cc.class == Array ? cc.to_yaml : [cc].to_yaml)
+    write_attribute(:cc, [*cc].to_yaml)
   end
 
   def add_to_send_queue

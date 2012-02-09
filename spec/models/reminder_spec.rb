@@ -12,13 +12,30 @@ describe Reminder do
     it { should validate_presence_of :user }
   end
 
-  context "overwritten accessors" do
-    describe "cc" do
-      reminder = Factory :reminder
-      reminder.cc = ['cc@example.com']
-      reminder.save
-      reminder.reload
-      reminder.cc.should == ['cc@example.com']
+  describe "overwritten accessors" do
+    before :each do
+      @reminder = Factory :reminder
+    end
+
+    it "should accept an array of cc's and return an array" do
+      @reminder.cc = ['cc@example.com']
+      @reminder.save
+      @reminder.reload
+      @reminder.cc.should == ['cc@example.com']
+    end
+
+    it "should accept a cc as a string and return an array" do
+      @reminder.cc = 'cc@example.com'
+      @reminder.save
+      @reminder.reload
+      @reminder.cc.should == ['cc@example.com']
+    end
+
+    it "should return an empty array if cc is nil" do
+      @reminder.cc = nil
+      @reminder.save
+      @reminder.reload
+      @reminder.cc.should == []
     end
   end
 
