@@ -1,8 +1,8 @@
 class RemindersController < ApplicationController
-  include RemindersHelper
-
   def index
-    @reminders = filter_reminders(params[:filter])
+    @current_filter = ReminderFilter.current_filter(params[:filter])
+    @reminders = ReminderFilter.filter_reminders(current_user.reminders, @current_filter)
+    @groups = ReminderFilter.group_reminders(@reminders)
   end
 
   def edit

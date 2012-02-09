@@ -12,15 +12,6 @@ class Reminder < ActiveRecord::Base
   before_create :generate_snooze_token
   after_create :queue_confirmation_email
 
-  ### Class methods
-  def self.fetch_reminders
-    time = Time.now.change(sec: 0)
-    last_time = time + 59.seconds
-
-    self.select("id, user_id").where("reminder_time >= ? AND reminder_time <= ? AND delivered = ?",
-                                     time, last_time, false).includes(:user)
-  end
-
   ### Scopes
 
   scope :upcoming, where("reminder_time >= ? AND delivered = ?", Time.now, false)
@@ -29,6 +20,15 @@ class Reminder < ActiveRecord::Base
                           Time.now, Date.tomorrow.to_datetime, false)
   scope :undelivered, where("reminder_time < ? AND delivered = ?", Time.now, false)
   scope :sorted, order("reminder_time ASC")
+
+  ### Class methods
+  def self.fetch_reminders
+    time = Time.now.change(sec: 0)
+    last_time = time + 59.seconds
+
+    self.select("id, user_id").where("reminder_time >= ? AND reminder_time <= ? AND delivered = ?",
+                                     time, last_time, false).includes(:user)
+  end
 
   ### Instance methods
 

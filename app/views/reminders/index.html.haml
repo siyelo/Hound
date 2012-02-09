@@ -1,5 +1,3 @@
-- groups = group_reminders(@reminders)
-
 %h2
   Your Reminders
 
@@ -12,7 +10,7 @@
       %th.large Reminder Date
       %th.small Mark as complete?
 
-  - groups.each_pair do |key, values|
+  - @groups.each_pair do |key, values|
     - if values.count > 0
       = key.to_s.titleize
 
