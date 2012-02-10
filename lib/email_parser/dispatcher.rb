@@ -11,7 +11,7 @@ module EmailParser
         to_us.each do |to|
           reminder_time = self.parse_email(to, e)
           reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                                      body: EmailHelper.extract_html_or_text(e),
+                                      body: self.extract_html_or_text(e),
                                       reminder_time: reminder_time, user: user,
                                       cc: not_to_us, message_id: e.message_id) if reminder_time
         end
@@ -46,6 +46,23 @@ module EmailParser
         rescue ArgumentError
           Resque.enqueue(ErrorNotificationWorker, email) if email
           nil
+        end
+      end
+
+      def extract_html_or_text(email)
+        if email.html_part
+          email.html_part.body.decoded
+        else
+          self.extract_text(email)
+        end
+      end
+
+
+      def extract_text(email)
+        if email.multipart?
+          email.text_part ? email.text_part.body.decoded : nil
+        else
+          email.body.decoded
         end
       end
     end
