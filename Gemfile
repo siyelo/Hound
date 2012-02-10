@@ -35,13 +35,12 @@ group :test do
   gem 'turn', '0.8.2', :require => false
   gem "factory_girl_rails"
   gem "guard-rspec"
-  gem 'shoulda'
+  gem 'shoulda-matchers'
   gem 'timecop'
   gem 'database_cleaner'
   gem 'steak'
   gem 'email_spec'
   gem 'resque_spec'
   gem 'rspec-mocks'
-  gem 'headless'
   gem 'capybara-webkit'
 end
