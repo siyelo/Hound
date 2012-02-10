@@ -2,11 +2,11 @@ class ReminderFilter
   FILTERS = %w(completed due_today undelivered)
 
   LAYERS = {
-    today:      0.days.from_now,
-    tomorrow:   1.day.from_now,
-    next_week:  1.week.from_now,
-    next_month: 1.month.from_now,
-    later:      1000.years.from_now
+    today:      0.days,
+    tomorrow:   1.day,
+    next_week:  1.week,
+    next_month: 1.month,
+    later:      1000.years
   }
 
   def self.current_filter(filter)
@@ -21,7 +21,7 @@ class ReminderFilter
     groups = Hash.new{|hash, key| hash[key] = []}
     reminders.each do |r|
       LAYERS.keys.each do |key|
-        (groups[key] << r; break) if r.reminder_time.to_date <= LAYERS[key].to_date
+        (groups[key] << r; break) if r.reminder_time.to_date <= LAYERS[key].from_now.to_date
       end
     end
     groups
