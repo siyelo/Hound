@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "EmailParser::IncrementalTime" do
+describe EmailParser::IncrementalTime do
   describe "parse addresses" do
     before :each do
       Timecop.freeze

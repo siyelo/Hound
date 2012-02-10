@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "EmailParser::Dispatcher" do
+describe EmailParser::Dispatcher do
   describe "parse addresses" do
     it "for adverbs" do
       emails = [Mail.new(from: 'pimp@macdaddy.yo',

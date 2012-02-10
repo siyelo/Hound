@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "EmailParser::AdverbParser" do
+describe EmailParser::AdverbParser do
   describe "parse addresses" do
     before :each do
       Timecop.freeze
