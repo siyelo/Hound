@@ -47,6 +47,8 @@ Spork.prefork do
     config.include EmailSpec::Helpers
     #config.include EmailSpec::Matcher
 
+    headless = Headless.new
+
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
@@ -54,9 +56,8 @@ Spork.prefork do
 
     config.before(:each) do
       if example.metadata[:js]
-        @headless = Headless.new
-        @headless.start
-        Capybara.current_driver = :webkit
+        headless.start
+        Capybara.current_driver = :selenium
         DatabaseCleaner.strategy = :truncation
       else
         DatabaseCleaner.strategy = :transaction
@@ -66,8 +67,8 @@ Spork.prefork do
 
     config.after(:each) do
       if example.metadata[:js]
+        headless.destroy
         Capybara.use_default_driver
-        @headless.destroy
       end
       DatabaseCleaner.clean
     end
