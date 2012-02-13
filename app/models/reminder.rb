@@ -6,6 +6,10 @@ class Reminder < ActiveRecord::Base
   # Validations
   validates_presence_of :email, :subject, :reminder_time, :user
 
+  ### Attributes
+  attr_accessible :email, :subject, :reminder_time, :body,
+    :cc, :user, :message_id, :delivered
+
   # Callbacks
   before_create :generate_snooze_token
   after_create :queue_confirmation_email

@@ -20,6 +20,6 @@ $(".mark_as_complete").live "click", ->
         element.closest("tr").addClass "completed_row"
 
 $ ->
-  if ($('.rich_text').length)
-    CKEDITOR.replace "rich_text",
+  if ($('.ckedit').length)
+    CKEDITOR.replace "reminder_body",
       toolbar : 'Basic'

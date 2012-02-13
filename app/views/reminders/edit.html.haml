@@ -9,7 +9,7 @@
   = f.datetime_select :reminder_time
   = f.label Time.zone
   %p
-  = f.text_area :body, name: 'rich_text', class:'rich_text'
+    = f.text_area :body, class:'ckedit'
   %br
   = f.submit :submit
   = link_to 'cancel', root_path
