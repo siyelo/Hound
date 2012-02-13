@@ -43,4 +43,5 @@ group :test do
   gem 'resque_spec'
   gem 'rspec-mocks'
   gem 'capybara-webkit'
+  gem 'headless'
 end
