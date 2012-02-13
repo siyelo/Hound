@@ -2,20 +2,63 @@ require 'acceptance/acceptance_helper'
 
 feature 'User sessions' do
 
-  context 'manage reminders' do
+  context 'complete reminders' do
     background do
       @user = Factory :user
-      @reminder = Factory :reminder, user: @user
+      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      log_in_with(@user)
     end
 
     scenario 'user can mark a reminder as completed', js: true do
-      log_in_with(@user)
       page.should have_content('You have 1 upcoming reminder')
       check 'reminder_delivered'
       page.should have_content('Saving')
       visit '/'
       page.should have_content('You have 0 upcoming reminder')
     end
+
+    scenario 'user cannot change the status of an old reminder which has been delivered' do
+      find('#reminder_delivered')['disabled'].should == nil #sanity - not disabled
+      @reminder.reminder_time -= 1.month
+      @reminder.delivered = true
+      @reminder.save
+
+      click_link 'Completed'
+      page.should have_content('reminder1')
+      find('#reminder_delivered')['disabled'].should == 'disabled'
+    end
+
+  end
+
+  context 'edit reminders' do
+    background do
+      @user = Factory :user
+      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      log_in_with(@user)
+      click_link 'reminder1'
+    end
+
+    scenario 'user can edit the reminder subject' do
+      fill_in 'reminder_subject', with: 'new subject'
+      click_button 'submit'
+      @reminder.reload
+      @reminder.subject.should == 'new subject'
+    end
+
+    scenario 'user can edit the reminder time' do
+      page.select('2013', from: 'reminder_reminder_time_1i')
+      click_button 'submit'
+      @reminder.reload
+      @reminder.reminder_time.year.should == 2013
+    end
+
+    scenario 'user can edit the reminder body' do
+      fill_in 'reminder_body', with: 'new body'
+      click_button 'submit'
+      @reminder.reload
+      @reminder.body.should == 'new body'
+    end
+
   end
 
   context 'filter reminders' do
