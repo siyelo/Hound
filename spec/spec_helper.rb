@@ -57,7 +57,7 @@ Spork.prefork do
     config.before(:each) do
       if example.metadata[:js]
         headless.start
-        Capybara.current_driver = :selenium
+        Capybara.current_driver = :webkit
         DatabaseCleaner.strategy = :truncation
       else
         DatabaseCleaner.strategy = :transaction
