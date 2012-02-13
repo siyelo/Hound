@@ -15,6 +15,7 @@ Spork.prefork do
   require 'rspec/autorun'
   require 'capybara/rspec'
   require 'shoulda/matchers/integrations/rspec'
+  require 'headless'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -53,6 +54,8 @@ Spork.prefork do
 
     config.before(:each) do
       if example.metadata[:js]
+        headless = Headless.new
+        headless.start
         Capybara.current_driver = :webkit
         DatabaseCleaner.strategy = :truncation
       else
@@ -62,7 +65,10 @@ Spork.prefork do
     end
 
     config.after(:each) do
-      Capybara.use_default_driver if example.metadata[:js]
+      if example.metadata[:js]
+        Capybara.use_default_driver
+        headless.destroy
+      end
       DatabaseCleaner.clean
     end
 
