@@ -2,13 +2,14 @@ class Reminder < ActiveRecord::Base
 
   ### Associations
   belongs_to :user
+  belongs_to :message_thread
 
   # Validations
-  validates_presence_of :email, :subject, :reminder_time, :user
+  validates_presence_of :email, :subject, :reminder_time, :user, :message_thread
 
   ### Attributes
   attr_accessible :email, :subject, :reminder_time, :body,
-    :cc, :user, :message_id, :delivered
+    :sent_to, :cc, :user, :message_id, :delivered, :message_thread
 
   # Callbacks
   before_create :generate_snooze_token

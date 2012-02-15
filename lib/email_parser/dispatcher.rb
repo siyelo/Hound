@@ -2,18 +2,20 @@ module EmailParser
   class Dispatcher
     def self.dispatch(emails)
       emails.each do |e|
-        user = User.find_or_invite(e)
+        parent_message = MessageThread.find_by_message_id(e.in_reply_to)
+        message = MessageThread.create!(message_id: e.message_id, parent: parent_message)
 
-        e.cc ||= []
-        to_us = (e.to + e.cc).select{ |t| t.include?('@hound.cc') }
-        not_to_us = (e.to + e.cc) - to_us
+        to_us = self.extract_to_us(e, parent_message)
+        not_to_us = self.extract_not_to_us(e, to_us)
 
         to_us.each do |to|
           reminder_time = self.parse_email(to, e)
-          reminder = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                                      body: self.extract_html_or_text(e),
-                                      reminder_time: reminder_time, user: user,
-                                      cc: not_to_us, message_id: e.message_id) if reminder_time
+          r = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
+                               body: self.extract_html_or_text(e),
+                               reminder_time: reminder_time,
+                               user: User.find_or_invite(e),
+                               sent_to: to, cc: not_to_us,
+                               message_thread: message) if reminder_time
         end
       end
     end
@@ -57,13 +59,25 @@ module EmailParser
         end
       end
 
-
       def extract_text(email)
         if email.multipart?
           email.text_part ? email.text_part.body.decoded : nil
         else
           email.body.decoded
         end
+      end
+
+      def extract_to_us(email, parent_message)
+        email.cc ||= []
+        to_us = (email.to + email.cc).select{ |t| t.include?('@hound.cc') }
+        to_us -= parent_message.hound_recipients if parent_message
+
+        to_us
+      end
+
+      def extract_not_to_us(email, to_us)
+        email.cc ||= []
+        (email.to + email.cc) - to_us
       end
     end
   end

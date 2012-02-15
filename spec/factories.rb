@@ -5,6 +5,7 @@ Factory.define :reminder do |f|
   f.reminder_time 1.minute.from_now
   f.delivered false
   f.user { Factory(:user)}
+  f.message_thread { Factory(:message_thread) }
   f.cc []
  end
 
@@ -14,3 +15,8 @@ Factory.define :user do |f|
   f.password_confirmation "testing"
   f.timezone "Sofia"
 end
+
+Factory.define :message_thread do |f|
+  f.sequence(:message_id) { |n| n }
+end
+

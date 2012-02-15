@@ -13,7 +13,7 @@ gem "devise_invitable", git: 'https://github.com/scambra/devise_invitable.git'
 gem 'unicorn'
 gem 'foreman'
 gem 'gitploy'
-
+gem 'acts_as_tree'
 # Gems used only for assets and not required
 # in production environments by default.
 

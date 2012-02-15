@@ -11,21 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124121146) do
+ActiveRecord::Schema.define(:version => 20120214153931) do
+
+  create_table "message_threads", :force => true do |t|
+    t.string   "message_id"
+    t.string   "parent_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
     t.string   "subject"
-    t.text     "body",          :limit => 255
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.text     "body",              :limit => 255
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.datetime "reminder_time"
     t.integer  "user_id"
-    t.boolean  "delivered",                    :default => false
+    t.boolean  "delivered",                        :default => false
     t.string   "snooze_token"
-    t.integer  "snooze_count",                 :default => 0
+    t.integer  "snooze_count",                     :default => 0
     t.string   "cc"
     t.string   "message_id"
+    t.integer  "message_thread_id"
+    t.string   "sent_to"
   end
 
   create_table "users", :force => true do |t|

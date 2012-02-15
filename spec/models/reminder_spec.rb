@@ -10,6 +10,7 @@ describe Reminder do
     it { should validate_presence_of :subject }
     it { should validate_presence_of :reminder_time }
     it { should validate_presence_of :user }
+    it { should validate_presence_of :message_thread }
   end
 
   describe "overwritten accessors" do
