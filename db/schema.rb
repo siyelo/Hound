@@ -11,13 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120214153931) do
+ActiveRecord::Schema.define(:version => 20120216075539) do
 
   create_table "message_threads", :force => true do |t|
     t.string   "message_id"
     t.string   "parent_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.integer  "depth"
   end
 
   create_table "reminders", :force => true do |t|
