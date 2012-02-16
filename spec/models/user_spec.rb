@@ -53,72 +53,40 @@ describe User do
       ResqueSpec.reset!
       reset_mailer
       Timecop.return
-    end
 
-    context "new users" do
-      before :each do
-        Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
+      Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
                                              to: '2days@hound.cc',
                                              subject: 'test', date: DateTime.now)])
-        FetchMailWorker.perform
-      end
-
-      it "should get confirmation that a reminder has been processed (new users receive them automatically)" do
-        Reminder.all.count.should == 1 #sanity
-        SendConfirmationWorker.should have_queue_size_of(1)
-        SendConfirmationWorker.perform(Reminder.last.id)
-        User.all.count.should == 1
-        ActiveSupport::TimeZone[User.first.timezone].formatted_offset.should == DateTime.now.zone
-
-        #only 2 because one is confirmation signup email and the other is the confirmation
-        #email - the reminder email is not included in this test
-        unread_emails_for('pimp@macdaddy.yo').size.should >= parse_email_count(2)
-      end
     end
 
     context "existing users" do
-      before :each do
-        @user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
-        Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
-                                             to: '2days@hound.cc',
-                                             subject: 'test', date: DateTime.now)])
+      it "should receive a confirmation email" do
+        user = Factory :user, email: 'pimp@macdaddy.yo'
         FetchMailWorker.perform
+        Reminder.all.count.should == 1 #sanity
+        SendConfirmationWorker.should have_queue_size_of(1)
+        SendConfirmationWorker.perform(Reminder.last.id)
+        unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
       end
 
       it "should not receive an email if the user has disabled that in their settings" do
+        user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
+        FetchMailWorker.perform
         Reminder.all.count.should == 1 #sanity
         SendConfirmationWorker.should have_queue_size_of(0)
-        #0 emails because there is no confirmation signup email nor is there a confirmation reminder
-        #email - the reminder email is not included in this test
-        unread_emails_for('pimp@macdaddy.yo').size.should >= parse_email_count(0)
       end
     end
 
-  end
-
-  describe 'invitation emails' do
-    before(:each) do
-      reset_mailer
-      Timecop.return
-      Mail.stub(:all).and_return([Mail.new(from: 'sachin@siyelo.com',
-                                           to: '2days@hound.cc',
-                                           subject: 'test', date: DateTime.now)])
+    context "new users" do
+      it "should send an invitation to new users" do
+        FetchMailWorker.perform
+        Reminder.all.count.should == 1 #sanity
+        SendConfirmationWorker.should have_queue_size_of(1)
+        SendConfirmationWorker.perform(Reminder.last.id)
+        unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
+      end
     end
 
-    it "should be sent to user who isn't already registered" do
-      FetchMailWorker.perform
-      Reminder.all.count.should == 1
-      User.all.count.should == 1
-      ActiveSupport::TimeZone[User.first.timezone].formatted_offset.should == DateTime.now.zone
-      unread_emails_for('sachin@siyelo.com').size.should >= parse_email_count(1)
-    end
-
-    it 'should not be sent to a user that exists' do
-      user = Factory(:user, :email => 'sachin@siyelo.com')
-      FetchMailWorker.perform
-      Reminder.all.count.should == 1
-      unread_emails_for('sachin@siyelo.com').size.should == parse_email_count(0)
-    end
   end
 
   describe 'modify_token' do

@@ -11,7 +11,8 @@ class UserMailer < ActionMailer::Base
 
   def send_confirmation(reminder)
     @reminder = reminder
-    mail(:to => reminder.email, subject: "Confirmation: #{reminder.subject}")
+    subject = reminder.user.active? ? "Confirmation" : "Welcome to Hound.cc"
+    mail(:to => reminder.email, subject: "#{subject}: #{reminder.subject}")
   end
 
   def send_notification_snooze(reminder, recipient)
