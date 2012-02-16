@@ -6,10 +6,21 @@
     %table{:style => "600px"}
       %tr
         %td{:colspan => "2"}
-          %strong Sup yo! We have received your request and will remind you at
-          = @reminder.reminder_time
+          %p
+            %strong Sup yo! We have received your request and will remind you at
+            = @reminder.reminder_time
+
     %br
-    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
-    to turn off email confirmations
+    - unless @reminder.user.active?
+      %div{:style => "width:500px;background-color:#ffffcc;border:1px solid #cacaca"}
+        %p Your reminder is ready to go but you haven't activated your account yet :(
+
+        %p Please click the activation link in the email invitation we sent you. We won't send out any reminders until we're sure that you want to use our service.
+
+    %p
+      = link_to "Edit/Delete this reminder", edit_reminder_url(@reminder)
+    %p
+      = link_to "Turn off confirmation emails", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
+
 
 

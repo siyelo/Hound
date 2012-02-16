@@ -1,5 +1,4 @@
 class SnoozeController < ApplicationController
-
   def edit
     @reminder = Reminder.find(params[:id])
     ## refactor me

@@ -1,7 +1,6 @@
 require 'acceptance/acceptance_helper'
 
-feature 'User sessions' do
-
+feature 'Reminders' do
   context 'complete reminders' do
     background do
       @user = Factory :user
