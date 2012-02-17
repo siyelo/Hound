@@ -3,7 +3,7 @@ require 'acceptance/acceptance_helper'
 feature 'User sessions' do
 
   background do
-    @user = Factory(:user, :password => 'testing', :password => 'testing')
+    @user = Factory(:user)
   end
 
   scenario 'user should receive an email and successfully reset password' do
@@ -67,7 +67,7 @@ feature 'User sessions' do
 
     visit '/users/edit'
     within('body') do
-      page.should have_content('Edit User')
+      page.should have_content('Edit your profile')
     end
     fill_in "user[current_password]", with: 'testing'
 

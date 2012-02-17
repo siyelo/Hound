@@ -1,11 +1,12 @@
 RadMeet::Application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => "users/registrations" }
 
   mount Resque::Server, :at => "/resque"
 
   resources :reminders, only: [:index, :edit, :update]
   resources :notifications, only: [:update, :edit]
   resources :snooze, only: [:show, :edit]
+  resources :email_aliases
 
   authenticated :user do
     root :to => "reminders#index"

@@ -21,7 +21,7 @@ class RemindersController < ApplicationController
         format.json { render :json => { :success => :true } }
         format.html { redirect_to reminders_path }
       else
-        flash[:notice] = "We have failed to update your reminder"
+        flash[:alert] = "We have failed to update your reminder"
         format.html { render :action => "edit" }
         format.js  { render :json => @reminder.errors,
                        :status => :unprocessable_entity }

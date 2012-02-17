@@ -1,10 +1,13 @@
 class MessageThread < ActiveRecord::Base
   acts_as_nested_set
 
-  attr_accessible :message_id, :parent_id, :parent
-
+  ### Associations
   has_many :reminders
 
+  ### Attributes
+  attr_accessible :message_id, :parent_id, :parent
+
+  ### Instance methods
   def hound_recipients
     self.reminders.map{ |r| r.sent_to }
   end

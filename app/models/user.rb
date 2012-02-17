@@ -1,25 +1,33 @@
 class User < ActiveRecord::Base
+  devise :invitable, :database_authenticatable, :registerable,
+    :recoverable, :rememberable, :trackable, :validatable
+
   ### Associations
   has_many :reminders
+  has_many :email_aliases
 
   ### Callbacks
-  after_create :generate_new_token
+  before_validation :generate_new_token, on: :create
 
   ### Validations
   validates_presence_of :timezone
-
-  devise :invitable, :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable
+  validates_with EmailValidator
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
   def self.find_or_invite(email)
+    from = email.from.first.to_s
     time_zone = ActiveSupport::TimeZone[email.date.zone.to_i].name
-    user = User.find_by_email(email.from.first.to_s) ||
-      User.invite!(email: email.from.first.to_s,
-                   timezone: time_zone) {|u| u.skip_invitation = true}
+    user = User.find_by_email_or_alias(from) ||
+      User.invite!(email: from, timezone: time_zone) {|u| u.skip_invitation = true}
+  end
+
+  def self.find_by_email_or_alias(email)
+    joins("left outer join email_aliases on email_aliases.user_id = users.id").
+    where("email_aliases.email = ? OR users.email = ?", email, email).
+    group("users.id").first
   end
 
   ### Instance methods
@@ -49,6 +57,10 @@ class User < ActiveRecord::Base
 
   def generate_new_token
     self.modify_token = Digest::SHA1.hexdigest("#{email} #{rand(1000)}")
-    self.save
   end
+
+  def all_email_addresses
+    aliases.map { |a| a.email } << email
+  end
+
 end

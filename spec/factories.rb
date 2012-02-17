@@ -20,3 +20,8 @@ Factory.define :message_thread do |f|
   f.sequence(:message_id) { |n| n }
 end
 
+Factory.define :email_alias do |f|
+  f.user { Factory(:user) }
+  f.sequence(:email) { |n| "smartypants#{n}@blah.com" }
+end
+

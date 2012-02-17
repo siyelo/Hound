@@ -26,6 +26,13 @@ describe User do
       user.save
       user.errors.get(:password).should == ["doesn't match confirmation"]
     end
+
+    it 'should validate uniqueness of email across aliases' do
+      alias_email = Factory :email_alias, email: 'batman@gotham.com'
+      user = Factory.build :user, email: 'batman@gotham.com'
+      user.valid?.should be_false
+      user.errors[:email].should include 'is not unique'
+    end
   end
 
   describe "account status" do
@@ -55,8 +62,8 @@ describe User do
       Timecop.return
 
       Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
-                                             to: '2days@hound.cc',
-                                             subject: 'test', date: DateTime.now)])
+                                           to: '2days@hound.cc',
+                                           subject: 'test', date: DateTime.now)])
     end
 
     context "existing users" do
@@ -110,6 +117,25 @@ describe User do
       u.save
       u.reload
       u.modify_token.should_not be_nil
+    end
+  end
+
+  describe 'find or invite user' do
+    it 'should find user by primary email' do
+      user = Factory :user, email: '1@1.com'
+      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
+      found.should == user
+    end
+
+    it 'should find a user by alias email' do
+      alias_email = Factory :email_alias, email: '1@1.com'
+      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
+      found.should == alias_email.user
+    end
+
+    it 'should invite a user if they are not found' do
+      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
+      found.active?.should be_false
     end
   end
 end

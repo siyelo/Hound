@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120216075539) do
+ActiveRecord::Schema.define(:version => 20120216151641) do
+
+  create_table "email_aliases", :force => true do |t|
+    t.string   "email"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "message_threads", :force => true do |t|
     t.string   "message_id"

@@ -10,7 +10,8 @@
   %body
     .topbar
       .container-fluid
-        %a.brand Hound.cc
+        .brand
+          = link_to 'Hound.cc', '/'
         %ul.nav
         %p.pull-right
           - unless user_signed_in?
