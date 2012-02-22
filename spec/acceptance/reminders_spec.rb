@@ -60,6 +60,50 @@ feature 'Reminders' do
 
   end
 
+  context 'edit cc email addresses', js: true do
+    background do
+      @user = Factory :user
+      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      log_in_with(@user)
+      click_link 'reminder1'
+    end
+
+    scenario 'user can add multiple comma or semi-colon seperated email addresses' do
+      fill_in 'reminder_cc_string', with: 'test@test1.com'
+      click_button 'submit'
+      page.should have_content('You have succesfully updated your reminder')
+      click_link 'reminder1'
+      find_field('reminder_cc_string').value.should == 'test@test1.com'
+
+      fill_in 'reminder_cc_string', with: 'test@test1.com; test@test2.com, test@test3.com'
+      click_button 'submit'
+      page.should have_content('You have succesfully updated your reminder')
+      click_link 'reminder1'
+      find_field('reminder_cc_string').value.should == 'test@test1.com, test@test2.com, test@test3.com'
+    end
+
+    scenario "user sees warning if email address is not properly formed" do
+      fill_in 'reminder_cc_string', with: 'test'
+      click_button 'submit'
+      handle_js_confirm
+      page.should_not have_content('You have succesfully updated your reminder')
+    end
+
+    scenario "user sees warning if one of many email addresses is not properly formed" do
+      fill_in 'reminder_cc_string', with: 'test@test1.com; test@sdva, test3.com'
+      click_button 'submit'
+      handle_js_confirm
+      page.should_not have_content('You have succesfully updated your reminder')
+    end
+
+    scenario "user does not see a warning if there are no cc email addresses" do
+      fill_in 'reminder_cc_string', with: ''
+      click_button 'submit'
+      page.should have_content('You have succesfully updated your reminder')
+    end
+
+  end
+
   context 'filter reminders' do
     background do
       @user = Factory :user

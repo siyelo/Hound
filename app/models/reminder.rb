@@ -1,4 +1,5 @@
 class Reminder < ActiveRecord::Base
+  include ActionView::Helpers::SanitizeHelper
 
   ### Associations
   belongs_to :user
@@ -8,7 +9,7 @@ class Reminder < ActiveRecord::Base
   validates_presence_of :email, :subject, :reminder_time, :user, :message_thread
 
   ### Attributes
-  attr_accessible :email, :subject, :reminder_time, :body,
+  attr_accessible :email, :subject, :reminder_time, :body, :cc_string,
     :sent_to, :cc, :user, :message_id, :delivered, :message_thread
 
   # Callbacks
@@ -97,6 +98,18 @@ class Reminder < ActiveRecord::Base
 
   def formatted_reminder_time
     reminder_time.in_time_zone(user.timezone).to_formatted_s(:short_with_day)
+  end
+
+  def stripped_body
+    body ? strip_tags(body) : ""
+  end
+
+  def cc_string
+    cc.join(", ")
+  end
+
+  def cc_string=(cc_string)
+    self.cc = cc_string.split(/[,;]\s*/)
   end
 
   private

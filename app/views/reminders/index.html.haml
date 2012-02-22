@@ -17,8 +17,9 @@
       %table{class: 'modern'}
         %tr
         - values.each do |r|
-          %tr
-            %td.large= link_to r.subject, edit_reminder_path(r)
+          %tr.reminder{data_link: edit_reminder_url(r)}
+            %td.large
+              = link_to r.subject, edit_reminder_path(r)
             %td.large= r.formatted_reminder_time
             = form_for r, url: reminder_path(r), remote: true do |f|
               %td.small= f.check_box :delivered?, class: 'mark_as_complete', disabled: allow_changes(r)

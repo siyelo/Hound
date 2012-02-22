@@ -1,4 +1,7 @@
 $(document).ready ->
+  $("#add_alias").live "click", ->
+    $(this).disabled
+
   $(".delete_link").live "click", ->
     event.preventDefault()
     element = $(this).parent('li')
