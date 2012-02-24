@@ -14,6 +14,7 @@ gem 'unicorn'
 gem 'foreman'
 gem 'gitploy'
 gem 'awesome_nested_set'
+gem 'diffy'
 # Gems used only for assets and not required
 # in production environments by default.
 

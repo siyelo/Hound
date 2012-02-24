@@ -8,20 +8,4 @@
         %td{:colspan => "2"}
           %strong Sup yo! Here's your reminder
           %hr
-      %tr
-        %td{:style => "width:50%"}
-          %h2 Subject:
-          %p{:style => "font-size:16px"}#{@reminder.subject}
-          %h2 Date Sent:
-          %p{:style => "font-size:16px"}#{@reminder.created_at.strftime('%d-%b-%Y')}
-          %h2 Snooze Count:
-          %p{:style => "font-size:16px"}#{@reminder.snooze_count}
-        %td{:style => "width:50%"}
-          - if @reminder.email == @recipient
-            = render 'snooze_box'
-          - else
-            = render 'cc_box'
-      %tr
-        %td{:colspan => "2"}
-          %hr
-          = @reminder.body.html_safe
+      =render 'reminder_body'

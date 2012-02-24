@@ -1,5 +1,4 @@
 class Reminder < ActiveRecord::Base
-  include ActionView::Helpers::SanitizeHelper
 
   ### Associations
   belongs_to :user
@@ -15,6 +14,7 @@ class Reminder < ActiveRecord::Base
   # Callbacks
   before_create :generate_snooze_token
   after_create :queue_confirmation_email
+  after_update :inform_other_recipients
 
   ### Scopes
 
@@ -67,8 +67,10 @@ class Reminder < ActiveRecord::Base
 
   #informs the cc'd users of a change to the reminder
   def inform_other_recipients
-    self.cc.each do |recipient|
-      UserMailer.send_notification_of_change(self, recipient).deliver
+    if (body_changed? || reminder_time_changed?) && !self.cc.empty?
+      self.cc.each do |recipient|
+        UserMailer.send_notification_of_change(self, recipient).deliver
+      end
     end
   end
 
@@ -98,10 +100,6 @@ class Reminder < ActiveRecord::Base
 
   def formatted_reminder_time
     reminder_time.in_time_zone(user.timezone).to_formatted_s(:short_with_day)
-  end
-
-  def stripped_body
-    body ? strip_tags(body) : ""
   end
 
   def cc_string

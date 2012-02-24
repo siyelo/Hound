@@ -16,7 +16,6 @@ class RemindersController < ApplicationController
     @reminder = current_user.reminders.find_by_id(params[:id])
     respond_to do |format|
       if @reminder.update_attributes(params[:reminder])
-        @reminder.inform_other_recipients unless @reminder.cc.empty?
         flash[:notice] = "You have succesfully updated your reminder"
         format.json { render :json => { :success => :true } }
         format.html { redirect_to reminders_path }

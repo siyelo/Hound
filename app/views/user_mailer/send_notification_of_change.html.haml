@@ -6,26 +6,17 @@
     %table{:style => "600px"}
       %tr
         %td{:colspan => "2"}
-          %strong Sup yo! Your previous reminder has undergone revisions
+          %p
+            %strong Sup yo! Your reminder has undergone revisions:
+          - if @reminder.reminder_time_changed?
+            %p
+              %strong Reminder Time:
+            = "From: #{@reminder.reminder_time_change[0]}"
+            %br
+            = "To: #{@reminder.reminder_time_change[1]}"
+          - if @reminder.body_changed?
+            %p
+              %strong Reminder Email:
+              = body_changes(@reminder)
           %hr
-      %tr
-        %td{:style => "width:50%"}
-          %h2 Subject:
-          %p{:style => "font-size:16px"}#{@reminder.subject}
-          %h2 Date Sent:
-          %p{:style => "font-size:16px"}#{@reminder.created_at.strftime('%d-%b-%Y')}
-          %h2 Snooze Count:
-          %p{:style => "font-size:16px"}#{@reminder.snooze_count}
-        %td{:style => "width:50%"}
-          - if @reminder.email == @recipient
-            = render 'snooze_box'
-          - else
-            = render 'cc_box'
-      %tr
-        %td{:colspan => "2"}
-          %hr
-          = @reminder.body.html_safe
-
-    = link_to "Click here", edit_notification_url(@reminder.user.id, token: @reminder.user.modify_token)
-    to turn off email confirmations
-
+      =render 'reminder_body'

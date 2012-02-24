@@ -47,6 +47,8 @@ describe Reminder do
       r = Factory.build :reminder, user: u
       r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
       r.save
+      r.reminder_time = Time.now + 1.day
+      r.save
       r.add_change_reminder_to_notification_queue
       NotificationWorker.should have_queue_size_of(1)
       NotificationWorker.perform(r.id, method)
