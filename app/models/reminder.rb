@@ -110,6 +110,14 @@ class Reminder < ActiveRecord::Base
     self.cc = cc_string.split(/[,;]\s*/)
   end
 
+  def formatted_date
+    reminder_time.strftime('%Y-%m-%d')
+  end
+
+  def formatted_time
+    reminder_time.strftime('%R')
+  end
+
   private
 
   def queue_confirmation_email

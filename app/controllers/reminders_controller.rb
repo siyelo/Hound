@@ -9,22 +9,33 @@ class RemindersController < ApplicationController
 
   def edit
     @reminder = current_user.reminders.find_by_id(params[:id])
-    redirect_to reminders_path unless @reminder
+    respond_to do |format|
+      format.html { redirect_to reminders_path unless @reminder}
+      format.js
+    end
   end
 
   def update
+    parse_reminder_time unless params[:reminder][:reminder_time]
     @reminder = current_user.reminders.find_by_id(params[:id])
     respond_to do |format|
+      format.js
       if @reminder.update_attributes(params[:reminder])
-        flash[:notice] = "You have succesfully updated your reminder"
-        format.json { render :json => { :success => :true } }
-        format.html { redirect_to reminders_path }
+        format.html { flash[:notice] = "You have succesfully updated your reminder";
+                      redirect_to reminders_path }
       else
-        flash[:alert] = "We have failed to update your reminder"
-        format.html { render :action => "edit" }
-        format.js  { render :json => @reminder.errors,
-                       :status => :unprocessable_entity }
+        format.html { flash[:alert] = "We have failed to update your reminder";
+                      render :action => "edit" }
       end
+    end
+  end
+
+  private
+
+  def parse_reminder_time
+    if params[:formatted_date] || params[:formatted_time]
+      date = DateTime.parse params[:formatted_date] +' '+ params[:formatted_time]
+      params[:reminder][:reminder_time] = date.change(offset: Time.zone.formatted_offset)
     end
   end
 end

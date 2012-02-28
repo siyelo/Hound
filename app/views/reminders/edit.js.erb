@@ -1,0 +1,8 @@
+$('.inline_reminder').fadeIn(300)
+$('.inline_reminder').html("<%=j render 'form' %>");
+CKEDITOR.replace("reminder_body", {
+ toolbar: 'Basic'
+});
+
+$('#reminder_formatted_time').timePicker();
+$('#reminder_formatted_date').datepicker({ dateFormat: 'yy-mm-dd' });

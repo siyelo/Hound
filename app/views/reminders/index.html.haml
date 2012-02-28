@@ -4,23 +4,20 @@
 =render 'sidebar'
 
 .content_right
-  %table{class: 'modern'}
-    %tr
-      =render 'title'
-      %th.large Reminder Date
-      %th.small Mark as complete?
+  .reminder_container
+    .inline_reminder
+  .reminder_list
+    %table{class: 'modern'}
+      %tr
+        =render 'title'
+        %th.large Reminder Date
+        %th.small Mark as complete?
 
-  - @groups.each_pair do |key, values|
-    - if values.count > 0
-      = key.to_s.titleize
-
-      %table{class: 'modern'}
-        %tr
-        - values.each do |r|
-          %tr.reminder{data_link: edit_reminder_url(r)}
-            %td.large
-              = link_to r.subject, edit_reminder_path(r)
-            %td.large= r.formatted_reminder_time
-            = form_for r, url: reminder_path(r), remote: true do |f|
-              %td.small= f.check_box :delivered?, class: 'mark_as_complete', disabled: allow_changes(r)
+    - @groups.each_pair do |key, values|
+      - if values.count > 0
+        = key.to_s.titleize
+        %table{class: 'modern'}
+          %tr
+          - values.each do |r|
+            = render r
   .status

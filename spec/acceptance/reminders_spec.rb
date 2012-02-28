@@ -45,10 +45,11 @@ feature 'Reminders' do
     end
 
     scenario 'user can edit the reminder time' do
-      page.select('2013', from: 'reminder_reminder_time_1i')
+      fill_in 'reminder_formatted_time', with: '20:30'
       click_button 'submit'
       @reminder.reload
-      @reminder.reminder_time.year.should == 2013
+      @reminder.reminder_time.min == '30'
+      @reminder.reminder_time.hour == '20'
     end
 
     scenario 'user can edit the reminder body' do
@@ -71,13 +72,13 @@ feature 'Reminders' do
     scenario 'user can add multiple comma or semi-colon seperated email addresses' do
       fill_in 'reminder_cc_string', with: 'test@test1.com'
       click_button 'submit'
-      page.should have_content('You have succesfully updated your reminder')
       click_link 'reminder1'
       find_field('reminder_cc_string').value.should == 'test@test1.com'
+    end
 
+    scenario 'user can add multiple comma or semi-colon seperated email addresses' do
       fill_in 'reminder_cc_string', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
-      page.should have_content('You have succesfully updated your reminder')
       click_link 'reminder1'
       find_field('reminder_cc_string').value.should == 'test@test1.com, test@test2.com, test@test3.com'
     end
@@ -85,23 +86,14 @@ feature 'Reminders' do
     scenario "user sees warning if email address is not properly formed" do
       fill_in 'reminder_cc_string', with: 'test'
       click_button 'submit'
-      handle_js_confirm
-      page.should_not have_content('You have succesfully updated your reminder')
+      page.should have_content('Not all cc addresses are properly formed.')
     end
 
     scenario "user sees warning if one of many email addresses is not properly formed" do
       fill_in 'reminder_cc_string', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
-      handle_js_confirm
-      page.should_not have_content('You have succesfully updated your reminder')
+      page.should have_content('Not all cc addresses are properly formed.')
     end
-
-    scenario "user does not see a warning if there are no cc email addresses" do
-      fill_in 'reminder_cc_string', with: ''
-      click_button 'submit'
-      page.should have_content('You have succesfully updated your reminder')
-    end
-
   end
 
   context 'filter reminders' do

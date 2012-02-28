@@ -1,0 +1,19 @@
+= form_for @reminder, remote: true do |f|
+  .errors
+  = f.label 'Subject:'
+  = f.text_field :subject
+  %p
+  = f.label 'Cc:'
+  = f.text_field :cc_string
+  %p
+  = f.label 'Reminder Date:'
+  = f.text_field :formatted_date, name: 'formatted_date'
+  %p
+  = f.label 'Reminder Time:'
+  = f.text_field :formatted_time, name: 'formatted_time'
+  = f.label Time.zone
+  %p
+    = f.text_area :body
+  %br
+  = f.submit :submit, class:'js_submit'
+  = link_to 'cancel', root_path

@@ -1,0 +1,7 @@
+%h3= "#{pluralize(@reminder.errors.count, 'error')} prevented us from saving your reminder"
+%ul
+- @reminder.errors.full_messages.each do |msg|
+  %li= msg
+%p
+%hr
+

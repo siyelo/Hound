@@ -18,7 +18,6 @@ module HelperMethods
     page.evaluate_script "window.confirm = function(msg) { return #{!!accept}; }"
   end
 
-
   def should_be_on(path)
     page.current_url.should match(Regexp.new(path))
   end

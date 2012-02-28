@@ -1,18 +1,4 @@
 %h2
   Edit Reminder
 
-= form_for @reminder do |f|
-  = f.label 'Subject:'
-  = f.text_field :subject
-  %p
-  = f.label 'Cc:'
-  = f.text_field :cc_string
-  %p
-  = f.label 'Reminder Date/Time:'
-  = f.datetime_select :reminder_time
-  = f.label Time.zone
-  %p
-    = f.text_area :body, class:'ckedit'
-  %br
-  = f.submit :submit, class:'js_submit', params: '123'
-  = link_to 'cancel', root_path
+= render 'form'
