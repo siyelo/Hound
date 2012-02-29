@@ -3,14 +3,18 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $(document).ready ->
-  if ($('.ckedit').length)
-    CKEDITOR.replace "reminder_body",
-      toolbar : 'Basic'
+  if ($('#reminder_body').length)
+    $('#reminder_body').tinymce
+      theme: "advanced",
+      theme_advanced_buttons1: "bold,italic,underline, strikethrough",
+      theme_advanced_buttons2: "",
+      theme_advanced_buttons3: "",
+      theme_advanced_buttons4: "",
+      theme_advanced_toolbar_location : "top",
+      theme_advanced_toolbar_align : "left"
 
   $(".subject_link").live "click", ->
-    if (CKEDITOR.instances['reminder_body'])
-      $('.inline_reminder').hide()
-      CKEDITOR.instances['reminder_body'].destroy()
+    $('.inline_reminder').hide()
 
   $(".mark_as_complete").live "click", ->
     element = $(this)
