@@ -15,7 +15,7 @@ class SnoozeController < ApplicationController
   # used to snooze reminders for other
   def show
     reminder = Reminder.find(params[:id])
-    reminder.add_to_snooze_to_notification_queue
+    Queuer.add_to_snooze_to_notification_queue(reminder)
     render action: 'informed_of_snooze'
   end
 end

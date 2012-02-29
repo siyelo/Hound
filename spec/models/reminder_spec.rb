@@ -49,7 +49,6 @@ describe Reminder do
       r.save
       r.reminder_time = Time.now + 1.day
       r.save
-      r.add_change_reminder_to_notification_queue
       NotificationWorker.should have_queue_size_of(1)
       NotificationWorker.perform(r.id, method)
       unread_emails_for('snoopdawg@snoopy.com').size.should >= parse_email_count(1)
@@ -76,7 +75,7 @@ describe Reminder do
       it "should properly queue" do
         reminder = Factory :reminder
         SendConfirmationWorker.should have_queue_size_of(1)
-        reminder.add_to_send_queue
+        Queuer.add_to_send_queue(reminder)
         SendReminderWorker.should have_queue_size_of(1)
         email = SendReminderWorker.perform(reminder.id)
         reminder.reload.delivered?.should be_true
@@ -120,7 +119,7 @@ describe Reminder do
 
       it "should mark a snoozed reminder as undelivered" do
         @reminder.save
-        @reminder.send_reminder_email
+        Notifier.send_reminder_email(@reminder)
         @reminder.delivered?.should == true
         @reminder.snooze_for('2months', @reminder.snooze_token)
         @reminder.delivered?.should == false

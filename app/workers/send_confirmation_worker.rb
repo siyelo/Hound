@@ -4,6 +4,6 @@ class SendConfirmationWorker
 
   def self.perform(reminder_id)
     reminder = Reminder.find_by_id(reminder_id)
-    reminder.send_confirmation_email
+    Notifier.send_confirmation_email(reminder)
   end
 end

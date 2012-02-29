@@ -5,6 +5,6 @@ class SendReminderWorker
 
   def self.perform(reminder_id)
     reminder = Reminder.find_by_id(reminder_id)
-    reminder.send_reminder_email
+    Notifier.send_reminder_email(reminder)
   end
 end

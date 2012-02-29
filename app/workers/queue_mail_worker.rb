@@ -8,7 +8,7 @@ class QueueMailWorker
     reminders = Reminder.fetch_reminders
 
     reminders.select{ |rem| rem.user.active? }.each do |r|
-      r.add_to_send_queue
+      Queuer.add_to_send_queue(r)
     end
   end
 end

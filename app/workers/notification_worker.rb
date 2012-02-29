@@ -6,6 +6,6 @@ class NotificationWorker
 
   def self.perform(reminder_id, type)
     reminder = Reminder.find_by_id(reminder_id)
-    reminder.send(type)
+    Notifier.send(type, reminder)
   end
 end
