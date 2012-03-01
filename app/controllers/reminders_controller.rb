@@ -30,6 +30,20 @@ class RemindersController < ApplicationController
     end
   end
 
+  def destroy
+    reminder = current_user.reminders.find_by_id(params[:id])
+    respond_to do |format|
+      format.js
+      if reminder.destroy
+        format.html { flash[:notice] = "Your reminder has been deleted";
+                      redirect_to reminders_path }
+      else
+        format.html { flash[:alert] = "We could not delete your reminder";
+                      redirect_to edit_reminder_path(reminder)}
+      end
+    end
+  end
+
   private
 
   def parse_reminder_time

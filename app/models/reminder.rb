@@ -62,7 +62,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def snooze_for(duration, token)
-    if snooze_token == token
+    if duration && snooze_token == token
       self.reminder_time = EmailParser::Dispatcher.parse_email(duration)
       self.snooze_count += 1
       self.delivered = false

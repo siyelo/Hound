@@ -19,3 +19,7 @@
       %tr
         %td{:style => "text-align:right"} Months:
         = render 'snooze_link', :options => ['1','3','6','12'], :type => 'mo'
+      %tr
+        %td
+        %td
+          = link_to 'set snooze manually', edit_reminder_url(@reminder)

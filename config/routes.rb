@@ -3,7 +3,7 @@ RadMeet::Application.routes.draw do
 
   mount Resque::Server, :at => "/resque"
 
-  resources :reminders, only: [:index, :edit, :update]
+  resources :reminders
   resources :notifications, only: [:update, :edit]
   resources :snooze, only: [:show, :edit]
   resources :email_aliases

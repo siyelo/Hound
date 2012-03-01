@@ -17,3 +17,5 @@
   %br
   = f.submit :submit, class:'js_submit', disable_with: 'Processing...'
   = link_to 'cancel', root_path, id: 'js_cancel'
+
+%p= link_to 'Delete this reminder', reminder_path(@reminder), method: 'delete', confirm: 'Are you sure?'
