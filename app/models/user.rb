@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   validates_presence_of :timezone
   validates_with EmailValidator
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
+  attr_accessible :email, :password, :remember_me,
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods

@@ -14,13 +14,13 @@ describe EmailAlias do
         alias_email = Factory :email_alias, email: 'clark@kent.com', user: @user
         alias_email2 = Factory.build :email_alias,  email: 'clark@kent.com', user: @user
         alias_email2.valid?.should be_false
-        alias_email2.errors[:email].should include 'is not unique'
+        alias_email2.errors[:email].should include 'is already registered'
       end
 
       it 'should validate uniqueness of email within Users' do
         alias_email = Factory.build :email_alias,  email: 'batman@gotham.com', user: @user
         alias_email.valid?.should be_false
-        alias_email.errors[:email].should include 'is not unique'
+        alias_email.errors[:email].should include 'is already registered'
       end
     end
   end

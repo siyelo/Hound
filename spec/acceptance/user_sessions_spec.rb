@@ -23,7 +23,6 @@ feature 'User sessions' do
     end
 
     fill_in "user[password]", :with=>"password"
-    fill_in "user[password_confirmation]", :with=>"password"
     click_button "Change my password"
 
     within('body') do
@@ -51,7 +50,6 @@ feature 'User sessions' do
 
     fill_in "user[email]", :with => 'testing@test.com'
     fill_in "user[password]", :with=>"password"
-    fill_in "user[password_confirmation]", :with=>"password"
     select "Sofia", :from => "user_timezone"
     click_button 'Sign up'
     within('body') do

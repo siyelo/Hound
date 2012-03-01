@@ -31,7 +31,7 @@ describe User do
       alias_email = Factory :email_alias, email: 'batman@gotham.com'
       user = Factory.build :user, email: 'batman@gotham.com'
       user.valid?.should be_false
-      user.errors[:email].should include 'is not unique'
+      user.errors[:email].should include 'is already registered'
     end
   end
 
