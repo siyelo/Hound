@@ -15,5 +15,5 @@
   %p
     = f.text_area :body
   %br
-  = f.submit :submit, class:'js_submit'
-  = link_to 'cancel', root_path
+  = f.submit :submit, class:'js_submit', disable_with: 'Processing...'
+  = link_to 'cancel', root_path, id: 'js_cancel'

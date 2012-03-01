@@ -13,11 +13,8 @@
         %th.large Reminder Date
         %th.small Mark as complete?
 
-    - @groups.each_pair do |key, values|
-      - if values.count > 0
-        = key.to_s.titleize
-        %table{class: 'modern'}
-          %tr
-          - values.each do |r|
-            = render r
+    - unless @current_filter == 'completed'
+      = render 'grouped_reminders'
+    - else
+      = render 'ungrouped_reminders'
   .status

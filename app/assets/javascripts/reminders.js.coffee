@@ -41,6 +41,10 @@ $(document).ready ->
       $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>')
       event.preventDefault()
 
+  $('#js_cancel').live "click", ->
+    $('.inline_reminder').hide()
+    return false
+
   validateCc =   ->
     regex = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
     value = $('#reminder_cc_string').val().trim()
