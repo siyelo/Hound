@@ -35,6 +35,7 @@ $(document).ready ->
         else
           element.closest("tr").addClass "completed_row"
 
+  #Validate the form of the cc email addresses before submitting
   $('.js_submit').live "click", ->
     $('.errors').html('')
     unless validateCc()

@@ -39,6 +39,18 @@ feature 'User sessions' do
     within('body') do
       page.should have_content('Signed in successfully')
     end
+  end
+
+  scenario 'user should be able to login with alias' do
+    alias_email = Factory :email_alias, user: @user, email: 't@test.com'
+    visit '/users/sign_in'
+    fill_in "user[email]", :with => alias_email.email
+    fill_in "user[password]", :with=> 'testing'
+    click_button 'Sign in'
+
+    within('body') do
+      page.should have_content('Signed in successfully')
+    end
 
   end
 
@@ -54,6 +66,22 @@ feature 'User sessions' do
     click_button 'Sign up'
     within('body') do
       page.should have_content('signed up successfully')
+    end
+  end
+
+  scenario 'user should not be able to sign-up if email used as someones alias' do
+    alias_email = Factory :email_alias, user: @user, email: 't@test.com'
+    visit '/users/sign_up'
+    within('body') do
+      page.should have_content('Sign up')
+    end
+
+    fill_in "user[email]", :with => alias_email.email
+    fill_in "user[password]", :with=>"password"
+    select "Sofia", :from => "user_timezone"
+    click_button 'Sign up'
+    within('body') do
+      page.should have_content('Email is already registered')
     end
   end
 

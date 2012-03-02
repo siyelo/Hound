@@ -27,7 +27,13 @@ class User < ActiveRecord::Base
   def self.find_by_email_or_alias(email)
     joins("left outer join email_aliases on email_aliases.user_id = users.id").
     where("email_aliases.email = ? OR users.email = ?", email, email).
-    group("users.id").first
+    group("users.id").readonly(false).first
+  end
+
+  #overwrite Devise finder - allow user to login with
+  #primary or alias email address
+  def self.find_for_database_authentication(conditions={})
+    self.find_by_email_or_alias(conditions[:email])
   end
 
   ### Instance methods
