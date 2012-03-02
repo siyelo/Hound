@@ -59,6 +59,15 @@ feature 'Reminders' do
       @reminder.body.should == 'new body'
     end
 
+    scenario 'user can edit body with invalid UTF-8 removed', js: true do
+      @reminder.body = "\xA0bad encoding \xA0/"
+      @reminder.save
+      @reminder.reload
+      visit '/'
+      click_link 'reminder1'
+      page.should have_content('Subject:')
+    end
+
   end
 
   context 'edit cc email addresses' do
