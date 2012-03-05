@@ -59,8 +59,6 @@ describe User do
     before(:each) do
       ResqueSpec.reset!
       reset_mailer
-      Timecop.return
-
       Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
                                            to: '2days@hound.cc',
                                            subject: 'test', date: DateTime.now)])

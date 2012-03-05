@@ -1,5 +1,13 @@
 class Queuer
   class << self
+
+    def add_all_to_send_queue(reminders)
+      reminders ||= []
+      reminders.each do |r|
+        self.add_to_send_queue(r)
+      end
+    end
+
     def add_to_send_queue(reminder)
       Resque.enqueue(SendReminderWorker, reminder.id)
     end

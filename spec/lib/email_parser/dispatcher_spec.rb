@@ -11,12 +11,11 @@ describe EmailParser::Dispatcher do
     end
 
     it "for incremental time" do
-      Timecop.freeze
       emails = [Mail.new(from: 'pimp@macdaddy.yo',
                          to: '2d8h3m@hound.cc',
                          subject: 'test', date: DateTime.now)]
       EmailParser::Dispatcher.dispatch(emails)
-      Reminder.last.reminder_time.should == (8.hours + 3.minutes + 2.days).from_now
+      Reminder.last.reminder_time.to_i.should == (8.hours + 3.minutes + 2.days).from_now.to_i
     end
 
     it "for a valid calendar time" do

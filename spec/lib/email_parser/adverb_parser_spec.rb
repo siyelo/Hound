@@ -3,10 +3,9 @@ require 'spec_helper'
 describe EmailParser::AdverbParser do
   describe "parse addresses" do
     before :each do
-      Timecop.freeze
       @adverb = EmailParser::AdverbParser.new("tomorrow@hound.cc")
     end
-
+    
     context "refactorings" do
       it "should be createable" do
         @adverb.email.should == "tomorrow@hound.cc"

@@ -47,7 +47,7 @@ describe Reminder do
       r = Factory.build :reminder, user: u
       r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
       r.save
-      r.reminder_time = Time.now + 1.day
+      r.reminder_time = Time.zone.now + 1.day
       r.save
       NotificationWorker.should have_queue_size_of(1)
       NotificationWorker.perform(r.id, method)
@@ -57,21 +57,32 @@ describe Reminder do
   end
 
   context "workers" do
-    describe "fetch_reminders" do
-      it "should only get reminders for the current minute" do
-        Timecop.freeze(Time.now)
-        correct_reminder = Factory :reminder, reminder_time: Time.now
-        incorrect_reminer = Factory :reminder, reminder_time: Time.now + 1.hour
-        incorrect_reminer2 = Factory :reminder, reminder_time: Time.now + 1.hour, delivered: true
-        incorrect_reminder3 = Factory :reminder, reminder_time: Time.now, delivered: true
-        reminders = Reminder.fetch_reminders
-        reminders.size.should == 1
-        reminders.first.id.should == correct_reminder.id
-      end
+    it "should fetch unsent reminders" do
+      now = Time.zone.now
+      future_sent_reminder = Factory :reminder, reminder_time: now + 1.hour, delivered: true
+      past_unsent_reminder = Factory :reminder, reminder_time: now - 1.hour
+      future_unsent_reminder = Factory :reminder, reminder_time: now + 1.hour
+      reminders = Reminder.unsent.sorted
+      reminders.first.id.should == past_unsent_reminder.id
+      reminders.second.id.should == future_unsent_reminder.id
+    end
+   
+    it "should fetch due reminders" do
+      now = Time.zone.now
+      due_reminder = Factory :reminder, reminder_time: now
+      later_reminder = Factory :reminder, reminder_time: now + 1.hour
+      reminders = Reminder.due
+      reminders.first.id.should == due_reminder.id
+    end 
+
+    it "should fetch from active users" do
+      now = Time.zone.now
+      r = Factory :reminder, reminder_time: now
+      reminders = Reminder.with_active_user
+      reminders.first.id.should == r.id
     end
 
     describe "queueing" do
-
       it "should properly queue" do
         reminder = Factory :reminder
         SendConfirmationWorker.should have_queue_size_of(1)
@@ -112,9 +123,10 @@ describe Reminder do
       end
 
       it "should snooze a reminder for a specified duration" do
-        @reminder.reminder_time = Time.now
+        now = Time.zone.now
+        @reminder.reminder_time = now
         @reminder.snooze_for('2days', @reminder.snooze_token)
-        @reminder.reminder_time.should == Time.now + 2.days
+        @reminder.reminder_time.to_i.should == (now + 2.days).to_i #Ruby times have greater precision
       end
 
       it "should mark a snoozed reminder as undelivered" do

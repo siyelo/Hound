@@ -18,6 +18,7 @@ class Reminder < ActiveRecord::Base
 
   ### Scopes
 
+  #TODO refactor into class methods
   scope :upcoming, where("reminder_time >= ? AND delivered = ?", Time.now, false)
   scope :completed, where("delivered = ?", true)
   scope :due_today, where("reminder_time >= ? AND reminder_time < ? AND delivered = ?",
@@ -25,14 +26,22 @@ class Reminder < ActiveRecord::Base
   scope :undelivered, where("reminder_time < ? AND delivered = ?", Time.now, false)
   scope :sorted, order("reminder_time ASC")
 
-  ### Class methods
-  def self.fetch_reminders
-    time = Time.now.change(sec: 0)
-    last_time = time + 59.seconds
+  class << self
+    ### Named Scopes
 
-    self.select("id, user_id").where("reminder_time >= ?
-                                     AND reminder_time <= ? AND delivered = ?",
-                                     time, last_time, false).includes(:user)
+    def due
+      where("reminder_time < ?", Time.zone.now.change(sec: 59))
+    end
+
+    def unsent
+       where("delivered = ?", false)
+    end
+
+    #TODO - refactor: we're diving too far into the user model here
+    def with_active_user
+      joins(:user).
+      where("users.invitation_token IS NULL OR users.invitation_accepted_at IS NOT NULL")
+    end
   end
 
   ### Instance methods

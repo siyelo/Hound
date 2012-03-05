@@ -25,9 +25,11 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_email_or_alias(email)
-    joins("left outer join email_aliases on email_aliases.user_id = users.id").
-    where("email_aliases.email = ? OR users.email = ?", email, email).
-    group("users.id").readonly(false).first
+    where("users.email = ? OR 
+           users.id = (SELECT em.user_id
+                       FROM email_aliases em
+                       WHERE em.email = ?)", email, email).
+    readonly(false).first
   end
 
   #overwrite Devise finder - allow user to login with
@@ -47,11 +49,9 @@ class User < ActiveRecord::Base
     write_attribute(:confirmation_email, value)
   end
 
-
   def normalize_boolean(value)
     value == true || value == "1"
   end
-
 
   def toggle_confirmation_email(token)
     if token == modify_token

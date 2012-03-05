@@ -1,8 +1,10 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.0'
-gem 'sqlite3'
+gem 'pg'
+gem 'sqlite3' #TODO REMOVE! USE PG OR SOME SHIT!
 gem 'therubyracer'
+gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', require: "resque/server"
 gem 'mail'
 gem 'chronic'
@@ -28,7 +30,6 @@ end
 group :development do
   gem "rspec-rails"
   gem 'guard-spork'
-  gem 'ruby-debug19'
   gem 'mailcatcher'
 end
 
@@ -38,7 +39,6 @@ group :test do
   gem "factory_girl_rails"
   gem "guard-rspec"
   gem 'shoulda-matchers'
-  gem 'timecop'
   gem 'database_cleaner'
   gem 'steak'
   gem 'email_spec'
@@ -46,4 +46,12 @@ group :test do
   gem 'rspec-mocks'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'launchy'
+end
+
+group :development, :test do
+  ### http://stackoverflow.com/questions/8251349/ruby-threadptr-data-type-error
+  gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+  gem 'ruby-debug-base19x', '~> 0.11.30.pre10'
+  gem 'ruby-debug19'
 end
