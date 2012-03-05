@@ -1,3 +1,8 @@
+# Hound.cc
+
+# Getting Started
+
+## 
 Ok so here's the deal
 Lots of shizzle in here is run off resque, I found an awesome plugin called
 resque scheduler (https://github.com/bvandenbos/resque-scheduler).

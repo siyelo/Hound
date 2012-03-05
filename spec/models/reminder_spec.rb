@@ -101,7 +101,7 @@ describe Reminder do
       it "should generate a snooze token when creating a reminder" do
         @reminder.snooze_token.should be_nil
         @reminder.save
-        @reminder.snooze_token.should_not be_nil
+        @reminder.snooze_token.length.should == 8
       end
 
       it "should not regenerate the snooze token after a reminder has been snoozed" do

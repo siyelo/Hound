@@ -92,7 +92,28 @@ class Reminder < ActiveRecord::Base
   end
 
   def generate_snooze_token
-    self.snooze_token = rand(36**8).to_s(36)
+    self.snooze_token = Token.new(8)
   end
 
 end
+# == Schema Information
+#
+# Table name: reminders
+#
+#  id                :integer         not null, primary key
+#  email             :string(255)
+#  subject           :string(255)
+#  body              :text(255)
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  reminder_time     :datetime
+#  user_id           :integer
+#  delivered         :boolean         default(FALSE)
+#  snooze_token      :string(255)
+#  snooze_count      :integer         default(0)
+#  cc                :string(255)
+#  message_id        :string(255)
+#  message_thread_id :integer
+#  sent_to           :string(255)
+#
+
