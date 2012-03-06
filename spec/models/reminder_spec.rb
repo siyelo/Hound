@@ -66,14 +66,14 @@ describe Reminder do
       reminders.first.id.should == past_unsent_reminder.id
       reminders.second.id.should == future_unsent_reminder.id
     end
-   
+
     it "should fetch due reminders" do
       now = Time.zone.now
       due_reminder = Factory :reminder, reminder_time: now
       later_reminder = Factory :reminder, reminder_time: now + 1.hour
       reminders = Reminder.due
       reminders.first.id.should == due_reminder.id
-    end 
+    end
 
     it "should fetch from active users" do
       now = Time.zone.now
@@ -151,6 +151,14 @@ describe Reminder do
         @email = UserMailer.send_reminder(reminder, reminder.cc.first)
         @email.should_not have_body_text('/Snooze for:/')
       end
+    end
+
+    it "should save with bad encoding" do
+      r = Factory :reminder
+      r.body = "\xA0bad encoding \xA0/"
+      lambda do
+        r.save!
+      end.should_not raise_exception
     end
   end
 end

@@ -58,19 +58,6 @@ feature 'Reminders' do
       @reminder.reload
       @reminder.body.should == 'new body'
     end
-
-    #TODO: Move to Unit test for reminder.body
-    scenario 'user can edit body with invalid UTF-8 removed', js: true do
-      pending #On PG:
-      #ActiveRecord::StatementInvalid Exception: PG::Error: ERROR:  invalid byte sequence for encoding "UTF8"
-      @reminder.body = "\xA0bad encoding \xA0/"
-      @reminder.save!
-      @reminder.reload
-      visit '/'
-      click_link 'reminder1'
-      page.should have_content('Subject:')
-    end
-
   end
 
   context 'edit cc email addresses' do

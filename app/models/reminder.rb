@@ -54,11 +54,12 @@ class Reminder < ActiveRecord::Base
     write_attribute(:cc, [*cc].to_yaml)
   end
 
-  # ensure characters that can't be transcoded are removed before
-  # displaying javascript escaped HTML on form
-  # This method is called by form_for when populating body field
-  def body_before_type_cast
-    body.force_encoding('UTF-8').valid_encoding? ? super : body.unpack("C*").pack("U*")
+  def body
+    Base64::decode64(read_attribute(:body))
+  end
+
+  def body=(value)
+    write_attribute(:body, Base64::encode64(value))
   end
 
   def cc_string
