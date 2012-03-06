@@ -2,7 +2,7 @@ Factory.define :reminder do |f|
   f.sequence(:email) { |n| "somedude#{n}@sorad.com" }
   f.subject "pewpepw"
   f.body "Body of the email"
-  f.reminder_time 1.minute.from_now
+  f.send_at 1.minute.from_now
   f.delivered false
   f.user { Factory(:user)}
   f.message_thread { Factory(:message_thread) }

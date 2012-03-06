@@ -23,7 +23,7 @@ class ReminderFilter
       groups = Hash.new{|hash, key| hash[key] = []}
       reminders.each do |r|
         LAYERS.keys.each do |key|
-          (groups[key] << r; break) if r.reminder_time.to_date <= LAYERS[key].from_now.to_date
+          (groups[key] << r; break) if r.send_at.to_date <= LAYERS[key].from_now.to_date
         end
       end
       groups

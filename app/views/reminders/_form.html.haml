@@ -7,10 +7,10 @@
   = f.text_field :cc, value: @reminder.cc.join(',')
   %p
   = f.label 'Reminder Date:'
-  = text_field_tag 'formatted_date', @reminder.reminder_time.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
+  = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
   %p
   = f.label 'Reminder Time:'
-  = text_field_tag 'formatted_time', @reminder.reminder_time.strftime('%R'), id: 'reminder_formatted_time'
+  = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time'
   = f.label Time.zone
   %p
     = f.text_area :body

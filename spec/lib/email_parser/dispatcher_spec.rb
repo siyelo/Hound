@@ -7,7 +7,7 @@ describe EmailParser::Dispatcher do
                          to: 'tomorrow@hound.cc',
                          subject: 'test', date: DateTime.now)]
       EmailParser::Dispatcher.dispatch(emails)
-      Reminder.last.reminder_time.should == 1.day.from_now.change(hour: 8)
+      Reminder.last.send_at.should == 1.day.from_now.change(hour: 8)
     end
 
     it "for incremental time" do
@@ -15,7 +15,7 @@ describe EmailParser::Dispatcher do
                          to: '2d8h3m@hound.cc',
                          subject: 'test', date: DateTime.now)]
       EmailParser::Dispatcher.dispatch(emails)
-      Reminder.last.reminder_time.to_i.should == (8.hours + 3.minutes + 2.days).from_now.to_i
+      Reminder.last.send_at.to_i.should == (8.hours + 3.minutes + 2.days).from_now.to_i
     end
 
     it "for a valid calendar time" do
@@ -23,7 +23,7 @@ describe EmailParser::Dispatcher do
                          to: '14February2013@hound.cc',
                          subject: 'test', date: DateTime.now)]
       EmailParser::Dispatcher.dispatch(emails)
-      Reminder.last.reminder_time.should == DateTime.parse("14Feb2013").change(hour: 8)
+      Reminder.last.send_at.should == DateTime.parse("14Feb2013").change(hour: 8)
     end
 
     it "for an invalid calendar time" do

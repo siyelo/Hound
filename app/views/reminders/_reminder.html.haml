@@ -1,6 +1,6 @@
 %tr.reminder{id: "reminder#{reminder.id}_row"}
   %td.large
     = link_to reminder.subject, edit_reminder_path(reminder), remote: true, class: 'subject_link'
-  %td.large= reminder.reminder_time.to_formatted_s(:short_with_day)
+  %td.large= reminder.send_at.to_formatted_s(:short_with_day)
   = form_for reminder, url: reminder_path(reminder), remote: true do |f|
     %td.small= f.check_box :delivered?, class: 'mark_as_complete', disabled: allow_changes(reminder)

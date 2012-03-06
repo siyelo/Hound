@@ -16,7 +16,7 @@ class RemindersController < ApplicationController
   end
 
   def update
-    parse_reminder_time unless params[:reminder][:reminder_time]
+    parse_send_at unless params[:reminder][:send_at]
     @reminder = current_user.reminders.find_by_id(params[:id])
     respond_to do |format|
       format.js
@@ -46,10 +46,10 @@ class RemindersController < ApplicationController
 
   private
 
-  def parse_reminder_time
+  def parse_send_at
     if params[:formatted_date] || params[:formatted_time]
       date = DateTime.parse params.delete(:formatted_date) +' '+ params.delete(:formatted_time)
-      params[:reminder][:reminder_time] = date.change(offset: Time.zone.formatted_offset)
+      params[:reminder][:send_at] = date.change(offset: Time.zone.formatted_offset)
     end
   end
 end

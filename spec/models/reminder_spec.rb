@@ -8,7 +8,7 @@ describe Reminder do
   describe "validations" do
     it { should validate_presence_of :email }
     it { should validate_presence_of :subject }
-    it { should validate_presence_of :reminder_time }
+    it { should validate_presence_of :send_at }
     it { should validate_presence_of :user }
     it { should validate_presence_of :message_thread }
   end
@@ -54,7 +54,7 @@ describe Reminder do
       r = Factory.build :reminder, user: u
       r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
       r.save
-      r.reminder_time = Time.zone.now + 1.day
+      r.send_at = Time.zone.now + 1.day
       r.save
       NotificationWorker.should have_queue_size_of(1)
       NotificationWorker.perform(r.id, method)
@@ -67,9 +67,9 @@ describe Reminder do
   ## scopes
     it "should fetch ready to send reminders" do
       now = Time.now
-      past_unsent_reminder = Factory :reminder, reminder_time: now - 1.hour
-      due_reminder = Factory :reminder, reminder_time: now
-      future_unsent_reminder = Factory :reminder, reminder_time: now + 1.hour
+      past_unsent_reminder = Factory :reminder, send_at: now - 1.hour
+      due_reminder = Factory :reminder, send_at: now
+      future_unsent_reminder = Factory :reminder, send_at: now + 1.hour
       reminders = Reminder.ready_to_send.sorted
       reminders.first.id.should == past_unsent_reminder.id
       reminders.second.id.should == due_reminder.id
@@ -77,15 +77,15 @@ describe Reminder do
 
     it "should fetch from active users" do
       now = Time.now
-      r = Factory :reminder, reminder_time: now
+      r = Factory :reminder, send_at: now
       reminders = Reminder.with_active_user
       reminders.first.id.should == r.id
     end
 
     it "should fetch upcoming reminders" do
       now = Time.now
-      due_reminder = Factory :reminder, reminder_time: now - 1.hour
-      future_unsent_reminder = Factory :reminder, reminder_time: now + 1.hour
+      due_reminder = Factory :reminder, send_at: now - 1.hour
+      future_unsent_reminder = Factory :reminder, send_at: now + 1.hour
       reminders = Reminder.upcoming.sorted
       reminders.first.id.should == future_unsent_reminder.id
     end
@@ -142,9 +142,9 @@ describe Reminder do
 
       it "should snooze a reminder for a specified duration" do
         now = Time.zone.now
-        @reminder.reminder_time = now
+        @reminder.send_at = now
         @reminder.snooze_for('2days', @reminder.snooze_token)
-        @reminder.reminder_time.to_i.should == (now + 2.days).to_i #Ruby times have greater precision
+        @reminder.send_at.to_i.should == (now + 2.days).to_i #Ruby times have greater precision
       end
 
       it "should mark a snoozed reminder as undelivered" do

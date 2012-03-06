@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20120306095543) do
     t.text     "body"
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
-    t.datetime "reminder_time"
+    t.datetime "send_at"
     t.integer  "user_id"
     t.boolean  "delivered",         :default => false, :null => false
     t.string   "snooze_token"

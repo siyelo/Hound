@@ -6,7 +6,7 @@ module ReminderScopes
       class << self
         ### Named Scopes
         def upcoming
-          where("reminder_time >= ? AND delivered = ?", Time.now, false)
+          where("send_at >= ? AND delivered = ?", Time.now, false)
         end
 
         def completed
@@ -14,12 +14,12 @@ module ReminderScopes
         end
 
         def sorted
-          order("reminder_time ASC")
+          order("send_at ASC")
         end
 
         def ready_to_send
           cutoff = Time.now.change(sec: LOOK_AHEAD_SECONDS)
-          where("reminder_time < ? AND delivered = ?", cutoff, false)
+          where("send_at < ? AND delivered = ?", cutoff, false)
         end
 
         #TODO - refactor: we're diving too far into the user model here

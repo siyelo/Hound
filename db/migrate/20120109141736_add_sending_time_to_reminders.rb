@@ -1,5 +1,6 @@
 class AddSendingTimeToReminders < ActiveRecord::Migration
   def change
-    add_column :reminders, :reminder_time, :datetime
+    add_column :reminders, :send_at, :datetime
   end
 end
+

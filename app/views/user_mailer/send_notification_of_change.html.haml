@@ -8,12 +8,12 @@
         %td{:colspan => "2"}
           %p
             %strong Sup yo! Your reminder has undergone revisions:
-          - if @reminder.reminder_time_changed?
+          - if @reminder.send_at_changed?
             %p
               %strong Reminder Time:
-            = "From: #{@reminder.reminder_time_change[0]}"
+            = "From: #{@reminder.send_at_change[0]}"
             %br
-            = "To: #{@reminder.reminder_time_change[1]}"
+            = "To: #{@reminder.send_at_change[1]}"
           - if @reminder.body_changed?
             %p
               %strong Reminder Email:

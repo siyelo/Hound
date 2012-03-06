@@ -1,7 +1,7 @@
 describe QueueMailWorker do
   before :each do
     @now = Time.now
-    due = Factory :reminder, reminder_time: @now
+    due = Factory :reminder, send_at: @now
   end
 
   it "should fetch and enqueue due&unsent reminders for active users" do

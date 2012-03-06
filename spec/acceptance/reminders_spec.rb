@@ -18,7 +18,7 @@ feature 'Reminders' do
 
     scenario 'user cannot change the status of an old reminder which has been delivered' do
       find('#reminder_delivered')['disabled'].should == nil #sanity - not disabled
-      @reminder.reminder_time -= 1.month
+      @reminder.send_at -= 1.month
       @reminder.delivered = true
       @reminder.save
 
@@ -48,8 +48,8 @@ feature 'Reminders' do
       fill_in 'reminder_formatted_time', with: '20:30'
       click_button 'submit'
       @reminder.reload
-      @reminder.reminder_time.min == '30'
-      @reminder.reminder_time.hour == '20'
+      @reminder.send_at.min == '30'
+      @reminder.send_at.hour == '20'
     end
 
     scenario 'user can edit the reminder body' do
@@ -97,7 +97,7 @@ feature 'Reminders' do
   context 'filter reminders' do
     background do
       @user = Factory :user
-      reminder1 = Factory :reminder, user: @user, reminder_time: Time.now + 1.day
+      reminder1 = Factory :reminder, user: @user, send_at: Time.now + 1.day
       reminder2 = Factory :reminder, user: @user, subject: 'reminder for today'
       reminder3 = Factory :reminder, user: @user, delivered: true, subject: 'delivered reminder'
       log_in_with(@user)

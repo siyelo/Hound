@@ -6,10 +6,10 @@ class Reminder < ActiveRecord::Base
   belongs_to :message_thread
 
   # Validations
-  validates_presence_of :email, :subject, :reminder_time, :user, :message_thread
+  validates_presence_of :email, :subject, :send_at, :user, :message_thread
 
   ### Attributes
-  attr_accessible :email, :subject, :reminder_time, :body, :sent_to, :cc, :user,
+  attr_accessible :email, :subject, :send_at, :body, :sent_to, :cc, :user,
     :message_id, :delivered, :message_thread
 
   # Callbacks
@@ -37,7 +37,7 @@ class Reminder < ActiveRecord::Base
 
   def snooze_for(duration, token)
     if duration && snooze_token == token
-      self.reminder_time = EmailParser::Dispatcher.parse_email(duration)
+      self.send_at = EmailParser::Dispatcher.parse_email(duration)
       self.snooze_count += 1
       self.delivered = false
       self.save!
@@ -66,12 +66,12 @@ end
 #  id                :integer         not null, primary key
 #  email             :string(255)
 #  subject           :string(255)
-#  body              :text(255)
+#  body              :text
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
-#  reminder_time     :datetime
+#  send_at           :datetime
 #  user_id           :integer
-#  delivered         :boolean         default(FALSE)
+#  delivered         :boolean         default(FALSE), not null
 #  snooze_token      :string(255)
 #  snooze_count      :integer         default(0)
 #  cc                :string(255)

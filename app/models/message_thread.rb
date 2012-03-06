@@ -22,11 +22,11 @@ end
 #
 #  id         :integer         not null, primary key
 #  message_id :string(255)
-#  parent_id  :string(255)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #  lft        :integer
 #  rgt        :integer
 #  depth      :integer
+#  parent_id  :integer
 #
 

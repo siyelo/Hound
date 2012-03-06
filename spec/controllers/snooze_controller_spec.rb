@@ -30,7 +30,7 @@ describe SnoozeController do
     end
 
     it "should show the new reminder time after successfully snoozing" do
-      old_time = @reminder.reminder_time
+      old_time = @reminder.send_at
       get :edit, id: @reminder.id, duration: '2days', token: @reminder.snooze_token
       response.should render_template('snooze_reminder')
     end

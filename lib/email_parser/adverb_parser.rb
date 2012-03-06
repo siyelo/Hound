@@ -39,7 +39,7 @@ module EmailParser
 
     ### Instance Methods
 
-    def reminder_time
+    def send_at
       matches = match_key_words
       self.send(matches.first) unless matches.empty?
     end

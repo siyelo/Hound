@@ -22,7 +22,7 @@ module EmailParser
 
     ### Instance Methods
 
-    def reminder_time
+    def send_at
       match_and_return_time.from_now
     end
 

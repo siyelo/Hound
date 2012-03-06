@@ -1,3 +1,2 @@
-desc "Clear logs"
-task :clean => ["log:clear"]
-
+desc "Install gems and do db:setup"
+task :clean => ["log:clear", "capy:clean"]

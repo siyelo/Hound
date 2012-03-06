@@ -8,13 +8,13 @@ module EmailParser
         to_us = self.extract_to_us(e, parent_message)
 
         to_us.each do |to|
-          reminder_time = self.parse_email(to, e)
+          send_at = self.parse_email(to, e)
           r = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
                                body: self.extract_html_or_text(e),
-                               reminder_time: reminder_time,
+                               send_at: send_at,
                                user: User.find_or_invite(e),
                                sent_to: to, cc: self.extract_reminder_cc(e, to, to_us),
-                               message_thread: message) if reminder_time
+                               message_thread: message) if send_at
         end
       end
     end
@@ -28,16 +28,16 @@ module EmailParser
         # we use this to determine when the email should be returned
         local_part = to.split('@')[0] || to
 
-        reminder_time = nil
+        send_at = nil
 
-        reminder_time = if local_part.match /(?!months)[a-z]{6,10}/
-                          EmailParser::AdverbParser.new(to).reminder_time
+        send_at = if local_part.match /(?!months)[a-z]{6,10}/
+                          EmailParser::AdverbParser.new(to).send_at
                         elsif local_part.match /\d+[a-z]+/
-                          EmailParser::IncrementalTime.new(to).reminder_time
+                          EmailParser::IncrementalTime.new(to).send_at
                         end
 
 
-        reminder_time ? reminder_time : self.calendar_date_parse(email, local_part)
+        send_at ? send_at : self.calendar_date_parse(email, local_part)
       end
 
       #refactor me
