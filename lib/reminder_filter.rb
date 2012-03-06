@@ -1,5 +1,6 @@
+#TODO refactor
 class ReminderFilter
-  FILTERS = %w(completed due_today undelivered)
+  FILTERS = %w(completed)
 
   LAYERS = {
     today:      0.days,

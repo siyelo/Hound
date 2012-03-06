@@ -1,4 +1,5 @@
 class Reminder < ActiveRecord::Base
+  include ReminderScopes
 
   ### Associations
   belongs_to :user
@@ -15,34 +16,6 @@ class Reminder < ActiveRecord::Base
   before_create :generate_snooze_token
   after_create :queue_confirmation_email
   after_update :queue_change_notification
-
-  ### Scopes
-
-  #TODO refactor into class methods
-  scope :upcoming, where("reminder_time >= ? AND delivered = ?", Time.now, false)
-  scope :completed, where("delivered = ?", true)
-  scope :due_today, where("reminder_time >= ? AND reminder_time < ? AND delivered = ?",
-                          Time.now, Date.tomorrow.to_datetime, false)
-  scope :undelivered, where("reminder_time < ? AND delivered = ?", Time.now, false)
-  scope :sorted, order("reminder_time ASC")
-
-  class << self
-    ### Named Scopes
-
-    def due
-      where("reminder_time < ?", Time.zone.now.change(sec: 59))
-    end
-
-    def unsent
-       where("delivered = ?", false)
-    end
-
-    #TODO - refactor: we're diving too far into the user model here
-    def with_active_user
-      joins(:user).
-      where("users.invitation_token IS NULL OR users.invitation_accepted_at IS NOT NULL")
-    end
-  end
 
   ### Instance methods
 
@@ -61,6 +34,8 @@ class Reminder < ActiveRecord::Base
   def body=(value)
     write_attribute(:body, Base64::encode64(value))
   end
+
+  #TODO move these form helpers
 
   def cc_string
     cc.join(", ")

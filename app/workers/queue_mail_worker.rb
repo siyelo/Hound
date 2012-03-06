@@ -5,6 +5,6 @@ class QueueMailWorker
   @queue = :process_queue
 
   def self.perform
-    Queuer.add_all_to_send_queue(Reminder.due.unsent.with_active_user)
+    Queuer.add_all_to_send_queue(Reminder.ready_to_send.with_active_user)
   end
 end

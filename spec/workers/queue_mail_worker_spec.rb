@@ -1,6 +1,6 @@
 describe QueueMailWorker do
   before :each do
-    @now = Time.zone.now
+    @now = Time.now
     due = Factory :reminder, reminder_time: @now
   end
 

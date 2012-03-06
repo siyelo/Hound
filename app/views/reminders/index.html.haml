@@ -9,7 +9,7 @@
   .reminder_list
     %table{class: 'modern'}
       %tr
-        =render 'title'
+        %th.large= "You have #{pluralize(@reminders.count, "#{@current_filter} reminder")}"
         %th.large Reminder Date
         %th.small Mark as complete?
 
