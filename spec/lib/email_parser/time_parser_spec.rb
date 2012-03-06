@@ -67,7 +67,7 @@ describe EmailParser::IncrementalTime do
     context "months" do
       it "should detect the months" do
         @time.email = "2months@sorad.cc"
-        @time.reminder_time.to_i.should == 2.months.from_now.to_i
+        @time.reminder_time.to_i.should == 2.months.from_now.to_i || 2.months.from_now.to_i + 1
       end
 
       it "should detect the months (complex)" do

@@ -38,6 +38,13 @@ describe Reminder do
       @reminder.reload
       @reminder.cc.should == []
     end
+
+    it "should allow multiple cc's to be created with a string" do
+      @reminder.cc = 'cc@abc.com, cc1@abc.com'
+      @reminder.save
+      @reminder.reload
+      @reminder.cc.should == ['cc@abc.com', 'cc1@abc.com']
+    end
   end
 
   describe "changed reminders" do
@@ -47,7 +54,7 @@ describe Reminder do
       r = Factory.build :reminder, user: u
       r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
       r.save
-      r.reminder_time = Time.now + 1.day
+      r.reminder_time = Time.zone.now + 1.day
       r.save
       NotificationWorker.should have_queue_size_of(1)
       NotificationWorker.perform(r.id, method)
@@ -134,7 +141,7 @@ describe Reminder do
       end
 
       it "should snooze a reminder for a specified duration" do
-        now = Time.now
+        now = Time.zone.now
         @reminder.reminder_time = now
         @reminder.snooze_for('2days', @reminder.snooze_token)
         @reminder.reminder_time.to_i.should == (now + 2.days).to_i #Ruby times have greater precision

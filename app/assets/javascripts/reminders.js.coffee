@@ -48,7 +48,7 @@ $(document).ready ->
 
   validateCc =   ->
     regex = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-    value = $('#reminder_cc_string').val().trim()
+    value = $('#reminder_cc').val().trim()
     emails = value.split(/[,;]\s*/)
     valid = true
     for i of emails

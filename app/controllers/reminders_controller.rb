@@ -48,7 +48,7 @@ class RemindersController < ApplicationController
 
   def parse_reminder_time
     if params[:formatted_date] || params[:formatted_time]
-      date = DateTime.parse params[:formatted_date] +' '+ params[:formatted_time]
+      date = DateTime.parse params.delete(:formatted_date) +' '+ params.delete(:formatted_time)
       params[:reminder][:reminder_time] = date.change(offset: Time.zone.formatted_offset)
     end
   end

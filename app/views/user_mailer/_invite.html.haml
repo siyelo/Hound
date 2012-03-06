@@ -1,5 +1,5 @@
 %h1 Welcome to Hound.cc
-%p= "We've automatically created an account for you and we've scheduled your reminder for #{@reminder.formatted_reminder_time}."
+%p= "We've automatically created an account for you and we've scheduled your reminder for #{@reminder.reminder_time.to_formatted_s(:short_with_day)}."
 
 %p Before we can start sending out reminders we need you to please activate your account by clicking the link below:
 

@@ -69,26 +69,26 @@ feature 'Reminders' do
 
     scenario 'user can add multiple comma or semi-colon seperated email addresses', js: true do
       click_link 'reminder1'
-      fill_in 'reminder_cc_string', with: 'test@test1.com'
+      fill_in 'reminder_cc', with: 'test@test1.com'
       click_button 'submit'
       click_link 'reminder1'
-      find_field('reminder_cc_string').value.should == 'test@test1.com'
+      find_field('reminder_cc').value.should == 'test@test1.com'
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc_string', with: 'test@test1.com; test@test2.com, test@test3.com'
+      fill_in 'reminder_cc', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
       page.should_not have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc_string', with: 'test'
+      fill_in 'reminder_cc', with: 'test'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc_string', with: 'test@test1.com; test@sdva, test3.com'
+      fill_in 'reminder_cc', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
     end

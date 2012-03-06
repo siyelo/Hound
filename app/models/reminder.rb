@@ -9,8 +9,8 @@ class Reminder < ActiveRecord::Base
   validates_presence_of :email, :subject, :reminder_time, :user, :message_thread
 
   ### Attributes
-  attr_accessible :email, :subject, :reminder_time, :body, :cc_string,
-    :sent_to, :cc, :user, :message_id, :delivered, :message_thread
+  attr_accessible :email, :subject, :reminder_time, :body, :sent_to, :cc, :user,
+    :message_id, :delivered, :message_thread
 
   # Callbacks
   before_create :generate_snooze_token
@@ -24,7 +24,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def cc=(cc)
-    write_attribute(:cc, [*cc].to_yaml)
+    write_attribute(:cc, EmailList.new(cc).to_yaml)
   end
 
   def body
@@ -35,24 +35,6 @@ class Reminder < ActiveRecord::Base
     write_attribute(:body, Base64::encode64(value))
   end
 
-  #TODO move these form helpers
-
-  def cc_string
-    cc.join(", ")
-  end
-
-  def cc_string=(cc_string)
-    self.cc = cc_string.split(/[,;]\s*/)
-  end
-
-  def formatted_date
-    reminder_time.strftime('%Y-%m-%d')
-  end
-
-  def formatted_time
-    reminder_time.strftime('%R')
-  end
-
   def snooze_for(duration, token)
     if duration && snooze_token == token
       self.reminder_time = EmailParser::Dispatcher.parse_email(duration)
@@ -60,10 +42,6 @@ class Reminder < ActiveRecord::Base
       self.delivered = false
       self.save!
     end
-  end
-
-  def formatted_reminder_time
-    reminder_time.in_time_zone(user.timezone).to_formatted_s(:short_with_day)
   end
 
   private
