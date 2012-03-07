@@ -25,7 +25,7 @@ deploy do
     run "source /var/lib/jenkins/.bash_profile"
     run "source /var/lib/jenkins/.rvm/scripts/rvm"
     run "source #{config.path}/.rvmrc"
-    run "rvm use 1.9.2@RadMeet"
+    run "rvm use 1.9.2@hound"
     run "ruby -v"
     run "git reset --hard"
     run "bundle install"

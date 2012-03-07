@@ -7,4 +7,4 @@ require 'rake/dsl_definition'
 
 require File.expand_path('../config/application', __FILE__)
 
-RadMeet::Application.load_tasks
+Hound::Application.load_tasks

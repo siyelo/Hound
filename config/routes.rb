@@ -1,4 +1,4 @@
-RadMeet::Application.routes.draw do
+Hound::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => "users/registrations" }
 
   mount Resque::Server, :at => "/resque"
