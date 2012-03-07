@@ -1,21 +1,21 @@
-= form_for @reminder, remote: true do |f|
-  .errors
-  = f.label 'Subject:'
-  = f.text_field :subject
-  %p
-  = f.label 'Cc:'
-  = f.text_field :cc, value: @reminder.cc.join(',')
-  %p
-  = f.label 'Reminder Date:'
-  = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
-  %p
-  = f.label 'Reminder Time:'
-  = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time'
-  = f.label Time.zone
-  %p
-    = f.text_area :body
-  %br
-  = f.submit :submit, class:'js_submit', disable_with: 'Processing...'
-  = link_to 'cancel', root_path, id: 'js_cancel'
+= form_tag reminder_path(@reminder_mail.reminder.id), remote: true, method: :put
+.errors
+= label_tag :subject, 'Subject:'
+= text_field_tag 'reminder_mail[subject]',  @reminder_mail.subject
+%p
+= label_tag :cc, 'Cc:'
+= text_field_tag 'reminder_mail[cc]', @reminder_mail.cc.join(',')
+%p
+= label_tag 'Reminder Date:'
+= text_field_tag 'formatted_date', @reminder_mail.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
+%p
+= label_tag 'Reminder Time:'
+= text_field_tag 'formatted_time', @reminder_mail.send_at.strftime('%R'), id: 'reminder_formatted_time'
+= label_tag Time.zone
+%p
+  = text_area_tag 'reminder_mail[body]', @reminder_mail.body
+%br
+= submit_tag 'Submit', class:'js_submit', disable_with: 'Processing...', id: 'submit'
+= link_to 'cancel', root_path, id: 'js_cancel'
 
-%p= link_to 'Delete this reminder', reminder_path(@reminder), method: 'delete', confirm: 'Are you sure?'
+%p= link_to 'Delete this reminder', reminder_path(@reminder_mail), method: 'delete', confirm: 'Are you sure?'

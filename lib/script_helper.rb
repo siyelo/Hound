@@ -1,5 +1,5 @@
 module ScriptHelper
-  DEFAULT_PRODUCTION_APP = 'radmeet'
+  DEFAULT_PRODUCTION_APP = 'hound'
 
   def run(cmd)
     puts "=> "+ cmd + "\n"

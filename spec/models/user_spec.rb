@@ -55,45 +55,6 @@ describe User do
     end
   end
 
-  describe "confirmation emails" do
-    before(:each) do
-      ResqueSpec.reset!
-      reset_mailer
-      Mail.stub(:all).and_return([Mail.new(from: 'pimp@macdaddy.yo',
-                                           to: '2days@hound.cc',
-                                           subject: 'test', date: DateTime.now)])
-    end
-
-    context "existing users" do
-      it "should receive a confirmation email" do
-        user = Factory :user, email: 'pimp@macdaddy.yo'
-        FetchMailWorker.perform
-        Reminder.all.count.should == 1 #sanity
-        SendConfirmationWorker.should have_queue_size_of(1)
-        SendConfirmationWorker.perform(Reminder.last.id)
-        unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
-      end
-
-      it "should not receive an email if the user has disabled that in their settings" do
-        user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
-        FetchMailWorker.perform
-        Reminder.all.count.should == 1 #sanity
-        SendConfirmationWorker.should have_queue_size_of(0)
-      end
-    end
-
-    context "new users" do
-      it "should send an invitation to new users" do
-        FetchMailWorker.perform
-        Reminder.all.count.should == 1 #sanity
-        SendConfirmationWorker.should have_queue_size_of(1)
-        SendConfirmationWorker.perform(Reminder.last.id)
-        unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
-      end
-    end
-
-  end
-
   describe 'modify_token' do
     before :each do
       @user = Factory :user
@@ -118,22 +79,4 @@ describe User do
     end
   end
 
-  describe 'find or invite user' do
-    it 'should find user by primary email' do
-      user = Factory :user, email: '1@1.com'
-      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
-      found.should == user
-    end
-
-    it 'should find a user by alias email' do
-      alias_email = Factory :email_alias, email: '1@1.com'
-      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
-      found.should == alias_email.user
-    end
-
-    it 'should invite a user if they are not found' do
-      found = User.find_or_invite(Mail.new(from: '1@1.com', date: DateTime.now))
-      found.active?.should be_false
-    end
-  end
 end

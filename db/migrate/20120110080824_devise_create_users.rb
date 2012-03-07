@@ -12,6 +12,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.token_authenticatable
 
 
+      t.string :timezone
+      t.string :modify_token
+      t.boolean :confirmation_email, default: true
       t.timestamps
     end
 

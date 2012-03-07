@@ -1,9 +1,12 @@
 class User < ActiveRecord::Base
-  devise :invitable, :database_authenticatable, :registerable,
+  include FindsOrInvitesUsers
+
+  devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
   ### Associations
-  has_many :reminders
+  has_many :reminders, through: :fetched_mails
+  has_many :fetched_mails
   has_many :email_aliases
 
   ### Callbacks
@@ -17,40 +20,32 @@ class User < ActiveRecord::Base
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
-  def self.find_or_invite(email)
-    from = email.from.first.to_s
-    time_zone = ActiveSupport::TimeZone[email.date.zone.to_i].name
-    user = User.find_by_email_or_alias(from) ||
-      User.invite!(email: from, timezone: time_zone) {|u| u.skip_invitation = true}
-  end
 
-  def self.find_by_email_or_alias(email)
-    where("users.email = ? OR 
-           users.id = (SELECT em.user_id
-                       FROM email_aliases em
-                       WHERE em.email = ?)", email, email).
-    readonly(false).first
-  end
+  class << self
+    def find_by_email_or_alias(email)
+      where("users.email = ? OR
+             users.id = (SELECT em.user_id
+                         FROM email_aliases em
+                         WHERE em.email = ?)", email, email).
+      readonly(false).first
+    end
 
-  #overwrite Devise finder - allow user to login with
-  #primary or alias email address
-  def self.find_for_database_authentication(conditions={})
-    self.find_by_email_or_alias(conditions[:email])
+    #overwrite Devise finder - allow user to login with
+    #primary or alias email address
+    def find_for_database_authentication(conditions={})
+      find_by_email_or_alias(conditions[:email])
+    end
   end
 
   ### Instance methods
+
   def active?
     return true if !invitation_token || invitation_accepted_at
   end
 
   def confirmation_email=(value)
-    value = normalize_boolean(value)
     generate_new_token if value
     write_attribute(:confirmation_email, value)
-  end
-
-  def normalize_boolean(value)
-    value == true || value == "1"
   end
 
   def toggle_confirmation_email(token)

@@ -5,5 +5,8 @@ class CreateAliases < ActiveRecord::Migration
       t.integer :user_id
       t.timestamps
     end
+
+    add_index :email_aliases, :email
+    add_index :email_aliases, :user_id
   end
 end

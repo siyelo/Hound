@@ -1,8 +1,8 @@
 %h1 Welcome to Hound.cc
-%p= "We've automatically created an account for you and we've scheduled your reminder for #{@reminder.send_at.to_formatted_s(:short_with_day)}."
+%p= "We've automatically created an account for you and we've scheduled your reminder for #{@send_at}."
 
 %p Before we can start sending out reminders we need you to please activate your account by clicking the link below:
 
-%p=link_to 'Activate my account!', accept_user_invitation_url(invitation_token:@reminder.user.invitation_token)
+%p=link_to 'Activate my account!', @accept_user_invitation_url
 
 %p Please note that if you don't activate your account, no reminder emails will be sent out.

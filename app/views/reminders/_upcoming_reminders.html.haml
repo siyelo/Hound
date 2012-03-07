@@ -1,0 +1,5 @@
+- @reminder_filter.grouped_by_periods.each_pair do |period_name, reminders|
+  - if reminders.present?
+    = period_name.to_s.titleize
+
+    = render 'reminders', :reminders => reminders

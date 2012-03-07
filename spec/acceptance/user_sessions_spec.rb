@@ -62,7 +62,7 @@ feature 'User sessions' do
 
     fill_in "user[email]", :with => 'testing@test.com'
     fill_in "user[password]", :with=>"password"
-    select "Sofia", :from => "user_timezone"
+    select "Sofia", :from => "Timezone"
     click_button 'Sign up'
     within('body') do
       page.should have_content('signed up successfully')
@@ -78,7 +78,7 @@ feature 'User sessions' do
 
     fill_in "user[email]", :with => alias_email.email
     fill_in "user[password]", :with=>"password"
-    select "Sofia", :from => "user_timezone"
+    select "Sofia", :from => "Timezone"
     click_button 'Sign up'
     within('body') do
       page.should have_content('Email is already registered')

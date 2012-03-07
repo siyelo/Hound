@@ -1,5 +1,4 @@
-%h2
-  Your Reminders
+%h2 Your Reminders
 
 =render 'sidebar'
 
@@ -9,12 +8,12 @@
   .reminder_list
     %table{class: 'modern'}
       %tr
-        %th.large= "You have #{pluralize(@reminders.count, "#{@current_filter} reminder")}"
+        %th.large= "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
         %th.large Reminder Date
         %th.small Mark as complete?
 
-    - unless @current_filter == 'completed'
-      = render 'grouped_reminders'
+    - if @reminder_filter.filter == 'completed'
+      = render 'reminders', :reminders => @reminder_filter.reminders
     - else
-      = render 'ungrouped_reminders'
+      = render 'upcoming_reminders'
   .status

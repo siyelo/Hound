@@ -2,6 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+class Reminder
+ @get_params_for_update_delivered: (is_checked) ->
+   { reminder_mail: { 'delivered': is_checked } }
+
+(exports ? this).Reminder = Reminder
+
 $(document).ready ->
   if ($('#reminder_body').length)
     $('#reminder_body').tinymce
@@ -19,11 +25,11 @@ $(document).ready ->
   $(".mark_as_complete").live "click", ->
     element = $(this)
     element.attr("disabled", true)
-    form = $(this).parent("td").siblings("form")[0]
+    form = element.parent("td").siblings("form")[0]
     $.ajax
       type: 'PUT'
       url: form.action
-      data: {reminder : { 'delivered' : $(this).is(':checked') }}
+      data: Reminder.get_params_for_update_delivered element.is(':checked')
       dataType: 'json'
       complete: ->
         element.attr("disabled", false)
@@ -48,7 +54,7 @@ $(document).ready ->
 
   validateCc =   ->
     regex = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-    value = $('#reminder_cc').val().trim()
+    value = $('#reminder_mail_cc').val().trim()
     emails = value.split(/[,;]\s*/)
     valid = true
     for i of emails

@@ -1,8 +1,0 @@
-- @groups.each_pair do |key, values|
-  - if values.count > 0
-    = key.to_s.titleize
-    %table{class: 'modern'}
-      %tr
-      - values.each do |r|
-        = render r
-

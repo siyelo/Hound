@@ -3,7 +3,8 @@
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
   %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
-    - unless @reminder.user.active?
+    -# this is a smell - TODO refactor into separate views
+    - unless @user_active
       = render 'invite'
     - else
       = render 'confirmation'

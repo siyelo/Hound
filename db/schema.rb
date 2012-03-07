@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120306095543) do
+ActiveRecord::Schema.define(:version => 20120309124003) do
 
   create_table "email_aliases", :force => true do |t|
     t.string   "email"
@@ -20,32 +20,39 @@ ActiveRecord::Schema.define(:version => 20120306095543) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "message_threads", :force => true do |t|
+  add_index "email_aliases", ["email"], :name => "index_email_aliases_on_email"
+  add_index "email_aliases", ["user_id"], :name => "index_email_aliases_on_user_id"
+
+  create_table "fetched_mails", :force => true do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "cc"
+    t.string   "bcc"
+    t.string   "subject"
+    t.string   "body"
+    t.integer  "user_id"
     t.string   "message_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.integer  "depth"
-    t.integer  "parent_id"
+    t.string   "in_reply_to"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
+
+  add_index "fetched_mails", ["message_id"], :name => "index_fetched_mails_on_message_id", :unique => true
+  add_index "fetched_mails", ["user_id"], :name => "index_fetched_mails_on_user_id"
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
-    t.string   "subject"
-    t.text     "body"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.boolean  "is_bcc",          :default => false
+    t.integer  "fetched_mail_id"
     t.datetime "send_at"
-    t.integer  "user_id"
-    t.boolean  "delivered",         :default => false, :null => false
+    t.boolean  "delivered",       :default => false, :null => false
     t.string   "snooze_token"
-    t.integer  "snooze_count",      :default => 0
-    t.string   "cc"
-    t.string   "message_id"
-    t.integer  "message_thread_id"
-    t.string   "sent_to"
+    t.integer  "snooze_count",    :default => 0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
+
+  add_index "reminders", ["fetched_mail_id"], :name => "index_reminders_on_fetched_mail_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -58,6 +65,9 @@ ActiveRecord::Schema.define(:version => 20120306095543) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "timezone"
+    t.string   "modify_token"
+    t.boolean  "confirmation_email",                    :default => true
     t.datetime "created_at",                                              :null => false
     t.datetime "updated_at",                                              :null => false
     t.string   "invitation_token",       :limit => 60
@@ -66,9 +76,6 @@ ActiveRecord::Schema.define(:version => 20120306095543) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "timezone"
-    t.boolean  "confirmation_email",                    :default => true
-    t.string   "modify_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

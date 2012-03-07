@@ -1,6 +1,6 @@
-<% if @reminder.errors.empty? %>
+<% if @reminder_mail.errors.empty? %>
   $('.inline_reminder').hide();
-  $("#reminder<%= @reminder.id%>_row").replaceWith("<%=j render @reminder %>")
+  $("#reminder<%= @reminder_mail.reminder.id%>_row").replaceWith("<%=j render @reminder_mail.reminder %>")
   $('.status').show().html('saved');
   $('.status').fadeOut(2000).delay(1000);
 <% else %>

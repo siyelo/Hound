@@ -1,43 +1,33 @@
 class Reminder < ActiveRecord::Base
-  include ReminderScopes
+  include ScopesReminders
 
   ### Associations
-  belongs_to :user
   belongs_to :message_thread
-
-  # Validations
-  validates_presence_of :email, :subject, :send_at, :user, :message_thread
+  belongs_to :fetched_mail
 
   ### Attributes
-  attr_accessible :email, :subject, :send_at, :body, :sent_to, :cc, :user,
-    :message_id, :delivered, :message_thread
+  attr_accessible :fetched_mail, :sent_to, :send_at, :delivered, :is_bcc
 
-  # Callbacks
+  ### Validations
+  validates :send_at, presence: true
+  validates :fetched_mail, presence: true
+
+  ### Callbacks
   before_create :generate_snooze_token
-  after_create :queue_confirmation_email
-  after_update :queue_change_notification
 
-  ### Instance methods
+  ### Delegate methods
+  delegate :subject, :subject=, to: :fetched_mail
+  delegate :cc, :cc=, to: :fetched_mail
+  delegate :body, :body=, to: :fetched_mail
+  delegate :user, :user=, to: :fetched_mail
 
-  def cc
-    [*YAML::load(read_attribute(:cc))]
-  end
-
-  def cc=(cc)
-    write_attribute(:cc, EmailList.new(cc).to_yaml)
-  end
-
-  def body
-    Base64::decode64(read_attribute(:body))
-  end
-
-  def body=(value)
-    write_attribute(:body, Base64::encode64(value))
+  def email #TODO PLS RENAME K THX
+    fetched_mail.from.first
   end
 
   def snooze_for(duration, token)
     if duration && snooze_token == token
-      self.send_at = EmailParser::Dispatcher.parse_email(duration)
+      self.send_at = EmailParser.parse(duration)
       self.snooze_count += 1
       self.delivered = false
       self.save!
@@ -45,20 +35,13 @@ class Reminder < ActiveRecord::Base
   end
 
   private
-
-  def queue_confirmation_email
-    Queuer.queue_confirmation_email(self)
-  end
-
-  def queue_change_notification
-    Queuer.queue_change_notification(self)
-  end
-
-  def generate_snooze_token
-    self.snooze_token = Token.new(8)
-  end
-
+    def generate_snooze_token
+      self.snooze_token = Token.new(8)
+    end
 end
+
+#TODO remove fields!
+#
 # == Schema Information
 #
 # Table name: reminders

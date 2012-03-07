@@ -4,7 +4,8 @@ feature 'Reminders' do
   context 'complete reminders' do
     background do
       @user = Factory :user
-      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      @reminder = Factory :reminder, user: @user,  send_at: DateTime.now + 1.month,
+        fetched_mail: Factory(:fetched_mail, user: @user, subject: 'reminder1')
       log_in_with(@user)
     end
 
@@ -32,13 +33,14 @@ feature 'Reminders' do
   context 'edit reminders' do
     background do
       @user = Factory :user
-      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      @reminder = Factory :reminder, user: @user,  send_at: DateTime.now + 1.month,
+        fetched_mail: Factory(:fetched_mail, user: @user, subject: 'reminder1')
       log_in_with(@user)
       click_link 'reminder1'
     end
 
     scenario 'user can edit the reminder subject' do
-      fill_in 'reminder_subject', with: 'new subject'
+      fill_in 'reminder_mail_subject', with: 'new subject'
       click_button 'submit'
       @reminder.reload
       @reminder.subject.should == 'new subject'
@@ -53,7 +55,7 @@ feature 'Reminders' do
     end
 
     scenario 'user can edit the reminder body' do
-      fill_in 'reminder_body', with: 'new body'
+      fill_in 'reminder_mail_body', with: 'new body'
       click_button 'submit'
       @reminder.reload
       @reminder.body.should == 'new body'
@@ -63,32 +65,33 @@ feature 'Reminders' do
   context 'edit cc email addresses' do
     background do
       @user = Factory :user
-      @reminder = Factory :reminder, user: @user, subject: 'reminder1'
+      @reminder = Factory :reminder, user: @user,  send_at: DateTime.now + 1.month,
+        fetched_mail: Factory(:fetched_mail, user: @user, subject: 'reminder1')
       log_in_with(@user)
     end
 
     scenario 'user can add multiple comma or semi-colon seperated email addresses', js: true do
       click_link 'reminder1'
-      fill_in 'reminder_cc', with: 'test@test1.com'
+      fill_in 'reminder_mail_cc', with: 'test@test1.com'
       click_button 'submit'
       click_link 'reminder1'
-      find_field('reminder_cc').value.should == 'test@test1.com'
+      find_field('reminder_mail_cc').value.should == 'test@test1.com'
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc', with: 'test@test1.com; test@test2.com, test@test3.com'
+      fill_in 'reminder_mail_cc', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
       page.should_not have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc', with: 'test'
+      fill_in 'reminder_mail_cc', with: 'test'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_cc', with: 'test@test1.com; test@sdva, test3.com'
+      fill_in 'reminder_mail_cc', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
     end
@@ -97,15 +100,15 @@ feature 'Reminders' do
   context 'filter reminders' do
     background do
       @user = Factory :user
-      reminder1 = Factory :reminder, user: @user, send_at: Time.now + 1.day
-      reminder2 = Factory :reminder, user: @user, subject: 'reminder for today'
-      reminder3 = Factory :reminder, user: @user, delivered: true, subject: 'delivered reminder'
+      reminder1 = Factory :reminder, send_at: DateTime.now + 1.day,
+        fetched_mail: Factory(:fetched_mail, user: @user, subject: 'reminder1')
+      reminder2 = Factory :reminder, delivered: true, send_at: DateTime.now - 1.day,
+        fetched_mail: Factory(:fetched_mail, user: @user, subject: 'delivered reminder')
       log_in_with(@user)
     end
 
     scenario 'user can filter reminders' do
-      page.should have_content('You have 2 upcoming reminders')
-
+      page.should have_content('You have 1 upcoming reminder')
       click_link 'Completed'
       page.should have_content('You have 1 completed reminder')
       page.should have_content('delivered reminder')
