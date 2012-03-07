@@ -17,15 +17,8 @@ class User < ActiveRecord::Base
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
-  def self.find_or_invite(email)
-    from = email.from.first.to_s
-    time_zone = ActiveSupport::TimeZone[email.date.zone.to_i].name
-    user = User.find_by_email_or_alias(from) ||
-      User.invite!(email: from, timezone: time_zone) {|u| u.skip_invitation = true}
-  end
-
   def self.find_by_email_or_alias(email)
-    where("users.email = ? OR 
+    where("users.email = ? OR
            users.id = (SELECT em.user_id
                        FROM email_aliases em
                        WHERE em.email = ?)", email, email).
