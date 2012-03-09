@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do #FindsOrInvitesUsers
   before :each do
-    @mail = Mail.new from: '1@1.com', date: Time.zone.now
+    @mail = Mail.new from: '1@1.com', date: Time.now.utc
   end
   it "should find a user by alias" do
     User.should_receive(:find_by_email_or_alias).with('1@1.com')
