@@ -79,9 +79,4 @@ describe User do
     end
   end
 
-  it 'should find a user by alias email' do
-    alias_email = Factory :email_alias, email: '1@1.com'
-    found = User.find_by_email_or_alias('1@1.com')
-    found.should == alias_email.user
-  end
 end

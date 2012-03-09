@@ -30,5 +30,9 @@ class Queuer
     def queue_confirmation_email(reminder)
       Resque.enqueue(SendConfirmationWorker, reminder.id) if reminder.user.confirmation_email?
     end
+
+    def queue_error_notification(email)
+      Resque.enqueue(ErrorNotificationWorker, email)
+    end
   end
 end

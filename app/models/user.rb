@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include FindsOrInvitesUsers
+
   devise :invitable, :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
@@ -17,19 +19,19 @@ class User < ActiveRecord::Base
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
-  def self.find_by_email_or_alias(email)
-    where("users.email = ? OR
-           users.id = (SELECT em.user_id
-                       FROM email_aliases em
-                       WHERE em.email = ?)", email, email).
-    readonly(false).first
-  end
+    def self.find_by_email_or_alias(email)
+      where("users.email = ? OR
+             users.id = (SELECT em.user_id
+                         FROM email_aliases em
+                         WHERE em.email = ?)", email, email).
+      readonly(false).first
+    end
 
-  #overwrite Devise finder - allow user to login with
-  #primary or alias email address
-  def self.find_for_database_authentication(conditions={})
-    self.find_by_email_or_alias(conditions[:email])
-  end
+    #overwrite Devise finder - allow user to login with
+    #primary or alias email address
+    def self.find_for_database_authentication(conditions={})
+      find_by_email_or_alias(conditions[:email])
+    end
 
   ### Instance methods
   def active?
