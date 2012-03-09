@@ -6,11 +6,8 @@ describe Reminder do
   end
 
   describe "validations" do
-    it { should validate_presence_of :email }
-    it { should validate_presence_of :subject }
     it { should validate_presence_of :send_at }
     it { should validate_presence_of :user }
-    it { should validate_presence_of :message_thread }
   end
 
   describe "overwritten accessors" do

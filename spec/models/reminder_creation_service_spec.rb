@@ -2,25 +2,27 @@ require 'spec_helper'
 
 describe ReminderCreationService do
   before :each do
-    @mail = stub :Mail, from: 'a@a.com', date: Time.zone.now
-    User.stub(:find_or_invite).and_return(Factory.build :user)
-    debugger
-    @fetched_mail = Factory.build :fetched_mail
-    FetchedMail.stub(:new).and_return(@fetched_mail)
+    @now = Time.now.utc
+    @mail = Mail.new from: 'a@a.com', date: @now
     @service = ReminderCreationService.new()
   end
 
-  it "finds or creates a user" do
-    User.should_receive(:find_or_invite).with(@mail) #TODO deprecate
-    @service.create @mail
+  it "finds or.creates a user" do
+    User.should_receive(:find_or_invite!).with(@mail) #TODO deprecate
+    @service.create! @mail
   end
 
-  it "should build a FetchedMail" do
+  it "saves a reminder for each Hound Address in the to/cc/bcc" do
+    @mail.stub(:to).and_return '1h@hound.cc'
+    Reminder.should_receive(:new).with(send_at: @now + 1.hour)
+    Reminder.should_receive(:save!)
+    @service.create! @mail
+  end
+
+  it "should save the Mail" do
     FetchedMail.should_receive(:new).with(@mail)
-    @service.create @mail
+    FetchedMail.should_receive(:save!)
+    @service.create! @mail
   end
-
-
-  #t should save the FetchedMail if >= 1 hound address
 
 end

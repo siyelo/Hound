@@ -6,7 +6,7 @@ class Reminder < ActiveRecord::Base
   belongs_to :message_thread
 
   # Validations
-  validates_presence_of :email, :subject, :send_at, :user, :message_thread
+  validates_presence_of :send_at, :user
 
   ### Attributes
   attr_accessible :email, :subject, :send_at, :body, :sent_to, :cc, :user,
