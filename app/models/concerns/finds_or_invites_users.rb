@@ -21,7 +21,6 @@ module FindsOrInvitesUsers
     def invite_without_invitation!(email)
       params = {email: from_address(email), timezone: email_time_zone(email)}
       params_valid_for_user!(params)
-      debugger
       User.invite!(params){ |u| u.skip_invitation = true }
     end
 
