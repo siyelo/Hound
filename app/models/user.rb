@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include FindsOrInvitesUsers
 
-  devise :invitable, validate_on_invite: true #TODO move to invitable concern
+  devise :invitable #TODO move to invitable concern
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 

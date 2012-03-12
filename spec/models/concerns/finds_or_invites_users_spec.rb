@@ -10,16 +10,6 @@ describe User do #FindsOrInvitesUsers
     User.find_or_invite!(@mail)
   end
 
-  it "should create a user if no account found" do
-    user = mock :user
-    user.stub(:valid?).and_return true
-    user.stub(:errors).and_return []
-    user.stub(:invite!).and_return true
-    User.stub(:new).and_return user
-    User.should_receive(:new)
-    user.should_receive(:invite!)
-    User.find_or_invite!(@mail)
-  end
 
   it "should not create a user the account was found" do
     user = Factory.build :user
@@ -55,5 +45,13 @@ describe User do #FindsOrInvitesUsers
     user.timezone.should == 'Casablanca'
   end
 
-
+  it "should create a user if no account found" do
+    user = Factory.build :user
+    user.stub(:valid?).and_return true
+    user.stub(:invite!).and_return true
+    User.stub(:new).and_return user
+    User.should_receive(:new)
+    user.should_receive(:invite!)
+    User.find_or_invite!(@mail)
+  end
 end

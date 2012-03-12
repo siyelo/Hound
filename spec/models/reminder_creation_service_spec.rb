@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ReminderCreationService do
   before :each do
     @now = Time.now.utc
-    @mail = Mail.new from: 'a@a.com', date: @now
+    @mail = Mail.new from: 'a@a.com', to: '1h@hound.cc', date: @now
     @service = ReminderCreationService.new()
   end
   

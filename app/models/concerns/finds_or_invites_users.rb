@@ -19,16 +19,19 @@ module FindsOrInvitesUsers
     end
 
     def invite_without_invitation!(email)
+      params = {email: from_address(email), timezone: email_time_zone(email)}
+      params_valid_for_user!(params)
       debugger
-      user = User.new(email: from_address(email), timezone: email_time_zone(email))
-      user.valid?
-      user.errors.delete(:password)
-      if user.errors.empty?
-        user.invite!{ |u| u.skip_invitation = true }
-      else
-        raise(ActiveRecord::RecordInvalid.new(user))
+      User.invite!(params){ |u| u.skip_invitation = true }
+    end
+
+    def params_valid_for_user!(params)
+      test_user = User.new(params)
+      test_user.valid?
+      test_user.errors.delete(:password)
+      unless test_user.errors.empty?
+        raise(ActiveRecord::RecordInvalid.new(test_user)) 
       end
-      user
     end
   end
 end

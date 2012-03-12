@@ -10,6 +10,7 @@ class ReminderCreationService
   def save_fetched_mail(mail, user)
     fetched_mail = FetchedMail.new(user: user)
     fetched_mail.from_mail(mail)
+    debugger
     fetched_mail.save!
   end
 end
