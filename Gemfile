@@ -2,8 +2,8 @@ source 'http://rubygems.org'
 
 gem 'awesome_nested_set'
 gem 'chronic'
-gem 'devise', '~> 1.5.3'
-gem "devise_invitable", git: 'https://github.com/scambra/devise_invitable.git'
+gem 'devise'
+gem "devise_invitable"
 gem 'diffy'
 gem 'foreman'
 gem 'gitploy'
