@@ -1,7 +1,7 @@
 class FetchedMail < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :to, :from, :subject, :body, :cc, :bcc
+  attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user
   serialize :to, Array
   serialize :cc, Array
   serialize :bcc, Array
@@ -9,7 +9,6 @@ class FetchedMail < ActiveRecord::Base
   # Validations
   validates :from, presence: true
   validates :to, presence: true
-  validates :body, presence: true
   validates :user, presence: true
 
   def from_mail(mail = Mail.new)

@@ -3,8 +3,13 @@ require 'spec_helper'
 describe FetchedMail do
    it { should validate_presence_of :from}
    it { should validate_presence_of :to}
-   it { should validate_presence_of :body}
    it { should validate_presence_of :user }
+
+   #optional email fields
+   it { should_not validate_presence_of :body}
+   it { should_not validate_presence_of :cc}
+   it { should_not validate_presence_of :bcc}
+   it { should_not validate_presence_of :subject}
 
   context "some bunch of tests needing a mail object" do
     before :each do
