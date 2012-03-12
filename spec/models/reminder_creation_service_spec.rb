@@ -8,8 +8,8 @@ describe ReminderCreationService do
   end
   
   it "finds or.creates a user", type: 'integration' do
-    User.should_receive(:find_or_invite!).with(@mail) #TODO deprecate
     @service.create! @mail
+    User.first.email.should == 'a@a.com'
   end
   
   it "saves a reminder for each Hound Address in the to/cc/bcc", type: 'integration' do
