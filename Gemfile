@@ -9,9 +9,9 @@ gem 'resque-scheduler', require: "resque/server"
 gem 'mail'
 gem 'chronic'
 gem 'jquery-rails'
-gem 'devise', '~> 1.5.3'
+gem "devise", "~> 2.0.4"
 gem 'haml', '~> 3.1.4'
-gem "devise_invitable", git: 'https://github.com/scambra/devise_invitable.git'
+gem "devise_invitable", "~> 1.0.0"
 gem 'unicorn'
 gem 'foreman'
 gem 'gitploy'
