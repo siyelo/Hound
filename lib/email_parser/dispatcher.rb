@@ -10,9 +10,9 @@ module EmailParser
         to_us.each do |to|
           send_at = self.parse_email(to, e)
           r = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
-                               body: self.extract_html_or_text(e),
+                               body: EmailBodyParser.extract_html_or_text_from_body(e),
                                send_at: send_at,
-                               user: User.find_or_invite(e),
+                               user: User.find_or_invite!(e),
                                sent_to: to, cc: self.extract_reminder_cc(e, to, to_us),
                                message_thread: message) if send_at
         end
