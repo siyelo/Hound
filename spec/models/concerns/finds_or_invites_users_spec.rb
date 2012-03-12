@@ -11,9 +11,7 @@ describe User do #FindsOrInvitesUsers
   end
 
   it "should create a user if no account found" do
-    user = double('user')
-    user.should_receive(:new).with(email: '1@1.com', timezone: 'Casablanca')
-    user.should_receive(:invite!)
+    User.should_receive(:new).with(email: '1@1.com', timezone: 'Casablanca')
     User.find_or_invite!(@mail)
   end
 

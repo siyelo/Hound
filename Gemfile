@@ -1,23 +1,22 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.0'
-gem 'pg'
-gem 'sqlite3' #TODO REMOVE! USE PG OR SOME SHIT!
-gem 'therubyracer'
-gem 'resque', '>= 1.20.0'
-gem 'resque-scheduler', require: "resque/server"
-gem 'mail'
+gem 'awesome_nested_set'
 gem 'chronic'
-gem 'jquery-rails'
-gem "devise", "~> 2.0.4"
-gem 'haml', '~> 3.1.4'
-gem "devise_invitable", "~> 1.0.0"
-gem 'unicorn'
+gem 'devise', '~> 1.5.3'
+gem "devise_invitable", git: 'https://github.com/scambra/devise_invitable.git'
+gem 'diffy'
 gem 'foreman'
 gem 'gitploy'
-gem 'awesome_nested_set'
-gem 'diffy'
+gem 'haml', '~> 3.1.4'
+gem 'jquery-rails'
+gem 'mail'
+gem 'pg'
+gem 'rails', '3.2.0'
+gem 'resque', '>= 1.20.0'
+gem 'resque-scheduler', require: "resque/server"
+gem 'therubyracer'
 gem 'tinymce-rails'
+gem 'unicorn'
 # Gems used only for assets and not required
 # in production environments by default.
 
