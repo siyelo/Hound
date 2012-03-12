@@ -11,7 +11,13 @@ describe User do #FindsOrInvitesUsers
   end
 
   it "should create a user if no account found" do
-    User.should_receive(:new).with(email: '1@1.com', timezone: 'Casablanca')
+    user = mock :user
+    user.stub(:valid?).and_return true
+    user.stub(:errors).and_return []
+    user.stub(:invite!).and_return true
+    User.stub(:new).and_return user
+    User.should_receive(:new)
+    user.should_receive(:invite!)
     User.find_or_invite!(@mail)
   end
 
