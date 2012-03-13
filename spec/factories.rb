@@ -26,12 +26,13 @@ Factory.define :email_alias do |f|
 end
 
 Factory.define :fetched_mail do |f|
+  f.user { Factory(:user) }
   f.to ["1d@hound.cc"]
   f.from "somedude@sorad.com"
   f.subject "Reminder subject"
   f.body "<h1> HTML body </h1>"
   f.cc ["another@sorad.com"]
   f.bcc []
-  f.in_reply_to ['1234']
+  f.message_id '1234'
 end
 

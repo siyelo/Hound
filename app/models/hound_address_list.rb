@@ -1,7 +1,15 @@
 class HoundAddressList < Array
+  def initialize(mail) 
+    super hound_addresses(mail || Mail.new)
+  end
 
-  def initialize(mail)
-   super hound_addresses(mail)
+  def ignore_existing_hound_addresses_in_reply!(fetched_mail)
+    if fetched_mail.parent
+      parent_hounds = HoundAddressList.new(fetched_mail.parent)
+      self - parent_hounds
+    else
+      self
+    end
   end
 
   private

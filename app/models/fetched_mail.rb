@@ -1,7 +1,8 @@
 class FetchedMail < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user
+  attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user, :message_id,
+    :in_reply_to
   serialize :to, Array
   serialize :cc, Array
   serialize :bcc, Array
@@ -10,27 +11,37 @@ class FetchedMail < ActiveRecord::Base
   validates :from, presence: true
   validates :to, presence: true
   validates :user, presence: true
+  validates :message_id, uniqueness: true
 
-  def from_mail(mail = Mail.new)
-    self.to = mail.to
-    self.from = mail.from.first.to_s if mail.from
-    self.subject = mail.subject
-    self.body = EmailBodyParser.extract_html_or_text_from_body(mail)
-    self.cc = mail.cc || []
-    self.bcc = mail.bcc || []
+  def self.create_from_mail!(mail = Mail.new, user)
+    fetched_mail = FetchedMail.new(user: user)
+    fetched_mail.from_mail(mail)
+    fetched_mail.save!
+    fetched_mail
   end
 
-  #def to_hound
-    #all_addresses.select{ |t| t.include?('@hound.cc') }
-  #end
+  def from_mail(mail = Mail.new)
+    self.subject = mail.subject
+    self.body = EmailBodyParser.extract_html_or_text_from_body(mail)
+    self.from = mail.from.first.to_s if mail.from
+    
+    [:to, :cc, :bcc].each do |m|
+      self.send("#{m}=", mail.send(m) || [])
+    end
 
-  #def not_to_hound
-    #all_addresses.select{ |t| !t.include?('@hound.cc') }
-  #end
+    [:subject, :message_id, :in_reply_to].each do |m|
+      self.send("#{m}=", mail.send(m))
+    end
+    self
+  end
 
-  #def all_addresses
-    #to + cc + bcc + [from]
-  #end
+  # this could be persisted with awesome_nested_set
+  # however we found this issue
+  # https://github.com/collectiveidea/awesome_nested_set/issues/121
+  # so we use a lookup instead, if a reply_to id is present
+  def parent
+    in_reply_to? ? self.class.where(message_id: in_reply_to).first : nil 
+  end
 end
 # == Schema Information
 #

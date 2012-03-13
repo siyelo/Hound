@@ -1,35 +1,29 @@
 class ReminderCreationService
   def create!(mail)
     user = User.find_or_invite!(mail)
-    save_fetched_mail(mail, user)
-    create_reminders(mail, user)
-  end
-
-  def parse_or_notify(to, email = nil)
-    begin
-      DateTime.parse_email(to)
-    rescue ArgumentError
-      Resque.enqueue(ErrorNotificationWorker, email) if email
-      nil
-    end
+    fetched_mail = FetchedMail.create_from_mail!(mail, user) 
+    create_reminders!(fetched_mail)
   end
 
   private
 
-  def save_fetched_mail(mail, user)
-    fetched_mail = FetchedMail.new(user: user)
-    fetched_mail.from_mail(mail)
-    fetched_mail.save!
+  # create on reminder per hound address
+  # unless its a reply, and the parent has the same hound address
+  def create_reminders!(fetched_mail)
+    FilteredAddressList.new(fetched_mail).each do |hound_address| 
+      create_or_notify!(hound_address, fetched_mail)
+    end
   end
-
-  def create_reminders(mail, user)
-    hounds = HoundAddressList.new(mail)
-    hounds.each do |h| 
-      send_at = parse_or_notify(h, mail)
-      #TODO smelly - fix once dispatcher is dead
-      if send_at
-        reminder = Reminder.create!(send_at: send_at, user: user)
-      end
+ 
+  # Parses an email and creates a Reminder
+  # Also catches email parsing errors and sends a notification
+  # throws all other exceptions
+  def create_or_notify!(to, fetched_mail)
+    begin
+      send_at = DateTime.parse_email(to)
+      Reminder.create!(send_at: send_at, user: fetched_mail.user)          
+    rescue ArgumentError
+      Resque.enqueue(ErrorNotificationWorker, fetched_mail)
     end
   end
 

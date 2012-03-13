@@ -8,7 +8,11 @@ class CreateFetchedMail < ActiveRecord::Migration
       t.string :subject
       t.string :body
       t.integer :user_id
+      t.string :message_id
+      t.string :in_reply_to
       t.timestamps
     end
+
+    add_index :fetched_mails, :message_id, :unique => true
   end
 end

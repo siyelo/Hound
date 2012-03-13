@@ -28,9 +28,13 @@ ActiveRecord::Schema.define(:version => 20120309124003) do
     t.string   "subject"
     t.string   "body"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "message_id"
+    t.string   "in_reply_to"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
+
+  add_index "fetched_mails", ["message_id"], :name => "index_fetched_mails_on_message_id", :unique => true
 
   create_table "message_threads", :force => true do |t|
     t.string   "message_id"

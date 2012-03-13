@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe HoundAddressList do
+  it "should accept nil" do
+    HoundAddressList.new(nil).should == []
+  end
 
   context "one hound (to) address" do
     before :each do
@@ -31,4 +34,5 @@ describe HoundAddressList do
     @mail = Mail.new bcc: '1d@hound.cc, 2d@hound.cc, g@g.com'
     HoundAddressList.new(@mail).should == ['1d@hound.cc', '2d@hound.cc']
   end
+
 end

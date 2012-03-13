@@ -17,7 +17,7 @@ describe ReminderCreationService do
     user = Factory :user
     User.stub(:find_or_invite!).and_return user
     @service.create! @mail
-    Reminder.last.send_at.to_i.should == 1.hour.from_now.to_i#.change(hour: 8)
+    Reminder.last.send_at.to_i.should == 1.hour.from_now.to_i
   end
   
   describe "multiple hound addresses" do 
@@ -34,8 +34,8 @@ describe ReminderCreationService do
 
     it "creates one reminder per Hound Address (multiple)", type: 'integration' do
       @service.create! @mail
-      Reminder.first.send_at.to_i.should == 1.hour.from_now.to_i#.change(hour: 8)
-      Reminder.last.send_at.to_i.should == 2.hour.from_now.to_i#.change(hour: 8)
+      Reminder.first.send_at.to_i.should == 1.hour.from_now.to_i
+      Reminder.last.send_at.to_i.should == 2.hour.from_now.to_i
     end
 
     it "accepts hound as cc" do
@@ -77,5 +77,35 @@ describe ReminderCreationService do
       ErrorNotificationWorker.should have_queue_size_of(1)
     end
 
+  describe 'replies' do
+    before :each do
+      @service = ReminderCreationService.new
+      @root = Mail.new(from: 'sachin@siyelo.com',
+                       cc: ['cc@mail.com'],
+                       to: ['2days@hound.cc'],
+                       message_id: '1234')
 
+      @child = Mail.new(from: 'cc@mail.com',
+                        cc: ['sachin@siyelo.com'],
+                        to: ['2days@hound.cc'],
+                        in_reply_to: '1234',
+                        message_id: '5678')
+    end
+
+    it 'should not create a new reminder if hound recipients havent changed' do
+      @service.create! @root
+      @service.create! @child
+      Reminder.count.should == 1
+    end
+
+    it 'should create a new reminder if hound recipients on a reply are different' do
+      @service.create! @root
+      @child.cc << '1h@hound.cc'
+      @service.create! @child
+      Reminder.count.should == 2
+    end
+
+        #root.to = ['5min@hound.cc', '10min@hound.cc']
+        #@child.to = ['5min@hound.cc', '8days@hound.cc']
+  end
 end

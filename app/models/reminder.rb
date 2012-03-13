@@ -60,6 +60,9 @@ class Reminder < ActiveRecord::Base
   end
 
 end
+
+#TODO remove fields!
+#
 # == Schema Information
 #
 # Table name: reminders

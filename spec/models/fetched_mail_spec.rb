@@ -1,17 +1,38 @@
 require 'spec_helper'
 
 describe FetchedMail do
-   it { should validate_presence_of :from}
-   it { should validate_presence_of :to}
-   it { should validate_presence_of :user }
+  it { should belong_to :user }
 
-   #optional email fields
-   it { should_not validate_presence_of :body}
-   it { should_not validate_presence_of :cc}
-   it { should_not validate_presence_of :bcc}
-   it { should_not validate_presence_of :subject}
+  it { should validate_presence_of :from}
+  it { should validate_presence_of :to}
+  it { should validate_presence_of :user }
 
-  context "some bunch of tests needing a mail object" do
+  #optional email fields
+  it { should_not validate_presence_of :body}
+  it { should_not validate_presence_of :cc}
+  it { should_not validate_presence_of :bcc}
+  it { should_not validate_presence_of :subject}
+
+  it "should validate unique messsage ids" do
+    Factory :fetched_mail
+    FetchedMail.new.should validate_uniqueness_of( :message_id )
+  end
+
+  describe "#create_from_mail!" do
+    before :each do
+      @user = Factory :user
+    end
+
+    it "should create from a Mail object" do
+      @message = Mail.new do
+        to '1d@hound.cc'
+        from 'sachin@siyelo.com'
+      end
+      FetchedMail.create_from_mail!(@message, @user).id.should_not be_nil
+    end
+  end
+
+  describe "fields" do
     before :each do
       @message = Mail.new do
         to '1d@hound.cc'
@@ -21,6 +42,8 @@ describe FetchedMail do
         text_part do
           body 'This is plain text'
         end
+        message_id '12345'
+        in_reply_to '1111'
       end
       @email = FetchedMail.new
       @email.from_mail(@message)
@@ -30,15 +53,14 @@ describe FetchedMail do
       @email.to.should == ['1d@hound.cc']
       @email.from.should == 'sachin@siyelo.com'
       @email.subject.should == 'email subject'
+      @email.message_id.should == '12345'
+      @email.in_reply_to.should == '1111'
     end
 
     it "should save multiple to/cc/bcc addresses" do
       @message.to << 'frank@furter.com'
-      email = FetchedMail.new
-      email.from_mail(@message)
-      email.to.should == ['1d@hound.cc', 'frank@furter.com']
-      email.user = Factory :user
-      email.save!
+      fm = FetchedMail.create_from_mail!(@message, Factory(:user))
+      fm.to.should == ['1d@hound.cc', 'frank@furter.com']
       FetchedMail.first.to.should == ['1d@hound.cc', 'frank@furter.com']
     end
 
@@ -97,57 +119,29 @@ describe FetchedMail do
     it "should extract the text part of the message as the body if there is not HTML" do
       @email.body.should == "This is plain text"
     end
+  end
 
-    it "should return all the @hound email addresses" do
-      pending
-      @email.cc = 'tomorrow@hound.cc'
+
+  describe "#parent" do
+    before :each do
+      @parent = Factory :fetched_mail, message_id: '123'
     end
 
-    it "should return all the non-@hound email addresses" do
-      pending
-      @email.cc = 'maybe@tomorrow.cc'
-      @email.not_to_hound.should == ['maybe@tomorrow.cc', 'sachin@siyelo.com']
+    it "should find no parent" do
+      @parent.parent.should == nil
     end
 
-    it "should add the message to an existing message thread" do
-      pending  #MOVE THIS OUT
-      mt = MessageThread.new message_id: '1'
-      MessageThread.stub(:find_by_message_id).with('1').and_return(mt)
-      @message.in_reply_to = '1'
-      email = FetchedMail.new(@message)
-      @email.message_thread.parent.should == mt
+    it "should not match nil parents for nil reply ids" do
+      @parent.message_id = nil
+      @parent.save!
+      @parent.parent.should == nil
     end
 
-    it "should create a new message thread if existing thread is not found" do
-      pending #MOVE OUT
-      MessageThread.stub(:find_by_message_id).with('1').and_return(nil.as_null_object)
-      @message.in_reply_to = '1'
-      email = FetchedMail.new(@message)
-      @email.message_thread.parent.should be_nil
+    it "should find its parent by message_id" do
+      @mail = Mail.new in_reply_to: '123'
+      @child = FetchedMail.new
+      @child.from_mail(@mail)
+      @child.parent.should == @parent
     end
-
-    it "should not create a new email if email is reply to thread
-      and hound addresses haven't changed" do
-      pending
-      MessageThread.stub(:find_by_message_id).with('1').and_return(nil.as_null_object)
-
-      @message.message_id = '1'
-      parent_email = FetchedMail.new(@message)
-
-      @message.in_reply_to = '1'
-      @message.message_id = '2'
-      @email = FetchedMail.new(@message)
-
-      @email.create_new_email?.should be_nil
-    end
-
-    it "should find an existing user from the message's from address" do
-      pending
-    end
-
-    it "should build a new user from the message from address and timezone" do
-      pending
-    end
-
   end
 end
