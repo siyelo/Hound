@@ -1,9 +1,9 @@
 class ReminderCreationService
   def create!(mail)
-    debugger
     user = User.find_or_invite!(mail)
     save_fetched_mail(mail, user)
-    reminder = Reminder.new(send_at: 1.hour.from_now).save!
+    reminder = Reminder.new(send_at: Time.now.utc + 1.hour, user: user)
+    reminder.save!
   end
 
   private

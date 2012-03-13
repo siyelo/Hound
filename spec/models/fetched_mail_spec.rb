@@ -16,7 +16,7 @@ describe FetchedMail do
       @message = Mail.new do
         to '1d@hound.cc'
         from 'sachin@siyelo.com'
-        subject 'Reminder subject'
+        subject 'email subject'
         date Time.zone.now
         text_part do
           body 'This is plain text'
@@ -29,7 +29,7 @@ describe FetchedMail do
     it "should create an email from a Mail::Message object" do
       @email.to.should == ['1d@hound.cc']
       @email.from.should == 'sachin@siyelo.com'
-      @email.subject.should == 'Reminder subject'
+      @email.subject.should == 'email subject'
     end
 
     it "should save multiple to/cc/bcc addresses" do
@@ -52,12 +52,46 @@ describe FetchedMail do
       email.body.should == "<h1>This is HTML</h1>"
     end
 
-    it "should return the cc's or an empty array" do
-      @email.cc.should == []
-    end
+    describe "email fields as strings or arrays" do
+      it "should return the cc's or an empty array" do
+        @email.cc.should == []
+      end
 
-    it "should return the bcc's or an empty array" do
-      @email.bcc.should == []
+      it "should return the bcc's or an empty array" do
+        @email.bcc.should == []
+      end
+
+      it "should accept an array of cc's and return an array" do
+        @email.cc = ['cc@example.com']
+        @email.user = Factory :user
+        @email.save!
+        @email.reload
+        @email.cc.should == ['cc@example.com']
+      end
+
+      it "should not accept a cc as a string" do
+        @email.cc = 'cc@example.com'
+        @email.user = Factory :user
+        lambda do
+          @email.save!
+        end.should raise_exception ActiveRecord::SerializationTypeMismatch
+      end
+
+      it "should return an empty array if cc is nil" do
+        @email.cc = nil
+        @email.user = Factory :user
+        @email.save!
+        @email.reload
+        @email.cc.should == []
+      end
+
+      it "should not allow multiple cc's to be created with a string" do
+        @email.cc = 'cc@abc.com, cc1@abc.com'
+        @email.user = Factory :user
+        lambda do
+          @email.save!
+        end.should raise_exception ActiveRecord::SerializationTypeMismatch
+      end
     end
 
     it "should extract the text part of the message as the body if there is not HTML" do
@@ -67,7 +101,6 @@ describe FetchedMail do
     it "should return all the @hound email addresses" do
       pending
       @email.cc = 'tomorrow@hound.cc'
-      @email.to_hound.should == ['1d@hound.cc', 'tomorrow@hound.cc']
     end
 
     it "should return all the non-@hound email addresses" do
@@ -93,7 +126,7 @@ describe FetchedMail do
       @email.message_thread.parent.should be_nil
     end
 
-    it "should not create a new reminder if email is reply to thread
+    it "should not create a new email if email is reply to thread
       and hound addresses haven't changed" do
       pending
       MessageThread.stub(:find_by_message_id).with('1').and_return(nil.as_null_object)
@@ -105,7 +138,7 @@ describe FetchedMail do
       @message.message_id = '2'
       @email = FetchedMail.new(@message)
 
-      @email.create_new_reminder?.should be_nil
+      @email.create_new_email?.should be_nil
     end
 
     it "should find an existing user from the message's from address" do

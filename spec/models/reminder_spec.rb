@@ -10,56 +10,19 @@ describe Reminder do
     it { should validate_presence_of :user }
   end
 
-  describe "overwritten accessors" do
-    before :each do
-      @reminder = Factory :reminder
-    end
-
-    it "should accept an array of cc's and return an array" do
-      @reminder.cc = ['cc@example.com']
-      @reminder.save
-      @reminder.reload
-      @reminder.cc.should == ['cc@example.com']
-    end
-
-    it "should accept a cc as a string and return an array" do
-      @reminder.cc = 'cc@example.com'
-      @reminder.save
-      @reminder.reload
-      @reminder.cc.should == ['cc@example.com']
-    end
-
-    it "should return an empty array if cc is nil" do
-      @reminder.cc = nil
-      @reminder.save
-      @reminder.reload
-      @reminder.cc.should == []
-    end
-
-    it "should allow multiple cc's to be created with a string" do
-      @reminder.cc = 'cc@abc.com, cc1@abc.com'
-      @reminder.save
-      @reminder.reload
-      @reminder.cc.should == ['cc@abc.com', 'cc1@abc.com']
-    end
+  it "should inform the recipients that the contents of the reminder have been changed" do
+    method = :inform_other_recipients
+    u = Factory :user
+    r = Factory.build :reminder, user: u
+    r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
+    r.save
+    r.send_at = Time.zone.now + 1.day
+    r.save
+    NotificationWorker.should have_queue_size_of(1)
+    NotificationWorker.perform(r.id, method)
+    unread_emails_for('snoopdawg@snoopy.com').size.should >= parse_email_count(1)
+    unread_emails_for('pimpboiwonder@vuvuzela.com').size.should >= parse_email_count(1)
   end
-
-  describe "changed reminders" do
-    it "should inform the recipients that the contents of the reminder have been changed" do
-      method = :inform_other_recipients
-      u = Factory :user
-      r = Factory.build :reminder, user: u
-      r.cc = ['pimpboiwonder@vuvuzela.com', 'snoopdawg@snoopy.com']
-      r.save
-      r.send_at = Time.zone.now + 1.day
-      r.save
-      NotificationWorker.should have_queue_size_of(1)
-      NotificationWorker.perform(r.id, method)
-      unread_emails_for('snoopdawg@snoopy.com').size.should >= parse_email_count(1)
-      unread_emails_for('pimpboiwonder@vuvuzela.com').size.should >= parse_email_count(1)
-    end
-  end
-
 
   ## scopes
     it "should fetch ready to send reminders" do
