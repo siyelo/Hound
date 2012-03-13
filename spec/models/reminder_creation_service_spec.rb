@@ -12,22 +12,19 @@ describe ReminderCreationService do
     User.first.email.should == 'a@a.com'
   end
   
-  it "saves a reminder for each Hound Address in the to/cc/bcc", type: 'integration' do
+  it "saves one reminder if one Hound Address in the to/cc/bcc", type: 'integration' do
     @mail.to = '1h@hound.cc'
     user = Factory :user
     User.stub(:find_or_invite!).and_return user
-    Reminder.should_receive(:new).with(send_at: @now + 1.hour, user: user)
-    Reminder.should_receive(:save!)
     @service.create! @mail
+    Reminder.last.send_at.to_i.should == 1.hour.from_now.to_i#.change(hour: 8)
   end
   
   it "should save the Mail", type: 'integration' do
     user = Factory :user
     User.stub(:find_or_invite!).and_return user
-    FetchedMail.should_receive(:new).with(user: user)
-    FetchedMail.should_receive(:from_mail).with(@mail)
-    FetchedMail.should_receive(:save!)
     @service.create! @mail
+    FetchedMail.first.to.should == @mail.to
   end
 
 end
