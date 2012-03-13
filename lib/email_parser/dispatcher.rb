@@ -1,6 +1,8 @@
 module EmailParser
   class Dispatcher
     def self.dispatch(emails)
+      @service = ReminderCreationService.new()
+
       emails.each do |e|
         parent_message = MessageThread.find_by_message_id(e.in_reply_to)
         message = MessageThread.create!(message_id: e.message_id, parent: parent_message)
@@ -8,7 +10,7 @@ module EmailParser
         to_us = self.extract_to_us(e, parent_message)
 
         to_us.each do |to|
-          send_at = self.parse_email(to, e)
+          send_at = @service.parse_or_notify(to, e)
           r = Reminder.create!(email: e.from.first.to_s, subject: e.subject,
                                body: EmailBodyParser.extract_html_or_text_from_body(e),
                                send_at: send_at,
@@ -22,15 +24,6 @@ module EmailParser
     private
 
     class << self
-      def parse_email(to, email = nil)
-        begin
-          DateTime.parse_email(to)
-        rescue ArgumentError
-          Resque.enqueue(ErrorNotificationWorker, email) if email
-          nil
-        end
-      end
-
 
       def extract_to_us(email, parent_message)
         to_us = self.all_addresses(email).select{ |t| t.include?('@hound.cc') }

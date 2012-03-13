@@ -21,4 +21,11 @@ describe DateTime do
   it "parses full month names" do
     DateTime.parse_email('12November2013@hound.cc').should == DateTime.parse('12Nov2013 08:00')
   end
+  
+  it "barfs on bad local parts" do
+    lambda do
+      DateTime.parse_email('pimpin@hound.cc')
+    end.should raise_exception ArgumentError
+  end
+
 end

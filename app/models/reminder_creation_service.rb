@@ -5,6 +5,15 @@ class ReminderCreationService
     create_reminders(mail, user)
   end
 
+  def parse_or_notify(to, email = nil)
+    begin
+      DateTime.parse_email(to)
+    rescue ArgumentError
+      Resque.enqueue(ErrorNotificationWorker, email) if email
+      nil
+    end
+  end
+
   private
 
   def save_fetched_mail(mail, user)
@@ -16,9 +25,12 @@ class ReminderCreationService
   def create_reminders(mail, user)
     hounds = HoundAddressList.new(mail)
     hounds.each do |h| 
-      send_at = EmailParser.parse_email(h, mail)
-      reminder = Reminder.new(send_at: send_at, user: user)
-      reminder.save!
+      send_at = parse_or_notify(h, mail)
+      #TODO smelly - fix once dispatcher is dead
+      if send_at
+        reminder = Reminder.create!(send_at: send_at, user: user)
+      end
     end
   end
+
 end

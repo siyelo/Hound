@@ -25,16 +25,38 @@ describe ReminderCreationService do
       @mail.to = '1h@hound.cc, 2h@hound.cc'
       @user = Factory :user
       User.stub(:find_or_invite!).and_return @user
-      @service.create! @mail
     end
   
     it "creates one reminder per Hound Address (multiple)", type: 'integration' do
+      @service.create! @mail
       Reminder.all.size.should == 2
     end
 
     it "creates one reminder per Hound Address (multiple)", type: 'integration' do
+      @service.create! @mail
       Reminder.first.send_at.to_i.should == 1.hour.from_now.to_i#.change(hour: 8)
       Reminder.last.send_at.to_i.should == 2.hour.from_now.to_i#.change(hour: 8)
+    end
+
+    it "accepts hound as cc" do
+      @mail.to = 'frank@furter.com'
+      @mail.cc = '1h@hound.cc'
+      @service.create! @mail
+      Reminder.all.size.should == 1
+    end
+    
+    it "accepts hound as bcc" do
+      @mail.to = 'frank@furter.com'
+      @mail.bcc = '1h@hound.cc'
+      @service.create! @mail
+      Reminder.all.size.should == 1
+    end
+
+    it "accepts hound as to and bcc, creating 2 reminders" do
+      @mail.to = '1h@hound.cc'
+      @mail.bcc = '2h@hound.cc'
+      @service.create! @mail
+      Reminder.all.size.should == 2
     end
   end
   
@@ -44,5 +66,16 @@ describe ReminderCreationService do
     @service.create! @mail
     FetchedMail.first.to.should == @mail.to
   end
+
+  it "should queue an error notification for an invalid hound address" do
+      ResqueSpec.reset!
+      Reminder.count.should == 0 #sanity
+      @mail = Mail.new(from: 'pimpboiwonder@vuvuzela.com',
+                         to: 'aslkdjf@hound.cc',
+                         subject: 'test', date: DateTime.now)
+      @service.create! @mail
+      ErrorNotificationWorker.should have_queue_size_of(1)
+    end
+
 
 end
