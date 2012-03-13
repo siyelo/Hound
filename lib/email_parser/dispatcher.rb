@@ -22,28 +22,9 @@ module EmailParser
     private
 
     class << self
-      ### Factory for dispatching emails to the correct parser
       def parse_email(to, email = nil)
-        # local part is the first part of the email
-        # we use this to determine when the email should be returned
-        local_part = to.split('@')[0] || to
-
-        send_at = nil
-
-        send_at = if local_part.match /(?!months)[a-z]{6,10}/
-                          EmailParser::AdverbParser.new(to).send_at
-                        elsif local_part.match /\d+[a-z]+/
-                          EmailParser::IncrementalTime.new(to).send_at
-                        end
-
-
-        send_at ? send_at : self.calendar_date_parse(email, local_part)
-      end
-
-      #refactor me
-      def calendar_date_parse(email, local_part)
         begin
-          DateTime.parse(local_part).change(hour: 8)
+          DateTime.parse_email(to)
         rescue ArgumentError
           Resque.enqueue(ErrorNotificationWorker, email) if email
           nil
