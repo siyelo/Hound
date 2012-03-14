@@ -9,11 +9,11 @@
   .reminder_list
     %table{class: 'modern'}
       %tr
-        %th.large= "You have #{pluralize(@reminders.count, "#{@current_filter} reminder")}"
+        %th.large= "You have #{pluralize(@presenter.reminders.count, "#{@presenter.filter} reminder")}"
         %th.large Reminder Date
         %th.small Mark as complete?
 
-    - unless @current_filter == 'completed'
+    - unless @presenter.filter == 'completed'
       = render 'grouped_reminders'
     - else
       = render 'ungrouped_reminders'

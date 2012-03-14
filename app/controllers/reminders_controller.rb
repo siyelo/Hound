@@ -2,9 +2,7 @@ class RemindersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @current_filter = ReminderFilter.current_filter(params[:filter])
-    @reminders = ReminderFilter.filter_reminders(current_user.reminders, @current_filter)
-    @groups = ReminderFilter.group_reminders(@reminders)
+    @presenter = ReminderPresenter.new(current_user.reminders, params[:filter])
   end
 
   def edit

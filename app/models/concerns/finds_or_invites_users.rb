@@ -2,7 +2,12 @@ module FindsOrInvitesUsers
   extend ActiveSupport::Concern
   UTC_ZONE = 0
 
+  included do
+    devise :invitable 
+  end
+
   module ClassMethods
+
     def find_or_invite!(email)
       User.find_by_email_or_alias(from_address(email)) || invite_without_invitation!(email)
     end

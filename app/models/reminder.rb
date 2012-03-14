@@ -1,5 +1,5 @@
 class Reminder < ActiveRecord::Base
-  include ReminderScopes
+  include ScopesReminders
 
   ### Associations
   belongs_to :user

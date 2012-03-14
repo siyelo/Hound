@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   include FindsOrInvitesUsers
 
-  devise :invitable #TODO move to invitable concern
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
@@ -20,7 +19,9 @@ class User < ActiveRecord::Base
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
-    def self.find_by_email_or_alias(email)
+  
+  class << self
+    def find_by_email_or_alias(email)
       where("users.email = ? OR
              users.id = (SELECT em.user_id
                          FROM email_aliases em
@@ -30,23 +31,20 @@ class User < ActiveRecord::Base
 
     #overwrite Devise finder - allow user to login with
     #primary or alias email address
-    def self.find_for_database_authentication(conditions={})
+    def find_for_database_authentication(conditions={})
       find_by_email_or_alias(conditions[:email])
     end
+  end
 
   ### Instance methods
+  
   def active?
     return true if !invitation_token || invitation_accepted_at
   end
 
   def confirmation_email=(value)
-    value = normalize_boolean(value)
     generate_new_token if value
     write_attribute(:confirmation_email, value)
-  end
-
-  def normalize_boolean(value)
-    value == true || value == "1"
   end
 
   def toggle_confirmation_email(token)

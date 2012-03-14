@@ -1,4 +1,4 @@
 .sidebar_left
   %ul
     - %w(upcoming completed).each do |filter|
-      %li= @current_filter == filter  ? filter.titleize : (link_to filter.titleize, reminders_path(filter: filter))
+      %li= @presenter.filter == filter  ? filter.titleize : (link_to filter.titleize, reminders_path(filter: filter))
