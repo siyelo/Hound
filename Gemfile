@@ -4,7 +4,6 @@ gem 'awesome_nested_set'
 gem 'chronic'
 gem 'devise'
 gem "devise_invitable"
-gem 'diffy'
 gem 'foreman'
 gem 'gitploy'
 gem 'haml', '~> 3.1.4'

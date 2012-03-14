@@ -6,7 +6,7 @@ class Reminder < ActiveRecord::Base
   belongs_to :message_thread
   belongs_to :fetched_mail
 
-  # Validations
+  ### Validations
   validates :send_at, presence: true
   validates :user, presence: true
   validates :fetched_mail, presence: true
@@ -15,10 +15,8 @@ class Reminder < ActiveRecord::Base
   attr_accessible :user, :fetched_mail,
                   :sent_to, :send_at, :delivered, :is_bcc
 
-  # Callbacks
+  ### Callbacks
   before_create :generate_snooze_token
-  after_create :queue_confirmation_email
-  after_update :queue_change_notification
 
   ### Instance methods
 
@@ -43,14 +41,6 @@ class Reminder < ActiveRecord::Base
   end
 
   private
-
-  def queue_confirmation_email
-    Queuer.queue_confirmation_email(self)
-  end
-
-  def queue_change_notification
-    Queuer.queue_change_notification(self)
-  end
 
   def generate_snooze_token
     self.snooze_token = Token.new(8)

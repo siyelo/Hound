@@ -23,13 +23,4 @@ describe Queuer do
     Queuer.add_to_send_queue(r1)
   end
 
-  it "should queue a change of reminder" do
-    r1 = Reminder.new
-    user = Factory.build :user, confirmation_email:  true
-    r1.stub(:user).and_return(user)
-    r1.stub(:cc).and_return(['test'])
-    r1.stub(:body_changed?).and_return(true)
-    Resque.should_receive(:enqueue).once
-    Queuer.queue_change_notification(r1)
-  end
 end

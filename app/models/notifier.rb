@@ -1,18 +1,5 @@
 class Notifier
   class << self
-    def snooze_notification_email(reminder)
-      reminder.cc.each do |recipient|
-        UserMailer.send_notification_snooze(reminder, recipient).deliver
-      end
-    end
-
-    #informs the cc'd users of a change to the reminder
-    def inform_other_recipients(reminder)
-      reminder.cc.each do |recipient|
-        UserMailer.send_notification_of_change(reminder, recipient).deliver
-      end
-    end
-
     def send_confirmation_email(reminder)
       UserMailer.send_confirmation(reminder).deliver
     end
@@ -27,6 +14,13 @@ class Notifier
         reminder.save!
       end
     end
+    
+    def snooze_notification_email(reminder)
+      reminder.cc.each do |recipient|
+        UserMailer.send_snooze_notification(reminder, recipient).deliver
+      end
+    end
+
   end
 end
 

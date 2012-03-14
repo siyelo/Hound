@@ -9,21 +9,24 @@ class UserMailer < ActionMailer::Base
          reply_to: reply_to, in_reply_to: "<#{reminder.message_thread.last_message_id}>")
   end
 
-  def send_confirmation(reminder)
-    @reminder = reminder
-    subject = reminder.user.active? ? "Confirmation" : "Welcome to Hound.cc"
-    mail(:to => reminder.email, subject: "#{subject}: #{reminder.subject}")
+  def send_confirmation(reminder, recipient = nil)
+    recipient ||= reminder.fetched_mail.from
+    @send_at = reminder.send_at
+    @edit_reminder_url = edit_reminder_url(reminder.id)
+    @edit_notification_url = edit_notification_url(reminder.user.id, 
+                                                   token: reminder.user.modify_token)
+    @user_active = reminder.user.active?
+    #TODO smell - refactor
+    if @user_active 
+      subject = "Confirmation"
+    else
+      @accept_user_invitation_url = accept_user_invitation_url(invitation_token:reminder.user.invitation_token)
+      subject = "Welcome to Hound.cc"
+    end
+    mail(:to => recipient, subject: "#{subject}: #{reminder.subject}")
   end
 
-  def send_notification_snooze(reminder, recipient)
-    @reminder = reminder
-    @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
-    mail(to: recipient, subject: "Re: #{reminder.subject}",
-         reply_to: reply_to, in_reply_to: "<#{reminder.message_id}>")
-  end
-
-  def send_notification_of_change(reminder, recipient)
+  def send_snooze_notification(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
     reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
