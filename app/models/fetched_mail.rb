@@ -25,7 +25,7 @@ class FetchedMail < ActiveRecord::Base
     self.subject = mail.subject
     self.body = EmailBodyParser.extract_html_or_text_from_body(mail)
     self.from = mail.from.first.to_s if mail.from
-    
+
     [:to, :cc, :bcc].each do |m|
       self.send("#{m}=", mail.send(m) || [])
     end
@@ -49,11 +49,15 @@ class FetchedMail < ActiveRecord::Base
   # https://github.com/collectiveidea/awesome_nested_set/issues/121
   # so we use a lookup instead, if a reply_to id is present
   def parent
-    in_reply_to? ? self.class.where(message_id: in_reply_to).first : nil 
+    in_reply_to? ? self.class.where(message_id: in_reply_to).first : nil
   end
 
   def all_addresses
     to.to_a + cc.to_a + bcc.to_a
+  end
+
+  def is_address_bcc?(address)
+    bcc.include? address
   end
 end
 # == Schema Information

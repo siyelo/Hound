@@ -28,7 +28,8 @@ class ReminderCreationService
   def create_or_notify!(to, fetched_mail)
     begin
       send_at = DateTime.parse_email(to)
-      Reminder.create!(send_at: send_at, user: fetched_mail.user, fetched_mail: fetched_mail, is_bcc: true)
+      Reminder.create!(send_at: send_at, user: fetched_mail.user,
+                       fetched_mail: fetched_mail, is_bcc: fetched_mail.is_address_bcc?(to))
     rescue ArgumentError
       Resque.enqueue(ErrorNotificationWorker, fetched_mail)
     end

@@ -133,7 +133,6 @@ describe FetchedMail do
     end
   end
 
-
   describe "#parent" do
     before :each do
       @parent = Factory :fetched_mail, message_id: '123'
@@ -158,7 +157,12 @@ describe FetchedMail do
   end
 
   it "should return all addresses" do
-    @mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
-    @mail.all_addresses.should == ['1d@hound.cc', '1@1.com', '2@2.com']
+    mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
+    mail.all_addresses.should == ['1d@hound.cc', '1@1.com', '2@2.com']
+  end
+
+  it "should return true if a hound address is in the bcc" do
+    mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2d@hound.cc']
+    mail.is_address_bcc?('2d@hound.cc').should == true
   end
 end

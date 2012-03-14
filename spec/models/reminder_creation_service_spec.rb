@@ -131,10 +131,9 @@ describe ReminderCreationService do
     end
 
     it "should flag reminders that are created with a bcc'ed Hound address" do
-      fm = Factory.build :fetched_mail, from: 'sachin@siyelo.com',
+      fm = Factory.build :fetched_mail,
                          to: ['to@mail.com'],
-                         bcc: ['tomorrow@hound.cc'],
-                         message_id: '1234'
+                         bcc: ['tomorrow@hound.cc']
 
       User.stub!(:find_or_invite!).and_return(fm.user)
       FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
@@ -144,7 +143,18 @@ describe ReminderCreationService do
       @service.create! Mail.new
     end
 
+    it "should not flag reminders that are not created with a bcc'ed Hound address" do
+      fm = Factory.build :fetched_mail,
+                         to: ['to@mail.com'],
+                         cc: ['tomorrow@hound.cc']
 
+      User.stub!(:find_or_invite!).and_return(fm.user)
+      FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
+
+      Reminder.should_receive(:create!).with(send_at: (DateTime.now.utc + 1.day).change(hour: 8),
+                                             user: fm.user, fetched_mail: fm, is_bcc: false )
+      @service.create! Mail.new
+    end
 
   end
 end
