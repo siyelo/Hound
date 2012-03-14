@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(:version => 20120309124003) do
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
-    t.string   "subject"
     t.text     "body"
+    t.boolean  "is_bcc",            :default => false
     t.integer  "fetched_mail_id"
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false

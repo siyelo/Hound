@@ -1,7 +1,6 @@
 Factory.define :reminder do |f|
   f.fetched_mail { Factory :fetched_mail }
   f.sequence(:email) { |n| "somedude#{n}@sorad.com" }
-  f.subject "pewpepw"
   f.body "Body of the email"
   f.send_at 1.minute.from_now
   f.delivered false

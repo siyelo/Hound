@@ -41,7 +41,7 @@ describe ReminderCreationService do
       Reminder.last.send_at.to_i.should == 1.hour.from_now.to_i
     end
 
-    describe "multiple hound addresses" do 
+    describe "multiple hound addresses" do
       before :each do
         @mail.to = '1h@hound.cc, 2h@hound.cc'
         @user = Factory :user
@@ -129,6 +129,22 @@ describe ReminderCreationService do
       #root.to = ['5min@hound.cc', '10min@hound.cc']
       #@child.to = ['5min@hound.cc', '8days@hound.cc']
     end
+
+    it "should flag reminders that are created with a bcc'ed Hound address" do
+      fm = Factory.build :fetched_mail, from: 'sachin@siyelo.com',
+                         to: ['to@mail.com'],
+                         bcc: ['tomorrow@hound.cc'],
+                         message_id: '1234'
+
+      User.stub!(:find_or_invite!).and_return(fm.user)
+      FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
+
+      Reminder.should_receive(:create!).with(send_at: (DateTime.now.utc + 1.day).change(hour: 8),
+                                             user: fm.user, fetched_mail: fm, is_bcc: true )
+      @service.create! Mail.new
+    end
+
+
 
   end
 end

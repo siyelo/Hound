@@ -12,8 +12,8 @@ class Reminder < ActiveRecord::Base
   validates :fetched_mail, presence: true
 
   ### Attributes
-  attr_accessible :user, :fetched_mail, 
-                  :sent_to, :send_at, :delivered
+  attr_accessible :user, :fetched_mail,
+                  :sent_to, :send_at, :delivered, :is_bcc
 
   # Callbacks
   before_create :generate_snooze_token
@@ -21,13 +21,16 @@ class Reminder < ActiveRecord::Base
   after_update :queue_change_notification
 
   ### Instance methods
-  
+
+  delegate :subject, :subject=, to: :fetched_mail
+  delegate :body, :body=, to: :fetched_mail
+
   def email #TODO PLS RENAME K THX
     fetched_mail.from.first
   end
 
   def cc
-    fetched_mail.all_addresses - HoundAddressList.new(fetched_mail)
+    is_bcc? ? [] : fetched_mail.all_addresses - HoundAddressList.new(fetched_mail)
   end
 
   def snooze_for(duration, token)
@@ -65,6 +68,7 @@ end
 #  email             :string(255)
 #  subject           :string(255)
 #  body              :text
+#  fetched_mail_id   :integer
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #  send_at           :datetime

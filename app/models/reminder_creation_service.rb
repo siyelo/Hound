@@ -8,7 +8,7 @@ class ReminderCreationService
 
   def create!(mail)
     user = User.find_or_invite!(mail)
-    fetched_mail = FetchedMail.create_from_mail!(mail, user) 
+    fetched_mail = FetchedMail.create_from_mail!(mail, user)
     create_reminders!(fetched_mail)
   end
 
@@ -17,18 +17,18 @@ class ReminderCreationService
   # create on reminder per hound address
   # unless its a reply, and the parent has the same hound address
   def create_reminders!(fetched_mail)
-    FilteredAddressList.new(fetched_mail).each do |hound_address| 
+    FilteredAddressList.new(fetched_mail).each do |hound_address|
       create_or_notify!(hound_address, fetched_mail)
     end
   end
- 
+
   # Parses an email and creates a Reminder
   # Also catches email parsing errors and sends a notification
   # throws all other exceptions
   def create_or_notify!(to, fetched_mail)
     begin
       send_at = DateTime.parse_email(to)
-      Reminder.create!(send_at: send_at, user: fetched_mail.user)          
+      Reminder.create!(send_at: send_at, user: fetched_mail.user, fetched_mail: fetched_mail, is_bcc: true)
     rescue ArgumentError
       Resque.enqueue(ErrorNotificationWorker, fetched_mail)
     end

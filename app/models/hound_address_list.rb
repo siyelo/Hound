@@ -1,6 +1,6 @@
 class HoundAddressList < Array
-  def initialize(mail) 
-    super hound_addresses(mail || Mail.new)
+  def initialize(mail)
+    super hound_addresses(mail || FetchedMail.new)
   end
 
   def ignore_existing_hound_addresses_in_reply!(fetched_mail)

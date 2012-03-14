@@ -3,8 +3,8 @@ class CreateReminders < ActiveRecord::Migration
     create_table :reminders do |t|
       #TODO tidy up all migrations
       t.string :email
-      t.string :subject
       t.string :body
+      t.boolean :is_bcc, default: false
       t.integer :fetched_mail_id
       t.timestamps
     end
