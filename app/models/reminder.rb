@@ -68,7 +68,6 @@ end
 #  email             :string(255)
 #  subject           :string(255)
 #  body              :text
-#  fetched_mail_id   :integer
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #  send_at           :datetime

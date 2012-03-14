@@ -64,17 +64,15 @@ end
 #
 # Table name: fetched_mails
 #
-#  id          :integer         not null, primary key
-#  from        :string(255)
-#  to          :string(255)
-#  cc          :string(255)
-#  bcc         :string(255)
-#  subject     :string(255)
-#  body        :string(255)
-#  user_id     :integer
-#  message_id  :string(255)     indexed
-#  in_reply_to :string(255)
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
+#  id         :integer         not null, primary key
+#  from       :string(255)
+#  to         :string(255)
+#  cc         :string(255)
+#  bcc        :string(255)
+#  subject    :string(255)
+#  body       :string(255)
+#  user_id    :integer
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
 #
 
