@@ -1,4 +1,5 @@
 Factory.define :reminder do |f|
+  f.fetched_mail { Factory :fetched_mail }
   f.sequence(:email) { |n| "somedude#{n}@sorad.com" }
   f.subject "pewpepw"
   f.body "Body of the email"
@@ -26,13 +27,13 @@ Factory.define :email_alias do |f|
 end
 
 Factory.define :fetched_mail do |f|
-  f.user { Factory(:user) }
+  f.user { Factory :user }
   f.to ["1d@hound.cc"]
   f.from "somedude@sorad.com"
   f.subject "Reminder subject"
   f.body "<h1> HTML body </h1>"
   f.cc ["another@sorad.com"]
   f.bcc []
-  f.message_id '1234'
+  f.sequence(:message_id)
 end
 

@@ -4,14 +4,16 @@ class Reminder < ActiveRecord::Base
   ### Associations
   belongs_to :user
   belongs_to :message_thread
+  belongs_to :fetched_mail
 
   # Validations
   validates :send_at, presence: true
   validates :user, presence: true
+  validates :fetched_mail, presence: true
 
   ### Attributes
-  attr_accessible :email, :subject, :send_at, :body, :sent_to, :cc, :user,
-    :message_id, :delivered, :message_thread
+  attr_accessible :user, :fetched_mail, 
+                  :sent_to, :send_at, :delivered
 
   # Callbacks
   before_create :generate_snooze_token
@@ -19,21 +21,13 @@ class Reminder < ActiveRecord::Base
   after_update :queue_change_notification
 
   ### Instance methods
+  
+  def email #TODO PLS RENAME K THX
+    fetched_mail.from.first
+  end
 
   def cc
-    [*YAML::load(read_attribute(:cc))]
-  end
-
-  def cc=(cc)
-    write_attribute(:cc, EmailList.new(cc).to_yaml)
-  end
-
-  def body
-    Base64::decode64(read_attribute(:body))
-  end
-
-  def body=(value)
-    write_attribute(:body, Base64::encode64(value))
+    fetched_mail.all_addresses - HoundAddressList.new(fetched_mail)
   end
 
   def snooze_for(duration, token)

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe FetchedMail do
   it { should belong_to :user }
+  it { should have_many :reminders }
 
   it { should validate_presence_of :from}
   it { should validate_presence_of :to}
@@ -16,6 +17,17 @@ describe FetchedMail do
   it "should validate unique messsage ids" do
     Factory :fetched_mail
     FetchedMail.new.should validate_uniqueness_of( :message_id )
+  end
+
+  describe "body" do
+    it "should save body with bad encoding" do
+      fm = Factory :fetched_mail
+      lambda do
+        #note rspec barfs if this spec fails!
+        fm.body = "\xA0bad encoding \xA0/"
+        fm.save!
+      end.should_not raise_exception
+    end
   end
 
   describe "#create_from_mail!" do
@@ -143,5 +155,10 @@ describe FetchedMail do
       @child.from_mail(@mail)
       @child.parent.should == @parent
     end
+  end
+
+  it "should return all addresses" do
+    @mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
+    @mail.all_addresses.should == ['1d@hound.cc', '1@1.com', '2@2.com']
   end
 end

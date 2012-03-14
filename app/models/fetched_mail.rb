@@ -1,5 +1,6 @@
 class FetchedMail < ActiveRecord::Base
   belongs_to :user
+  has_many :reminders
 
   attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user, :message_id,
     :in_reply_to
@@ -35,12 +36,24 @@ class FetchedMail < ActiveRecord::Base
     self
   end
 
+  def body
+    Base64::decode64(read_attribute(:body))
+  end
+
+  def body=(value)
+    write_attribute(:body, Base64::encode64(value || ''))
+  end
+
   # this could be persisted with awesome_nested_set
   # however we found this issue
   # https://github.com/collectiveidea/awesome_nested_set/issues/121
   # so we use a lookup instead, if a reply_to id is present
   def parent
     in_reply_to? ? self.class.where(message_id: in_reply_to).first : nil 
+  end
+
+  def all_addresses
+    to.to_a + cc.to_a + bcc.to_a
   end
 end
 # == Schema Information
