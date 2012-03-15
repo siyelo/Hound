@@ -53,12 +53,7 @@ class User
 
   class << self
     def find_by_email_or_alias(email)
-      where(:email => email)
-      # where("users.email = ? OR
-      #        users.id = (SELECT em.user_id
-      #                    FROM email_aliases em
-      #                    WHERE em.email = ?)", email, email).
-      # readonly(false).first
+      any_of({:email => email}, {"email_aliases.email" => email}).first
     end
 
     #overwrite Devise finder - allow user to login with
