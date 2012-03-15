@@ -1,9 +1,8 @@
 class EmailValidator < ActiveModel::Validator
   def validate(record)
-    if should_validate(record) &&
-        User.find_by_email_or_alias(record.email).length > 0
+    if should_validate(record) && User.find_by_email_or_alias(record.email)
       unless record.errors[:email].include? 'has already been taken'
-          record.errors.add(:email, "is already registered")
+        record.errors.add(:email, "is already registered")
       end
     end
   end
