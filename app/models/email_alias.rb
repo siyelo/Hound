@@ -1,6 +1,12 @@
-class EmailAlias < ActiveRecord::Base
+class EmailAlias
+
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :email, :type => String, :null => false
+
   ### Associations
-  belongs_to :user
+  embedded_in :user
 
   ### Validations
   validates_presence_of :user, :email

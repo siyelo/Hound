@@ -6,7 +6,7 @@ module ScopesReminders
   module ClassMethods
     ### Named Scopes
     def upcoming
-      where("send_at >= ? AND delivered = ?", Time.now, false)
+      where(:send_at.gt => Time.now, :delivered => false)
     end
 
     def completed
@@ -14,7 +14,7 @@ module ScopesReminders
     end
 
     def sorted
-      order("send_at ASC")
+      order_by([:send_at, :asc])
     end
 
     def ready_to_send

@@ -1,12 +1,43 @@
-class User < ActiveRecord::Base
+class User
+
+  include Mongoid::Document
+  include Mongoid::Timestamps
   include FindsOrInvitesUsers
+
+  ## Database authenticatable
+  field :email,              :type => String, :null => false
+  field :encrypted_password, :type => String, :null => false
+
+  ## Recoverable
+  field :reset_password_token,   :type => String
+  field :reset_password_sent_at, :type => Time
+
+  ## Rememberable
+  field :remember_created_at, :type => Time
+
+  ## Trackable
+  field :sign_in_count,      :type => Integer
+  field :current_sign_in_at, :type => Time
+  field :last_sign_in_at,    :type => Time
+  field :current_sign_in_ip, :type => String
+  field :last_sign_in_ip,    :type => String
+
+  field :invitation_token, type: String
+  field :invitation_sent_at, type: DateTime
+  field :invitation_accepted_at, type: DateTime
+  field :invitation_limit, type: Integer
+  field :invited_by_id, type: Integer
+  field :invited_by_type, type: String
+  field :timezone, type: String
+  field :confirmation_email, type: Boolean
+  field :modify_token, type: String
 
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
   ### Associations
-  has_many :reminders
-  has_many :email_aliases
+  embeds_many :reminders
+  embeds_many :email_aliases
 
   ### Callbacks
   before_validation :generate_new_token, on: :create
@@ -19,14 +50,15 @@ class User < ActiveRecord::Base
     :timezone, :confirmation_email, :modify_token
 
   ### Class methods
-  
+
   class << self
     def find_by_email_or_alias(email)
-      where("users.email = ? OR
-             users.id = (SELECT em.user_id
-                         FROM email_aliases em
-                         WHERE em.email = ?)", email, email).
-      readonly(false).first
+      where(:email => email)
+      # where("users.email = ? OR
+      #        users.id = (SELECT em.user_id
+      #                    FROM email_aliases em
+      #                    WHERE em.email = ?)", email, email).
+      # readonly(false).first
     end
 
     #overwrite Devise finder - allow user to login with
@@ -37,7 +69,7 @@ class User < ActiveRecord::Base
   end
 
   ### Instance methods
-  
+
   def active?
     return true if !invitation_token || invitation_accepted_at
   end

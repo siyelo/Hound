@@ -1,6 +1,5 @@
 source 'http://rubygems.org'
 
-gem 'awesome_nested_set'
 gem 'chronic'
 gem 'devise'
 gem "devise_invitable"
@@ -10,6 +9,8 @@ gem 'haml', '~> 3.1.4'
 gem 'jquery-rails'
 gem 'mail'
 gem 'pg'
+gem 'mongoid'
+gem 'bson_ext'
 gem 'rails', '3.2.0'
 gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', require: "resque/server"

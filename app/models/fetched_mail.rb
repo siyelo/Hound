@@ -1,4 +1,7 @@
-class FetchedMail < ActiveRecord::Base
+class FetchedMail
+
+  include Mongoid::Document
+
   belongs_to :user
   has_many :reminders
 

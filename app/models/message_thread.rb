@@ -1,4 +1,8 @@
-class MessageThread < ActiveRecord::Base
+class MessageThread
+
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
   acts_as_nested_set
 
   ### Associations

@@ -1,4 +1,7 @@
-class Reminder < ActiveRecord::Base
+class Reminder
+
+  include Mongoid::Document
+  include Mongoid::Timestamps
   include ScopesReminders
 
   ### Associations
