@@ -1,3 +1,7 @@
+require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/integer/time'
+require 'active_support/core_ext/date/calculations'
+
 class ReminderFilter
   AVAILABLE_FILTERS = %w(completed)
   DEFAULT_FILTER    = 'upcoming'
@@ -9,11 +13,11 @@ class ReminderFilter
     later:      1000.years
   }
 
-  attr_reader :filter, :user
+  attr_reader :filter, :filtered_reminders
 
-  def initialize(user, filter = DEFAULT_FILTER)
-    @user   = user
+  def initialize(reminders, filter = DEFAULT_FILTER)
     @filter = AVAILABLE_FILTERS.include?(filter) ? filter : DEFAULT_FILTER
+    @filtered_reminders = reminders.send(@filter).sorted
   end
 
   def grouped_by_periods
@@ -25,14 +29,6 @@ class ReminderFilter
     end
 
      groups
-  end
-
-  def reminders
-    user.reminders
-  end
-
-  def filtered_reminders
-    user.reminders.send(filter).sorted
   end
 
   private

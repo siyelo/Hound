@@ -1,4 +1,4 @@
-require 'acceptance/acceptance_helper'
+require 'spec_helper_acceptance'
 
 feature 'User sessions' do
 

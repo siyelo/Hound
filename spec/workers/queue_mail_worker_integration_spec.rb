@@ -1,3 +1,5 @@
+require  'spec_helper'
+
 describe QueueMailWorker do
   before :each do
     @now = Time.now

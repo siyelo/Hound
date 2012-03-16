@@ -13,7 +13,7 @@
         %th.small Mark as complete?
 
     - if @reminder_filter.filter == 'completed'
-      = render 'reminders', :reminders => @reminder_filter.reminders
+      = render 'reminders', :reminders => @reminder_filter.filtered_reminders
     - else
       = render 'upcoming_reminders'
   .status

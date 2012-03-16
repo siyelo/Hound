@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'email_list'
 
 describe EmailList do
   it "should create a list from a single email address" do

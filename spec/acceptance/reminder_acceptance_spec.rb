@@ -1,4 +1,4 @@
-require 'acceptance/acceptance_helper'
+require 'spec_helper_acceptance'
 
 feature 'Reminders' do
   context 'complete reminders' do
@@ -13,6 +13,7 @@ feature 'Reminders' do
       page.should have_content('You have 1 upcoming reminder')
       check 'reminder_delivered'
       page.should have_content('Saving')
+      page.should have_content('saved')
       visit '/'
       page.should have_content('You have 0 upcoming reminder')
     end

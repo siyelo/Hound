@@ -1,7 +1,6 @@
-require 'acceptance/acceptance_helper'
+require 'spec_helper_acceptance'
 
 feature 'Email Aliases' do
-
   background do
     @user = Factory(:user)
     log_in_with(@user)

@@ -1,22 +1,15 @@
+require 'active_support/core_ext/module/delegation'
+
+# Presenter for Reminders & Mail entities
 class ReminderMail
-  include ActiveModel::Validations
-  REMINDER_ATTRIBUTES = [:send_at, :delivered]
-  MAIL_ATTRIBUTES = [:subject, :body, :cc]
+  attr_accessor :reminder, :fetched_mail, :errors
 
-  attr_accessor :reminder
+  delegate :subject, :body, to: :fetched_mail
+  delegate :send_at, :delivered?, to: :reminder
 
-  validate do
-    [@reminder, @fetched_mail].each do |object|
-      unless object.valid?
-        object.errors.each do |key, values|
-          errors[key] = values
-        end
-      end
-    end
-  end
-
-  def initialize(reminder)
+  def initialize(reminder, errors = {})
     @reminder = reminder
+    @errors = errors
     @fetched_mail = @reminder.fetched_mail if @reminder
   end
 
@@ -30,47 +23,6 @@ class ReminderMail
 
   def all_recipients
     [to] + cc
-  end
-
-  def subject
-    @fetched_mail.subject
-  end
-
-  def body
-    @fetched_mail.body
-  end
-
-  def send_at
-    @reminder.send_at
-  end
-
-  def delivered?
-    @reminder.delivered?
-  end
-
-  def update_attributes(params = {})
-    return false unless @reminder
-    REMINDER_ATTRIBUTES.each do |attribute|
-      @reminder.send("#{attribute}=", params[attribute]) if params[attribute]
-    end
-    MAIL_ATTRIBUTES.each do |attribute|
-      @fetched_mail.send("#{attribute}=", params[attribute]) if params[attribute]
-    end
-    return false unless valid?
-    save_objects
-  end
-
-  private
-
-  def save_objects
-    begin
-      ActiveRecord::Base.transaction do
-        @reminder.save!
-        @fetched_mail.save!
-      end
-    rescue
-      false
-    end
   end
 end
 

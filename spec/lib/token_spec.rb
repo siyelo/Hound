@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'token'
 
 describe Token do
   it "should create a 40 char token by default" do

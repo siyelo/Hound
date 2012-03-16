@@ -9,6 +9,13 @@ describe User do
     it { should allow_value("a@b.com").for(:email) }
     it { should_not allow_value("123").for(:password) }
     it { should allow_value("123123").for(:password) }
+    it { should allow_mass_assignment_of :email }
+    it { should allow_mass_assignment_of :password }
+    it { should allow_mass_assignment_of :password_confirmation }
+    it { should allow_mass_assignment_of :remember_me }
+    it { should allow_mass_assignment_of :timezone }
+    it { should allow_mass_assignment_of :confirmation_email }
+    it { should allow_mass_assignment_of :modify_token }
 
     context "existing record in db" do
       subject { Factory(:user) }

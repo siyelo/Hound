@@ -1,12 +1,13 @@
-require 'spec_helper'
+require 'email_parser'
 
 describe EmailParser do
   it "parses adverb addresses (defaulting to 8am)" do
-    EmailParser.parse('tomorrow@hound.cc').should == (DateTime.now.utc + 1.day).change(hour: 8)
+    Time.zone = "Harare"
+    EmailParser.parse('tomorrow@hound.cc').should == (Time.zone.now + 1.day).change(hour: 8)
   end
 
   it "parses incremental addresses" do
-    EmailParser.parse('2d@hound.cc').to_i.should == (DateTime.now.utc + 2.days).to_i
+    EmailParser.parse('2d@hound.cc').to_i.should == (Time.now + 2.days).to_i
   end
 
   it "parses calendar addresses w/o times: defaults to 8am" do

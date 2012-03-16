@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'filtered_address_list'
 
 describe FilteredAddressList do
   it "filters out hound addresses that already exist in parent message" do
-    parent = Factory :fetched_mail, message_id: '123', to: ['1d@hound.cc']
-    reply = Factory.build :fetched_mail, in_reply_to: '123', to: ['1d@hound.cc']
-    FilteredAddressList.new(reply).should == []
+    parent_mail = mock :fm_parent, all_addresses: ['1d@hound.cc', 'frank@f.com']
+    mail = mock :fm, parent: parent_mail, all_addresses: ['1d@hound.cc', '2d@hound.cc']
+    FilteredAddressList.new(mail).should == ['2d@hound.cc']
   end
 end
 

@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/grouping'
+
 class EmailList < Array
   def initialize(string_or_array)
     string_or_array ||= []
