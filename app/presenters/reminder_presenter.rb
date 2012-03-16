@@ -29,7 +29,7 @@ class ReminderPresenter
 
   # Before grouping, we always apply the filter to the reminders first
   def group_reminders
-    groups ||= Hash.new{|hash, key| hash[key] = []}
+    groups ||= Hash.new([])
     filtered_reminders.each do |r|
       @@layers.keys.each do |key|
         (groups[key] << r; break) if r.send_at.to_date <= @@layers[key].from_now.to_date

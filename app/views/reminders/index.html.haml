@@ -13,8 +13,8 @@
         %th.large Reminder Date
         %th.small Mark as complete?
 
-    - unless @presenter.filter == 'completed'
-      = render 'grouped_reminders'
-    - else
+    - if @presenter.filter == 'completed'
       = render 'ungrouped_reminders'
+    - else
+      = render 'grouped_reminders'
   .status

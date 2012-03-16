@@ -32,12 +32,12 @@ class User
   field :confirmation_email, type: Boolean
   field :modify_token, type: String
 
+  ### Associations
+  embeds_many :email_aliases
+  embeds_many :fetched_mails
+
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
-
-  ### Associations
-  embeds_many :reminders
-  embeds_many :email_aliases
 
   ### Callbacks
   before_validation :generate_new_token, on: :create

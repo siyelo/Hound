@@ -1,4 +1,4 @@
 %table{class: 'modern'}
   %tr
-    - @presenter.each do |r|
+    - @presenter.reminders.each do |r|
       = render r

@@ -4,6 +4,19 @@ class Reminder
   include Mongoid::Timestamps
   include ScopesReminders
 
+  field :email,             type: String
+  field :body,              type: String
+  field :is_bcc,            type: Boolean
+  field :sent_at,           type: DateTime
+  field :delivered,         type: Boolean
+  field :snooze_token,      type: String
+  field :snooze_count,      type: Integer
+  field :message_id,        type: String
+  field :message_thread_id, type: String
+  field :sent_to,           type: String
+
+  embedded_in :fetched_mail
+
   ### Associations
   belongs_to :user
   belongs_to :message_thread

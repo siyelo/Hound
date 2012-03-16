@@ -1,15 +1,22 @@
 class FetchedMail
 
   include Mongoid::Document
+  include Mongoid::Timestamps
 
-  belongs_to :user
-  has_many :reminders
+  field :from,        type: String
+  field :to,          type: Array
+  field :cc,          type: Array
+  field :bcc,         type: Array
+  field :subject,     type: String
+  field :body,        type: String
+  field :message_id,  type: String
+  field :in_reply_to, type: String
+
+  embeds_many :reminders
+  embedded_in :user
 
   attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user, :message_id,
     :in_reply_to
-  serialize :to, Array
-  serialize :cc, Array
-  serialize :bcc, Array
 
   # Validations
   validates :from, presence: true

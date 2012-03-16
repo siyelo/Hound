@@ -31,7 +31,7 @@ Spork.prefork do
     # config.mock_with :rr
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-    config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false
@@ -49,29 +49,35 @@ Spork.prefork do
 
     headless = Headless.new
 
-    config.before(:suite) do
-      DatabaseCleaner.strategy = :transaction
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
     config.before(:each) do
-      if example.metadata[:js]
-        headless.start
-        Capybara.current_driver = :webkit
-        DatabaseCleaner.strategy = :truncation
-      else
-        DatabaseCleaner.strategy = :transaction
-        DatabaseCleaner.start
-      end
-    end
-
-    config.after(:each) do
-      if example.metadata[:js]
-        headless.destroy
-        Capybara.use_default_driver
-      end
+      DatabaseCleaner.orm = "mongoid"
+      DatabaseCleaner.strategy = :truncation#, {:except => %w[ neighborhoods ]}
       DatabaseCleaner.clean
     end
+
+    # config.before(:suite) do
+    #   DatabaseCleaner.strategy = :transaction
+    #   DatabaseCleaner.clean_with(:truncation)
+    # end
+
+    # config.before(:each) do
+    #   if example.metadata[:js]
+    #     headless.start
+    #     Capybara.current_driver = :webkit
+    #     DatabaseCleaner.strategy = :truncation
+    #   else
+    #     DatabaseCleaner.strategy = :transaction
+    #     DatabaseCleaner.start
+    #   end
+    # end
+
+    # config.after(:each) do
+    #   if example.metadata[:js]
+    #     headless.destroy
+    #     Capybara.use_default_driver
+    #   end
+    #   DatabaseCleaner.clean
+    # end
 
   end
 end

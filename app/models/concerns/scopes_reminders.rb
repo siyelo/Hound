@@ -10,7 +10,7 @@ module ScopesReminders
     end
 
     def completed
-      where("delivered = ?", true)
+      where(delivered: true)
     end
 
     def sorted
