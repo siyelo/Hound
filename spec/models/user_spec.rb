@@ -36,21 +36,21 @@ describe User do
   end
 
   describe "account status" do
-    it "should return false if invitation has not been accepted" do
+    it "returns false if invitation has not been accepted" do
       user = User.invite!(email: 'a@b.com', timezone: "+02:00")
       user.active?.should be_false
     end
 
-    it "should return true if invitation has been accepted" do
+    it "returns true if invitation has been accepted" do
       user = User.invite!(email: 'a@b.com', timezone: "+02:00")
-      User.accept_invitation!(:invitation_token => user.invitation_token,
-                              :password => "password")
+      User.accept_invitation!(invitation_token: user.invitation_token,
+                              password: "password")
       user.reload
       user.active?.should be_true
     end
 
-    it "should return true if user signed-up (was not invited)" do
-      user = Factory(:user)
+    it "returns true when user signed up themselves (was not invited)" do
+      user = Factory.build(:user)
       user.active?.should be_true
     end
   end
@@ -92,5 +92,4 @@ describe User do
       user.modify_token.should_not be_nil
     end
   end
-
 end
