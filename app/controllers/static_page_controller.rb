@@ -1,8 +1,6 @@
 class StaticPageController < ApplicationController
   def index
-    respond_to do |format|
-      format.html
-    end
+    render :layout => 'landing'
   end
 end
 

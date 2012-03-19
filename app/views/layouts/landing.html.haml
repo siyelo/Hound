@@ -1,14 +1,28 @@
 !!! 5
--# http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither
-- html_tag :class => "no-js", :lang => "en" do
-  = render "head"
+%html
+  %head
+    = render 'layouts/head'
 
-  %body{ :class => "#{ controller.controller_name }" }
+  %body
     = render "layouts/chromeframe"
+    .topbar
+      .container-fluid
+        .brand
+          = link_to 'Hound.cc', '/'
+        %ul.nav
+        %p.pull-right
+          - unless user_signed_in?
+            =link_to 'Sign up', new_user_registration_path
+            = " | "
+            =link_to 'Login', new_user_session_path
+          - else
+            =link_to current_user.email, edit_user_registration_path
+            =" | "
+            =link_to 'Logout', destroy_user_session_path, :method => :delete
 
-    #main{ :role => "main" }
-      = render "flashes"
+    .container-fluid
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
       = yield
 
-    -# Javascript at the bottom for fast page loading
-    = render "javascripts"
+    = javascript_include_tag "application"
