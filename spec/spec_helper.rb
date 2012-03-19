@@ -46,6 +46,10 @@ Spork.prefork do
     config.include EmailSpec::Helpers
     #config.include EmailSpec::Matcher
 
+    # Devise test helpers
+    config.include Devise::TestHelpers, :type => :controller
+
+
     # config.before(:suite) do
     #   DatabaseCleaner.strategy = :transaction
     #   DatabaseCleaner.clean_with(:truncation)

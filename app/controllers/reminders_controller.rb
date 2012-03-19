@@ -6,7 +6,7 @@ class RemindersController < ApplicationController
   end
 
   def edit
-    reminder = current_user.reminders.find_by_id(params[:id])
+    reminder = current_user.reminders.find(params[:id])
     @reminder_mail = ReminderMail.new(reminder) if reminder
     respond_to do |format|
       format.html { redirect_to reminders_path unless @reminder_mail}
@@ -16,7 +16,7 @@ class RemindersController < ApplicationController
 
   def update
     parse_send_at!
-    reminder = current_user.reminders.find_by_id params[:id]
+    reminder = current_user.reminders.find params[:id]
     @reminder_mail = ReminderMail.new(reminder)
     respond_to do |format|
       format.js
@@ -31,7 +31,7 @@ class RemindersController < ApplicationController
   end
 
   def destroy
-    reminder = current_user.reminders.find_by_id(params[:id])
+    reminder = current_user.reminders.find(params[:id])
     respond_to do |format|
       format.js
       if reminder.destroy
