@@ -7,6 +7,8 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require h5bp
 //= require_tree .
+
 //= require jquery.timePicker
 //= require tinymce-jquery

@@ -16,13 +16,15 @@ gem 'resque-scheduler', require: "resque/server"
 gem 'therubyracer'
 gem 'tinymce-rails'
 gem 'unicorn'
-# Gems used only for assets and not required
-# in production environments by default.
+gem 'haml-rails'
+gem 'html5-rails'
 
 group :assets do
-  gem 'coffee-rails', "~> 3.2.1"
   gem 'sass-rails', "  ~> 3.2.3"
+  gem 'coffee-rails', "~> 3.2.1"
   gem 'uglifier', '>= 1.0.3'
+  gem 'compass-rails'
+  gem 'compass-h5bp'
 end
 
 group :development do
