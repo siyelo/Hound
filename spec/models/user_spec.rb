@@ -55,27 +55,41 @@ describe User do
     end
   end
 
-  describe 'modify_token' do
-    before :each do
-      @user = Factory :user
+  describe '#disable_confirmation_emails' do
+    let (:user) { Factory :user }
+
+    it "modify token exists when user is created" do
+      user.modify_token.should_not be_nil
     end
 
-    it "exists when user is created" do
-      @user.modify_token.should_not be_nil
+    it "can remove modify token" do
+      user.disable_confirmation_emails(user.modify_token)
+      user.modify_token.should be_nil
     end
 
-    it "should be removed after clicking the link to remove email notifications" do
-      @user.toggle_confirmation_email(@user.modify_token)
-      @user.modify_token.should be_nil
+    it "cannot remove modify token if token is invalid" do
+      user.disable_confirmation_emails(nil)
+      user.modify_token.should_not be_nil
+    end
+
+    it "can change confirmation email" do
+      user.disable_confirmation_emails(user.modify_token)
+      user.reload.confirmation_email.should be_false
+    end
+
+    it "cannot change confirmation email if token is invalid" do
+      user.disable_confirmation_emails(nil)
+      user.reload.confirmation_email.should be_true
     end
 
     it "should be regenerated when confirmation email is set to true" do
-      u = Factory :user, confirmation_email: false
-      u.modify_token = nil; u.save
-      u.confirmation_email = true
-      u.save
-      u.reload
-      u.modify_token.should_not be_nil
+      user.modify_token = nil
+      user.save
+
+      user.confirmation_email = true
+      user.save
+      user.reload
+      user.modify_token.should_not be_nil
     end
   end
 

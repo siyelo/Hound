@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
     write_attribute(:confirmation_email, value)
   end
 
-  def toggle_confirmation_email(token)
+  def disable_confirmation_emails(token)
     if token == modify_token
       self.confirmation_email = false
       self.modify_token = nil
