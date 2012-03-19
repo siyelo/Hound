@@ -12,12 +12,12 @@ module EmailParser
     ### Constants
 
     MATCHERS = {
-      minutes:  /(\d{1,2})(?!mo)m[a-zA-Z]*/,
-      hours:  /(\d{1,2})ho?u?r?s?/,
-      days:  /(\d{1,2})da?y?s?/,
-      weeks:  /(\d{1,2})we?e?k?s?/,
+      years:  /(\d{1,2})ye?a?r?s?/,
       months:  /(\d{1,2})mo[a-zA-Z]*/,
-      years:  /(\d{1,2})ye?a?r?s?/
+      weeks:  /(\d{1,2})we?e?k?s?/,
+      days:  /(\d{1,2})da?y?s?/,
+      hours:  /(\d{1,2})ho?u?r?s?/,
+      minutes:  /(\d{1,2})(?!mo)m[a-zA-Z]*/
     }
 
     ### Instance Methods

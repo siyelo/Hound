@@ -107,5 +107,22 @@ describe EmailParser::IncrementalTime do
                                        23.hours + 1.minute).from_now.to_i
       end
     end
+
+    context "order of date matching" do
+      # if today is 30th day in a month of 31 days (and next month has 30 days)
+      # then Time.now + 1.day + 1.month != Time.now + 1.month + 1.day
+      # i.e.:
+      # 30 March + 1.day  == 31 March
+      # 31 March + 1.month = 30 April
+      # -------------------------------
+      # 30 March + 1.month == 30 April
+      # 30 April + 1.day == 31 April
+
+      it "should match increments in decending order (years to minutes) regardless of email order" do
+        Time.stub(:now).and_return Time.parse '30-03-2011'
+        @time.email = "1d1mo1y@sorad.cc"
+        @time.send_at.to_i.should == Time.parse('31-04-2012').to_i
+      end
+    end
   end
 end
