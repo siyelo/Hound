@@ -2,27 +2,60 @@
 %html
   %head
     = render 'layouts/head'
+    %link{:href => "http://fonts.googleapis.com/css?family=Lobster|Amaranth", :rel => "stylesheet", :type => "text/css"}
 
   %body
     = render "layouts/chromeframe"
-    .topbar
-      .container-fluid
-        .brand
+    %header#header
+      .wrapper
+    
+        %h1#logo
           = link_to 'Hound.cc', '/'
-        %ul.nav
-        %p.pull-right
-          - unless user_signed_in?
-            =link_to 'Sign up', new_user_registration_path
-            = " | "
-            =link_to 'Login', new_user_session_path
-          - else
-            =link_to current_user.email, edit_user_registration_path
-            =" | "
-            =link_to 'Logout', destroy_user_session_path, :method => :delete
 
-    .container-fluid
+        %nav#main-nav
+          %li=link_to 'Home', '/', :class=>"active"
+          %li=mail_to 'info@hound.cc', 'Contact Us'
+          - unless user_signed_in?
+            %li=link_to 'Sign up', new_user_registration_path
+            %li=link_to 'Login', new_user_session_path
+          - else
+            %li=link_to current_user.email, edit_user_registration_path
+            %li=link_to 'Logout', destroy_user_session_path, :method => :delete
+
+        %h2
+          Turn your emails into reminders, quickly!
+        %h3
+          Be more productive by focussing on what’s important right now. Clear out your inbox and schedule reminders for future tasks with Hound.cc.
+        %p.signup-wrap
+          = link_to "Sign Up Free!", new_user_registration_path, :class=>"signup button"
+          %span Lorem Ipsum Dolor Sit Amet
+          
+        %ul.short-guide
+          %li
+            = image_tag('100x100.gif')
+            %h4 Nothing to install
+            %p Schedule and snooze reminders directly from your inbox - it’s as easy as sending an email.
+          %li
+            = image_tag('100x100.gif')
+            %h4 Focus on what's important
+            %p If an email doesn’t have to be dealt with right away, forward it to us and forget about it.
+          %li
+            = image_tag('100x100.gif')
+            %h4 Use it your way
+            %p BCC us on an email thread to create a private reminder for yourself or CC us to remind a group of people.
+          %li
+            = image_tag('100x100.gif')
+            %h4 It's quick and easy
+            %p Take a look through our examples and you’ll be good to go!
+    
+    %section#content
       - flash.each do |name, msg|
         = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
-      = yield
+      .wrapper
+        = yield
+        
+    %footer#footer
+      .wrapper
+        %p Copyright information
 
     = javascript_include_tag "application"

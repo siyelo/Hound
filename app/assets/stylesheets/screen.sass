@@ -1,0 +1,181 @@
+@import compass/reset
+@import compass/utilities
+@import compass/css3
+
+$one:   #e88300
+$two:   #febd69
+$three: #2c1900
+
+body
+  background: url(image_path("bg.png"))
+  font-family: sans-serif
+  
+h1, h2, h3, h4
+  font-family: 'Lobster', cursive
+  font-weight: normal
+
+.wrapper
+  margin: 0 auto
+  max-width: 1000px
+  width: 80%
+  
+#header
+  background: url(image_path("bg-header.jpg")) repeat-x bottom center
+  height: 850px
+  h2
+    clear: both
+    color: $two
+    font-size: 60px
+    font-style: italic
+    padding: 20px 0 25px
+    +text-shadow(rgba(0, 0, 0, 0.5) 0 5px 1px)
+  h3
+    color: $one
+    font-family: Amaranth
+    font-size: 20px
+    font-style: italic
+    line-height: 1.4
+    padding: 0 15px 10px
+    width: 50%
+    +text-shadow(rgba(0, 0, 0, 0.5) 0 3px 1px)
+    
+#logo
+  float: left
+  left: -50px
+  padding: 40px 0 60px
+  position: relative
+  
+  a
+    background: url(image_path("logo.png")) no-repeat center
+    display: block
+    height: 53px
+    opacity: 0.8
+    overflow: hidden
+    text-indent: -9999px
+    width: 178px
+    &:hover, &:focus
+      opacity: 1
+      +transition(all 0.5s ease)
+  
+#main-nav
+  float: right
+  +pie-clearfix
+  li
+    display: inline
+    float: left
+  a
+    color: $one
+    display: block
+    font-family: 'Lobster'
+    padding: 70px 20px 30px
+    text-decoration: none
+    +text-shadow(#000 0 1px 0)
+    &:hover, &:focus, &.active
+      background: rgba(0, 0, 0, 0.2)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+      color: #fff
+
+.button
+  background: $two
+  color: $three
+  display: block
+  font-family: Lobster
+  font-size: 22px
+  padding: 11px 0
+  text-decoration: none
+  +border-radius(2px)
+  +box-shadow(rgba(0, 0, 0, 0.4) 0 5px 1px)
+  +text-shadow(#fff 0 1px 0)
+  &:hover, &:focus
+    background: $two + #111
+    color: #000
+    +box-shadow(rgba(0, 0, 0, 0.7) 0 5px 1px)
+    +transition(all 0.5s ease)
+  &:active
+    position: relative
+    top: 3px
+    +box-shadow(rgba(0, 0, 0, 0.4) 0 2px 1px)
+ 
+.signup-wrap
+  margin: 50px 15px
+  text-align: center
+  width: 40%
+  span
+    color: $one
+    display: block
+    font-size: 11px
+    opacity: 0.3
+    padding: 15px 0 0
+    +text-shadow(rgba(0, 0, 0, 0.3) 0 1px 0)
+  &:hover, &:focus
+    span
+      opacity: 1
+      +transition(all 1s ease)
+ 
+.signup
+  text-align: center
+
+.short-guide
+  margin-top: 150px
+  +pie-clearfix
+  li
+    display: inline-block
+    float: left
+    padding: 0 1%
+    text-align: center
+    width: 23%
+  img
+    display: inline-block
+    height: 70px
+    margin-bottom: 18px
+  h4
+    color: $three
+    font-size: 18px
+    margin-bottom: 7px
+  p
+    color: $three + #222
+    font: normal 14px Amaranth
+    
+    
+.tour
+  padding-top: 20px
+  +pie-clearfix
+  li
+    margin: 40px 0 25px
+    +pie-clearfix
+  span.number
+    background: $one
+    color: #fff
+    display: block
+    font: 20px Lobster
+    float: left
+    margin-right: 2%
+    padding: 12px 0
+    text-align: center
+    width: 5%
+    +border-radius(100px)
+    +text-shadow(rgba(0, 0, 0, 0.3) 0 1px 1px)
+  .tour-content
+    float: left
+    width: 93%
+  h2
+    color: $three
+    font-size: 36px
+    margin: 5px 0 20px
+    +text-shadow(rgba(0, 0, 0, 0.4) 0 2px 2px)
+  p
+    font: normal 14px/1.4 Amaranth
+    float: left
+    padding-left: 0.5%
+    width: 45%
+  img
+    float: right
+    width: 45%
+    
+#footer
+  background: $two
+  color: rgba(0, 0, 0, 0.5)
+  font: 14px Amaranth
+  margin-top: 50px
+  padding: 30px 0
+  +text-shadow(rgba(255, 255, 255, 0.5) 0 1px 1px)
