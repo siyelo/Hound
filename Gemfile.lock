@@ -29,6 +29,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.7)
+    airbrake (3.0.9)
+      activesupport
+      builder
     annotate (2.4.1.beta1)
     ansi (1.4.2)
     archive-tar-minitar (0.5.2)
@@ -297,6 +300,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   annotate (~> 2.4.1.beta)
   awesome_nested_set
   capybara-webkit

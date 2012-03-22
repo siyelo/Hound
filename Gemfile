@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem "airbrake"
 gem 'awesome_nested_set'
 gem 'chronic'
 gem 'devise'
