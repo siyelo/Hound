@@ -131,6 +131,7 @@ describe ReminderCreationService do
     end
 
     it "should flag reminders that are created with a bcc'ed Hound address" do
+      Time.zone = "Harare"
       fm = Factory.build :fetched_mail,
                          to: ['to@mail.com'],
                          bcc: ['tomorrow@hound.cc']
@@ -138,12 +139,13 @@ describe ReminderCreationService do
       User.stub!(:find_or_invite!).and_return(fm.user)
       FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
 
-      Reminder.should_receive(:create!).with(send_at: (DateTime.now.utc + 1.day).change(hour: 8),
+      Reminder.should_receive(:create!).with(send_at: (DateTime.now + 1.day).change(hour: 8),
                                              fetched_mail: fm, is_bcc: true )
       @service.create! Mail.new
     end
 
     it "should not flag reminders that are not created with a bcc'ed Hound address" do
+      Time.zone = "Harare"
       fm = Factory.build :fetched_mail,
                          to: ['to@mail.com'],
                          cc: ['tomorrow@hound.cc']
@@ -151,7 +153,7 @@ describe ReminderCreationService do
       User.stub!(:find_or_invite!).and_return(fm.user)
       FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
 
-      Reminder.should_receive(:create!).with(send_at: (DateTime.now.utc + 1.day).change(hour: 8),
+      Reminder.should_receive(:create!).with(send_at: (DateTime.now + 1.day).change(hour: 8),
                                              fetched_mail: fm, is_bcc: false )
       @service.create! Mail.new
     end

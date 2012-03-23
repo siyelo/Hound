@@ -1,22 +1,17 @@
 require 'hound/services/reminder_mail_updater'
 require 'ostruct'
 
-describe Hound::ReminderMailUpdater do
-  module ActiveRecord
-    class Base
-      def self.transaction(&block)
-        block.call
-      end
-    end
-  end
+module ActiveRecord
+  class Base; end
+end
 
+describe Hound::ReminderMailUpdater do
   let(:params) { { id: 1, reminder_mail: { send_at: "some date", delivered: 'true',
     subject: 'subject', body: 'body', cc: 'cc'} } }
   let(:fetched_mail) { OpenStruct.new save!: true, errors: {} }
   let(:reminder) { OpenStruct.new fetched_mail: fetched_mail, save!: true, errors: {}}
   let(:reminders) { mock(:scope, find_by_id: reminder) }
   let(:user) { mock :user, reminders: reminders }
-
   let(:updater) { Hound::ReminderMailUpdater.new }
 
   it "should only find reminders that belong to given user" do
@@ -44,54 +39,79 @@ describe Hound::ReminderMailUpdater do
     updater.perform(user, params)
   end
 
-  it 'should perform an update' do
-    reminder.should_receive(:save!)
-    fetched_mail.should_receive(:save!)
-    updater.perform(user, params)
-  end
-
-  it 'should return true if all OK' do
-    updater.perform(user, params).should == true
-  end
-
-  it 'should rollback if one entity save fails' do
-    reminder.stub(:save!).and_raise Exception.new
-    fetched_mail.should_not_receive(:save!)
-    updater.perform(user, params).should == false
-  end
-
-  it 'should catch the exception if one entity save fails' do
-    reminder.stub(:save!).and_raise Exception.new
-    lambda do
+  context "transactional update" do
+    before :each do
+      ActiveRecord::Base.stub(:transaction).and_yield
+    end
+    it 'should perform an update' do
+      reminder.should_receive(:save!)
+      fetched_mail.should_receive(:save!)
       updater.perform(user, params)
-    end.should_not raise_exception
-  end
+    end
 
-  it "should fail if reminder id not found" do
-    reminders = mock :scope, find_by_id: nil
-    user = mock :user, reminders: reminders
-    updater.perform(user, params).should == false
-  end
+    it 'should return true if all OK' do
+      ActiveRecord::Base.stub(:transaction).and_yield
+      updater.perform(user, params).should == true
+    end
 
-  it "has empty errors if all saved ok" do
-    updater.perform(user, params).should == true
-    updater.errors.should be_empty
-  end
+    it 'should rollback if one entity save fails' do
+      ActiveRecord::Base.stub(:transaction).and_yield
+      reminder.stub(:save!).and_raise Exception.new
+      fetched_mail.should_not_receive(:save!)
+      updater.perform(user, params).should == false
+    end
 
-  it ".errors on reminder" do
-    reminder.stub(:save!).and_raise Exception.new
-    errors = {some_error: 'some error'}
-    reminder.stub(:errors).and_return errors
-    updater.perform(user, params)
-    updater.errors.should == errors
-  end
+    it 'should catch the exception if one entity save fails' do
+      ActiveRecord::Base.stub(:transaction).and_yield
+      reminder.stub(:save!).and_raise Exception.new
+      lambda do
+        updater.perform(user, params)
+      end.should_not raise_exception
+    end
 
-  it ".errors on fetched mail" do
-    fetched_mail.stub(:save!).and_raise Exception.new
-    errors = {some_error: 'some error'}
-    fetched_mail.stub(:errors).and_return errors
-    updater.perform(user, params)
-    updater.errors.should == errors
+    it "should fail if reminder id not found" do
+      reminders = mock :scope, find_by_id: nil
+      user = mock :user, reminders: reminders
+      updater.perform(user, params).should == false
+    end
+
+    it "has empty errors if all saved ok" do
+      ActiveRecord::Base.stub(:transaction).and_yield
+      updater.perform(user, params).should == true
+      updater.errors.should be_empty
+    end
+
+    it ".errors on reminder" do
+      reminder.stub(:save!).and_raise Exception.new
+      errors = {some_error: 'some error'}
+      reminder.stub(:errors).and_return errors
+      updater.perform(user, params)
+      updater.errors.should == errors
+    end
+
+    it ".errors on fetched mail" do
+      fetched_mail.stub(:save!).and_raise Exception.new
+      errors = {some_error: 'some error'}
+      fetched_mail.stub(:errors).and_return errors
+      updater.perform(user, params)
+      updater.errors.should == errors
+    end
+
+    it 'should build a valid reminder mail' do
+      updater.perform(user, params)
+      rm = updater.reminder_mail
+      rm.reminder.should == reminder
+      rm.fetched_mail.should == fetched_mail
+    end
+
+    it 'should assign errors to the reminder mail presenter' do
+      fetched_mail.stub(:save!).and_raise Exception.new
+      errors = {some_error: 'some error'}
+      fetched_mail.stub(:errors).and_return errors
+      updater.perform(user, params)
+      rm = updater.reminder_mail
+      rm.errors.should == errors
+    end
   end
 
   it "should combine formatted date & time params into UTC time" do
@@ -100,21 +120,5 @@ describe Hound::ReminderMailUpdater do
       reminder_mail: { subject: 'subject' } }
     updater.perform(user, params)
     updater.reminder.send_at.should == DateTime.parse('2012-12-31 00:45')
-  end
-
-  it 'should build a valid reminder mail' do
-    updater.perform(user, params)
-    rm = updater.reminder_mail
-    rm.reminder.should == reminder
-    rm.fetched_mail.should == fetched_mail
-  end
-
-  it 'should assign errors to the reminder mail presenter' do
-    fetched_mail.stub(:save!).and_raise Exception.new
-    errors = {some_error: 'some error'}
-    fetched_mail.stub(:errors).and_return errors
-    updater.perform(user, params)
-    rm = updater.reminder_mail
-    rm.errors.should == errors
   end
 end

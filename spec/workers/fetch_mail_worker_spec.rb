@@ -2,9 +2,7 @@ require  'spec_helper_lite'
 $: << File.join(APP_ROOT, "app/workers")
 require 'fetch_mail_worker'
 
-class ReminderCreationService
-  def fetch_all_mails; end
-end
+class ReminderCreationService; end
 
 describe FetchMailWorker do
   it "should use the fetch queue" do

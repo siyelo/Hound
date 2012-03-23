@@ -39,7 +39,6 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem "factory_girl_rails"
-  gem 'guard-coffeescript'
   gem "guard-rspec"
   gem 'headless'
   gem 'launchy'
@@ -52,9 +51,9 @@ group :test do
 end
 
 group :development, :test do
-  ### http://stackoverflow.com/questions/8251349/ruby-threadptr-data-type-error
-  gem "jasminerice"
+  gem 'guard-coffeescript'
   gem "guard-jasmine"
+  gem 'jasmine'
   gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
   gem 'ruby-debug19'
   gem 'ruby-debug-base19x', '~> 0.11.30.pre10'

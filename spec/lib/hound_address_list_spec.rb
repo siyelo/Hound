@@ -1,11 +1,11 @@
 require 'hound_address_list'
 
-class FetchedMail
-  def all_addresses; [] end
-end
+class FetchedMail; end
 
 describe HoundAddressList do
   it "should accept nil" do
+    mail = mock FetchedMail, all_addresses: []
+    FetchedMail.stub(:new).and_return mail
     HoundAddressList.new(nil).should == []
   end
 
