@@ -33,13 +33,14 @@ describe Hound::ReminderMailUpdater do
   it 'should assign reminder related fields' do
     reminder.should_receive(:send_at=).with("some date")
     reminder.should_receive(:delivered=).with("true")
+    reminder.should_receive(:cc=).with("cc")
     updater.perform(user, params)
   end
 
   it 'should assign fetched_mail related fields ' do
     fetched_mail.should_receive(:subject=).with("subject")
     fetched_mail.should_receive(:body=).with("body")
-    fetched_mail.should_receive(:cc=).with("cc")
+    fetched_mail.should_not_receive(:cc=)
     updater.perform(user, params)
   end
 

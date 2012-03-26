@@ -14,7 +14,7 @@ class Queuer
 
     # sends emails to the people cc'd on an email when the main one is snoozed
     def add_to_snooze_to_notification_queue(reminder)
-      unless reminder.cc.empty?
+      unless reminder.cc.empty? && reminder.fetched_mail.cc.empty?
         Resque.enqueue(NotificationWorker, reminder.id, :snooze_notification_email)
       end
     end

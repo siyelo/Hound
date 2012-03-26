@@ -8,7 +8,8 @@ describe ReminderMail do
   let(:send_at){ DateTime.now }
   let(:fetched_mail) { OpenStruct.new subject: 's', body: 'b',
     from: 'pimp@juice.com', all_addresses: ['1d@hound.cc', 'cc@example.com'] }
-  let(:reminder) { mock :reminder, is_bcc?: false, send_at: send_at, fetched_mail: fetched_mail }
+  let(:reminder) { mock :reminder, is_bcc?: false, send_at: send_at, fetched_mail: fetched_mail,
+  cc: []}
   let(:rm) { ReminderMail.new(reminder) }
 
   it "should delegate body and subject to fetched_mail" do
@@ -31,10 +32,15 @@ describe ReminderMail do
     rm.all_recipients.size.should == 2
   end
 
+  it "should delegate to the Reminder cc field if it is present" do
+    reminder.stub(:cc).and_return(['cc@example.com'])
+    ReminderMail.new(reminder).cc.should == ['cc@example.com']
+  end
+
   it "should not include @hound addresses in reminders' cc field" do
     HoundAddressList.stub(:new).and_return(['1d@hound.cc'])
     fetched_mail.all_addresses = ['1d@hound.cc', 'cc@example.com'] #mock !
-    r = mock :reminder, is_bcc?: false, send_at: send_at, fetched_mail: fetched_mail
+    r = mock :reminder, is_bcc?: false, send_at: send_at, fetched_mail: fetched_mail, cc: []
     ReminderMail.new(r).cc.should == ['cc@example.com']
   end
 

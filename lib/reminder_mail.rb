@@ -14,7 +14,7 @@ class ReminderMail
   end
 
   def cc
-    @reminder.is_bcc? ? [] : @fetched_mail.all_addresses - HoundAddressList.new(@fetched_mail)
+    @reminder.is_bcc? ? [] : reminder_or_fetched_mail_cc
   end
 
   def to
@@ -23,6 +23,16 @@ class ReminderMail
 
   def all_recipients
     [to] + cc
+  end
+
+  private
+
+  def reminder_or_fetched_mail_cc
+    @reminder.cc.empty? ? fetched_mail_cc : @reminder.cc
+  end
+
+  def fetched_mail_cc
+    @fetched_mail.all_addresses - HoundAddressList.new(@fetched_mail)
   end
 end
 

@@ -6,7 +6,10 @@ class Reminder < ActiveRecord::Base
   belongs_to :fetched_mail
 
   ### Attributes
-  attr_accessible :fetched_mail, :sent_to, :send_at, :delivered, :is_bcc
+  attr_accessible :fetched_mail, :sent_to, :send_at, :delivered, :is_bcc, :cc
+
+  ### Serialized attributes
+  serialize :cc,  Array
 
   ### Validations
   validates :send_at, presence: true
@@ -17,12 +20,15 @@ class Reminder < ActiveRecord::Base
 
   ### Delegate methods
   delegate :subject, :subject=, to: :fetched_mail
-  delegate :cc, :cc=, to: :fetched_mail
   delegate :body, :body=, to: :fetched_mail
   delegate :user, :user=, to: :fetched_mail
 
   def email #TODO PLS RENAME K THX
     fetched_mail.from.first
+  end
+
+  def cc=(cc_string_or_array)
+    write_attribute(:cc, EmailList.new(cc_string_or_array))
   end
 
   def snooze_for(duration, token)

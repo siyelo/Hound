@@ -5,35 +5,62 @@ describe Reminder do
   it { should validate_presence_of :fetched_mail }
   it { should belong_to :fetched_mail }
 
-  describe "Reminder Mail" do
-    it "should delegate simple fields to the associated mail (reading)" do
-      mail = Factory :fetched_mail
-      r = Factory :reminder, fetched_mail: mail
-      r.subject.should == mail.subject
-      r.body.should == mail.body
+  it "should delegate simple fields to the associated mail (reading)" do
+    mail = Factory :fetched_mail
+    r = Factory :reminder, fetched_mail: mail
+    r.subject.should == mail.subject
+    r.body.should == mail.body
+  end
+
+  it "should delegate simple fields to the associated mail (writing)" do
+    mail = Factory :fetched_mail
+    r = Factory :reminder, fetched_mail: mail
+    r.subject = '123'
+    r.subject.should == '123'
+    r.body = '456'
+    r.body.should == '456'
+  end
+
+  it "should send reminders to the From address on the creation mail" do
+    mail = Factory :fetched_mail, from: ['sender@g.com']
+    r = Factory :reminder, fetched_mail: mail
+    r.email.should == 'sender@g.com'
+  end
+
+  it "should send reminders to the From address on the creation mail" do
+    pending
+    mail = Factory :fetched_mail, to: ['recipient@g.com', '1h@hound.cc'],
+      cc: ['recipient2@g.com', '2h@hound.cc']
+    r = Factory :reminder, fetched_mail: mail
+    r.cc.should == ['recipient@g.com', 'recipient2@g.com']
+  end
+
+  describe 'cc as string or array' do
+    let (:r) { Factory :reminder, cc: nil }
+
+    it "should return the cc's or an empty array" do
+      r.cc.should == []
     end
 
-    it "should delegate simple fields to the associated mail (writing)" do
-      mail = Factory :fetched_mail
-      r = Factory :reminder, fetched_mail: mail
-      r.subject = '123'
-      r.subject.should == '123'
-      r.body = '456'
-      r.body.should == '456'
+    it "should accept an array of cc's and return an array" do
+      r.cc = ['cc@example.com']
+      r.save!
+      r.reload
+      r.cc.should == ['cc@example.com']
     end
 
-    it "should send reminders to the From address on the creation mail" do
-      mail = Factory :fetched_mail, from: ['sender@g.com']
-      r = Factory :reminder, fetched_mail: mail
-      r.email.should == 'sender@g.com'
+    it "should accept a cc as a string" do
+      r.cc = 'cc@example.com'
+      lambda do
+        r.save!
+      end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
     end
 
-    it "should send reminders to the From address on the creation mail" do
-      pending
-      mail = Factory :fetched_mail, to: ['recipient@g.com', '1h@hound.cc'],
-        cc: ['recipient2@g.com', '2h@hound.cc']
-      r = Factory :reminder, fetched_mail: mail
-      r.cc.should == ['recipient@g.com', 'recipient2@g.com']
+    it "should allow multiple cc's to be created with a string" do
+      r.cc = 'cc@abc.com, cc1@abc.com'
+      lambda do
+        r.save!
+      end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
     end
   end
 

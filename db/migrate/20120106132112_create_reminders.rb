@@ -3,6 +3,7 @@ class CreateReminders < ActiveRecord::Migration
     create_table :reminders do |t|
       t.string :email
       t.boolean :is_bcc, default: false
+      t.string :cc
       t.integer :fetched_mail_id
       t.datetime :send_at
       t.boolean :delivered, :default => false, :null => false

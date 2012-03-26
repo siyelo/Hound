@@ -6,8 +6,8 @@ require 'reminder_mail'
 
 module Hound
   class ReminderMailUpdater
-    REMINDER_ATTRIBUTES = [:send_at, :delivered]
-    MAIL_ATTRIBUTES = [:subject, :body, :cc]
+    REMINDER_ATTRIBUTES = [:send_at, :delivered, :cc]
+    MAIL_ATTRIBUTES = [:subject, :body]
 
     attr_reader :reminder
 
@@ -63,8 +63,11 @@ module Hound
     def parse_send_at!(params)
       if params[:reminder_mail] && !params[:reminder_mail][:send_at]
         if params[:formatted_date] || params[:formatted_time]
-          date = DateTime.parse params.delete(:formatted_date) +' '+ params.delete(:formatted_time)
-          params[:reminder_mail][:send_at] = date.change(offset: Time.zone.formatted_offset)
+          date_string = params.delete(:formatted_date) +' '+
+            params.delete(:formatted_time)
+          date = DateTime.parse date_string
+          params[:reminder_mail][:send_at] = date.change(offset:
+                                                         Time.zone.formatted_offset)
         end
       end
     end

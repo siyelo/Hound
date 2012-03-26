@@ -11,7 +11,7 @@ class RemindersController < ApplicationController
     reminder = current_user.reminders.find(params[:id])
     @reminder_mail = ReminderMail.new(reminder) if reminder
     respond_to do |format|
-      format.html { redirect_to reminders_path unless @reminder_mail}
+      format.html { redirect_to reminders_path unless @reminder_mail }
       format.js
     end
   end
@@ -24,10 +24,10 @@ class RemindersController < ApplicationController
       format.js
       format.html do
         if @reminder_mail.errors.empty?
-          flash[:notice] = "You have successfully updated your reminder";
+          flash[:notice] = "You have successfully updated your reminder"
           redirect_to reminders_path
         else
-          flash[:alert] = "We have failed to update your reminder";
+          flash[:alert] = "We have failed to update your reminder"
           render :action => "edit"
         end
       end
@@ -47,7 +47,4 @@ class RemindersController < ApplicationController
       end
     end
   end
-
-  private
-
- end
+end
