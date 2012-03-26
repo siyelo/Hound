@@ -25,13 +25,10 @@ namespace 'test' do |ns|
     t.pattern = acceptance_test_files
     t.fail_on_error = false
   end
-
-  desc "Run jasmine acceptance"
-  task :jasmine => ["jasmine:ci"]
 end
 
 # Clear out the default Rails dependencies
 Rake::Task['test'].clear
 desc "Run all tests"
-task 'test' => %w[test:unit test:integration test:acceptance test:jasmine]
+task 'test' => %w[test:unit test:integration test:acceptance jasmine:ci]
 
