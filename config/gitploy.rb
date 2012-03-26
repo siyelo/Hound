@@ -22,13 +22,13 @@ deploy do
   push!
   remote do
     run "cd #{config.path}"
+    run "git reset --hard"
     run "source /home/deployer/.bash_profile"
     run "source /home/deployer/.rvm/scripts/rvm"
     run "source #{config.path}/.rvmrc"
     run "rvm use 1.9.2@hound"
     run "ruby -v"
     run "rvm wrapper ruby-1.9.2-p290@hound bootup unicorn_rails"
-    run "git reset --hard"
     run "cp config/database.yml.pg config/database.yml"
     run "bundle install"
     run "rake db:migrate"
