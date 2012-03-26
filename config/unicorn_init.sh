@@ -5,9 +5,9 @@ set -e
 
 # Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
-APP_ROOT=/home/deployer/apps/radmeet
+APP_ROOT=/home/deployer/apps/hound
 PID=$APP_ROOT/tmp/pids/unicorn.pid
-CMD="$APP_ROOT/bin/unicorn -D -c $APP_ROOT/config/unicorn.rb"
+CMD="bootup_unicorn_rails -D -c $APP_ROOT/config/unicorn.rb"
 action="$1"
 set -u
 

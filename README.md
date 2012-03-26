@@ -2,7 +2,7 @@
 
 # Getting Started
 
-## 
+##
 Ok so here's the deal
 Lots of shizzle in here is run off resque, I found an awesome plugin called
 resque scheduler (https://github.com/bvandenbos/resque-scheduler).
@@ -20,4 +20,7 @@ rake resque:work QUEUE='*'
 
 and BAM. you're off to the racez.
 
-Peace
+
+## Deploy
+
+    $ gitploy staging

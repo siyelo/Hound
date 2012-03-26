@@ -60,16 +60,11 @@ test:
   username: hound_test
   password: hound_test
 
-# note - yes this is a duplication of the test db - but with just
-#   cucumber:
-#      <<: *test
-# then the build wont work for some reason.
-cucumber:
+production:
   adapter: postgresql
   encoding: unicode
-  database: hound_test
+  database: hound_prod
   pool: 5
-  username: hound_test
-  password: hound_test
+  username: hound_prod
+  password: hound_prod
 
-# prod config doesnt matter since we're using heroku
