@@ -13,17 +13,13 @@
 require File.join(File.dirname(__FILE__), '../../lib/', 'script_helper')
 include ScriptHelper
 
-WORKSPACE=ENV['WORKSPACE'] || "../"
+WORKSPACE=ENV['WORKSPACE'] || "../../"
 
 def bundle_install
-  #result = run "bundle check"
-  #run_or_die "bundle install" unless result == true
-  run_or_die "bundle install"
 end
 
-def setup_sqlite
-  #run_or_die "cp #{WORKSPACE}/config/database.yml.sample.sqlite3 #{WORKSPACE}/config/database.yml"
-  run "cp #{WORKSPACE}/config/database.yml.sqlite3 #{WORKSPACE}/config/database.yml"
+def setup_db
+  run "cp #{WORKSPACE}/config/database.yml.pg #{WORKSPACE}/config/database.yml"
 end
 
 def setup_specs
@@ -31,10 +27,9 @@ def setup_specs
   run_or_die "rake setup_quick --trace RAILS_ENV=test"
 end
 
-def specs
+def run_specs
   setup_specs
-  run_or_die "rspec spec"
-  #run_or_die "spec spec/models/<pick_some_quick_spec>.rb" #debug
+  run_or_die "rake test"
 end
 
 # http://blog.kabisa.nl/2010/05/24/headless-cucumbers-and-capybaras-with-selenium-and-hudson/
@@ -49,17 +44,9 @@ end
   #run "/etc/init.d/xvfb stop"
 #end
 
-#def cukes
-  #setup_cukes
-  #run_or_die "rake cucumber"
-  ##run_or_die "rake cucumber:run" #for debug
-  #teardown_cukes
-#end
-
 # main
-bundle_install
-setup_sqlite
-specs
-#cukes
+run_or_die "bundle install"
+setup_db
+run_specs
 run_or_die "rake clean"
 
