@@ -85,7 +85,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to edit their details' do
+  scenario 'user should be able to edit their details excl. password' do
     visit '/users/sign_in'
     fill_in "user[email]", :with => @user.email
     fill_in "user[password]", :with=> 'testing'
@@ -95,6 +95,25 @@ feature 'User sessions' do
     within('body') do
       page.should have_content('Edit your profile')
     end
+
+    find(:css, "#user_confirmation_email").set(true)
+    click_button 'Update'
+    within('body') do
+      page.should have_content('You updated your account successfully.')
+    end
+  end
+
+  scenario 'user should be able to edit their details incl. password' do
+    visit '/users/sign_in'
+    fill_in "user[email]", :with => @user.email
+    fill_in "user[password]", :with=> 'testing'
+    click_button 'Sign in'
+
+    visit '/users/edit'
+    within('body') do
+      page.should have_content('Edit your profile')
+    end
+    fill_in "user[password]", with: 'password'
     fill_in "user[current_password]", with: 'testing'
 
     find(:css, "#user_confirmation_email").set(true)
