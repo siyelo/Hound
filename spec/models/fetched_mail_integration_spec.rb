@@ -27,6 +27,8 @@ describe FetchedMail do
         fm.body = "\xA0bad encoding \xA0/"
         fm.save!
       end.should_not raise_exception
+      fm.reload
+      fm.body.valid_encoding?.should be_true
     end
   end
 

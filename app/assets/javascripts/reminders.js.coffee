@@ -17,9 +17,10 @@ class Reminder
     return valid
 
   @mark_as_complete: (form, element) ->
+    element.attr("disabled", true)
     $.ajax
       type: 'PUT'
-      url: form.action
+      url: form.attr('action')
       data: Reminder.get_params_for_update_delivered element.is(':checked')
       dataType: 'json'
       complete: ->
@@ -32,14 +33,14 @@ class Reminder
       $('.status').fadeOut(2000)
       if element.closest("tr").hasClass("completed_row")
         element.closest("tr").removeClass "completed_row"
-      else
+      else if element.is(':checked')
         element.closest("tr").addClass "completed_row"
 
 (exports ? this).Reminder = Reminder
 
 $(document).ready ->
-  if ($('#reminder_body').length)
-    $('#reminder_body').tinymce
+  if ($('#reminder_mail_body').length > 0)
+    $('#reminder_mail_body').tinymce
       theme: "advanced",
       theme_advanced_buttons1: "bold,italic,underline, strikethrough",
       theme_advanced_buttons2: "",
@@ -53,8 +54,7 @@ $(document).ready ->
 
   $(".mark_as_complete").live "click", ->
     element = $(this)
-    element.attr("disabled", true)
-    form = element.parent("td").siblings("form")[0]
+    form = element.parents("form:first")
     Reminder.mark_as_complete(form, element)
 
   #Validate the form of the cc email addresses before submitting

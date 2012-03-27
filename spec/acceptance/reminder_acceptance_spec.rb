@@ -11,22 +11,21 @@ feature 'Reminders' do
 
     scenario 'user can mark a reminder as completed', js: true do
       page.should have_content('You have 1 upcoming reminder')
-      check 'reminder_delivered'
+      check 'reminder_mail_delivered'
       page.should have_content('Saving')
-      page.should have_content('saved')
       visit '/'
       page.should have_content('You have 0 upcoming reminder')
     end
 
     scenario 'user cannot change the status of an old reminder which has been delivered' do
-      find('#reminder_delivered')['disabled'].should == nil #sanity - not disabled
+      find('#reminder_mail_delivered')['disabled'].should == nil #sanity - not disabled
       @reminder.send_at -= 1.month
       @reminder.delivered = true
       @reminder.save
 
       click_link 'Completed'
       page.should have_content('reminder1')
-      find('#reminder_delivered')['disabled'].should == 'disabled'
+      find('#reminder_mail_delivered')['disabled'].should == 'disabled'
     end
 
   end

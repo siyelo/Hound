@@ -34,12 +34,8 @@ class FetchedMail < ActiveRecord::Base
     self
   end
 
-  def body
-    Base64::decode64(read_attribute(:body))
-  end
-
   def body=(value)
-    write_attribute(:body, Base64::encode64(value || ''))
+    write_attribute(:body, value ? value.unpack("C*").pack("U*") : '')
   end
 
   def cc=(cc_string_or_array)
