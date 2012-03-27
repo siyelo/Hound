@@ -9,8 +9,8 @@ $three: #2c1900
 body
   background: url(image_path("bg.png"))
   font-family: sans-serif
-  
-h1, h2, h3, h4
+
+h1, h2, h3
   font-family: 'Lobster', cursive
   font-weight: normal
 
@@ -18,7 +18,7 @@ h1, h2, h3, h4
   margin: 0 auto
   max-width: 1000px
   width: 80%
-  
+
 #header
   background: url(image_path("bg-header.jpg")) repeat-x bottom center
   height: 850px
@@ -38,13 +38,13 @@ h1, h2, h3, h4
     padding: 0 15px 10px
     width: 50%
     +text-shadow(rgba(0, 0, 0, 0.5) 0 3px 1px)
-    
+
 #logo
   float: left
   left: -50px
   padding: 40px 0 60px
   position: relative
-  
+
   a
     background: url(image_path("logo.png")) no-repeat center
     display: block
@@ -56,7 +56,7 @@ h1, h2, h3, h4
     &:hover, &:focus
       opacity: 1
       +transition(all 0.5s ease)
-  
+
 #main-nav
   float: right
   +pie-clearfix
@@ -95,7 +95,7 @@ h1, h2, h3, h4
     position: relative
     top: 3px
     +box-shadow(rgba(0, 0, 0, 0.4) 0 2px 1px)
- 
+
 .signup-wrap
   margin: 50px 15px
   text-align: center
@@ -111,7 +111,7 @@ h1, h2, h3, h4
     span
       opacity: 1
       +transition(all 1s ease)
- 
+
 .signup
   text-align: center
 
@@ -135,8 +135,8 @@ h1, h2, h3, h4
   p
     color: $three + #222
     font: normal 14px Amaranth
-    
-    
+
+
 .tour
   padding-top: 20px
   +pie-clearfix
@@ -171,7 +171,7 @@ h1, h2, h3, h4
   img
     float: right
     width: 45%
-    
+
 #footer
   background: $two
   color: rgba(0, 0, 0, 0.5)

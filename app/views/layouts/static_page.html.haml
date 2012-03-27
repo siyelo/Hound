@@ -1,0 +1,41 @@
+!!! 5
+%html
+  %head
+    = render 'layouts/head'
+    %link{:href => "http://fonts.googleapis.com/css?family=Lobster|Amaranth", :rel => "stylesheet", :type => "text/css"}
+
+  %body
+    = render "layouts/chromeframe"
+    %header#header
+      .wrapper
+
+        %h1#logo
+          = link_to 'Hound.cc', '/'
+
+        %nav#main-nav
+          %li= link_to 'Home', '/', :class=>"active"
+          %li= link_to 'Pricing', '/pricing'
+          %li= link_to 'FAQ', '/faq'
+          - unless user_signed_in?
+            %li= link_to 'Sign up', new_user_registration_path
+            %li= link_to 'Login', new_user_session_path
+          - else
+            %li= link_to current_user.email, edit_user_registration_path
+            %li= link_to 'Logout', destroy_user_session_path, :method => :delete
+
+        = content_for :header
+
+    %section#content
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
+      .wrapper
+        = yield
+
+    %footer#footer
+      .wrapper
+        %p &copy; Copyright 2012 Siyelo
+        %ul
+          %li= link_to 'Terms of Use', 'terms-of-use'
+          %li= mail_to 'info@hound.cc', 'Contact Us'
+
+    = javascript_include_tag "application"

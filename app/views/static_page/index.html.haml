@@ -1,55 +1,97 @@
+- content_for :header do
+  %h2
+    Turn your emails into reminders, quickly!
+  %h3
+    Hound is an email-based productivity and scheduling tool. It helps you clear out your inbox and to focus on what’s important right now.
+  %p.signup-wrap
+    = link_to "Sign Up Free!", new_user_registration_path, :class=>"signup button"
+    %span All features completely free during public beta!
+  %ul.short-guide
+    %li
+      = image_tag('100x100.gif')
+      %h4 Choose a time
+    %li
+      = image_tag('100x100.gif')
+      %h4 Send us an email
+    %li
+      = image_tag('100x100.gif')
+      %h4 Get reminded, on-time
+    %li
+      = image_tag('100x100.gif')
+      %h4 Snooze it (or do it)
+
 %ul.tour
   %li
     %span.number 1
     .tour-content
-      %h2 Many uses and even more benefits
+      %h2 Choose when you'd like to be reminded
       %p
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Use our flexible email addresses to schedule a reminder at a time that suits you.
         %br
         %br
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+
+        You can choose times like
+        = mail_to '5minutes@hound.cc'
+        or
+        = mail_to '1day@hound.cc'
+        (and many more).
       = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
 
   %li
     %span.number 2
     .tour-content
-      %h2 Many uses and even more benefits
+      %h2 Send us an email
       %p
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Address an email to Hound and we'll create reminders for you.
         %br
         %br
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        You can also schedule reminders for others by copying them on the email.
       = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
 
   %li
     %span.number 3
     .tour-content
-      %h2 Many uses and even more benefits
+      %h2 Receive your reminder directly into your inbox
       %p
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Hound sends you a reminder email when it's due.
         %br
         %br
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Hound reminders also work well with threaded conversations in Gmail and Mail.app.
       = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
 
   %li
     %span.number 4
     .tour-content
-      %h2 Many uses and even more benefits
+      %h2 Snooze it (or do it :-)
       %p
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Need to put off 'til tomorrow what doesnt need to be done today?
         %br
         %br
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
+        Easy. Just snooze your Hound reminders with one click, right from your inbox!
       = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
 
+%h2 Benefits You'll Love
+%ul.benefits
   %li
-    %span.number 5
-    .tour-content
-      %h2 Many uses and even more benefits
-      %p
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
-        %br
-        %br
-        The team can focus on their current tasks without having to worry about the client deliverable just yet. They will be reminded about it in due course and will have enough time to get it delivered.
-      = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
+    %h3 Increase Productivity
+    %p Manage your todos more effectively.
+  %li
+    %h3 Increase Sales
+    %p Follow up important leads on time.
+  %li
+    %h3 Nothing to Install
+    %p Works directly from your inbox (and browser).
+  %li
+    %h3 Get Things Done
+    %p Get your inbox to zero.
+  %li
+    %h3 It's free to use
+    %p First 30 reminders each month are free.
+  %li
+    %h3 Get Started Immediately
+    %p
+      = link_to 'Sign up now', new_user_registration_path
+      or send a test email to
+      = mail_to '15minutes@hound.cc'
+      and follow the instructions.
+

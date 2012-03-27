@@ -13,5 +13,5 @@ Hound::Application.routes.draw do
   end
 
   root :to => 'static_page#index'
-
+  match '/:action(.html)' => 'static_page#:action'
 end
