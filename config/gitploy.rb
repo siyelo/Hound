@@ -32,7 +32,7 @@ deploy do
     run "cp config/database.yml.pg config/database.yml"
     run "bundle install"
     run "rake db:migrate"
-    run "rake assets:precompile"
+    run "bundle exec rake assets:precompile"
     run "rvmsudo foreman export upstart /etc/init -a hound -u deployer"
     run "sudo service hound_unicorn restart"
     run "sudo restart hound"
