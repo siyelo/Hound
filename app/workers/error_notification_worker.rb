@@ -4,7 +4,8 @@ class ErrorNotificationWorker
 
   @queue = :error_queue
 
-  def self.perform(email)
-    UserMailer.send_error_notification(email).deliver
+  def self.perform(fetched_mail_id)
+    fetched_mail = FetchedMail.find_by_id(fetched_mail_id)
+    UserMailer.send_error_notification(fetched_mail).deliver
   end
 end

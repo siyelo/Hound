@@ -14,7 +14,7 @@ describe SnoozeController do
       get :show, id: @reminder.id
       NotificationWorker.should have_queue_size_of(1)
       response.should render_template('informed_of_snooze')
-      NotificationWorker.perform(@reminder.id, method)
+      NotificationWorker.perform(@reminder.id)
       unread_emails_for('pimpchains@rus.com').size.should >= parse_email_count(1)
       unread_emails_for('tapped@datass.yo').size.should >= parse_email_count(1)
     end

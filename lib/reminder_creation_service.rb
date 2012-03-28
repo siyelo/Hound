@@ -31,7 +31,7 @@ class ReminderCreationService
       Reminder.create!(send_at: send_at, fetched_mail: fetched_mail,
                        is_bcc: fetched_mail.is_address_bcc?(to))
     rescue ArgumentError
-      Resque.enqueue(ErrorNotificationWorker, fetched_mail)
+      Resque.enqueue(ErrorNotificationWorker, fetched_mail.id)
     end
   end
 end

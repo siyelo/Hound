@@ -4,8 +4,8 @@ class NotificationWorker
 
   @queue = :notification_queue
 
-  def self.perform(reminder_id, type)
+  def self.perform(reminder_id)
     reminder = Reminder.find_by_id(reminder_id)
-    Notifier.send(type, reminder)
+    Notifier.snooze_notification_email(reminder)
   end
 end
