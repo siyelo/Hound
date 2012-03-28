@@ -122,4 +122,11 @@ feature 'User sessions' do
       page.should have_content('You updated your account successfully.')
     end
   end
+
+  scenario 'user should be able to change their timezone when accepting invite' do
+    @user.invitation_token = '1234'
+    @user.save
+    visit '/users/invitation/accept?invitation_token=1234'
+    page.should have_content('Timezone')
+  end
 end
