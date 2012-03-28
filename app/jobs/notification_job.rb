@@ -1,4 +1,4 @@
-class NotificationWorker
+class NotificationJob
   # This class is to remind users cc'd in an email that
   # the reminder has been snoozed or that a reminder has been changed
 

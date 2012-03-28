@@ -95,7 +95,7 @@ describe ReminderCreationService do
                        to: 'aslkdjf@hound.cc',
                        subject: 'test', date: DateTime.now)
       @service.create! @mail
-      ErrorNotificationWorker.should have_queue_size_of(1)
+      ErrorNotificationJob.should have_queue_size_of(1)
     end
 
     describe 'replies' do

@@ -1,9 +1,5 @@
 class Notifier
   class << self
-    def send_confirmation_email(reminder)
-      UserMailer.send_confirmation(reminder).deliver
-    end
-
     def send_reminder_email(reminder)
       reminder_mail = ReminderMail.new(reminder)
       # this is necessary because we may have more than one worker polling

@@ -12,27 +12,27 @@ describe "confirmation emails" do
   context "existing users" do
     it "should receive a confirmation email" do
       user = Factory :user, email: 'pimp@macdaddy.yo'
-      FetchMailWorker.perform
+      FetchMailJob.perform
       Reminder.all.count.should == 1 #sanity
-      SendConfirmationWorker.should have_queue_size_of(1)
-      SendConfirmationWorker.perform(Reminder.last.id)
+      SendConfirmationJob.should have_queue_size_of(1)
+      SendConfirmationJob.perform(Reminder.last.id)
       unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
     end
 
     it "should not receive an email if the user has disabled that in their settings" do
       user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
-      FetchMailWorker.perform
+      FetchMailJob.perform
       Reminder.all.count.should == 1 #sanity
-      SendConfirmationWorker.should have_queue_size_of(0)
+      SendConfirmationJob.should have_queue_size_of(0)
     end
   end
 
   context "new users" do
     it "should send an invitation to new users" do
-      FetchMailWorker.perform
+      FetchMailJob.perform
       Reminder.all.count.should == 1 #sanity
-      SendConfirmationWorker.should have_queue_size_of(1)
-      SendConfirmationWorker.perform(Reminder.last.id)
+      SendConfirmationJob.should have_queue_size_of(1)
+      SendConfirmationJob.perform(Reminder.last.id)
       unread_emails_for('pimp@macdaddy.yo').size.should == parse_email_count(1)
     end
   end

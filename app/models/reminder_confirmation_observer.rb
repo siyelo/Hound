@@ -3,7 +3,7 @@ class ReminderConfirmationObserver < ActiveRecord::Observer
   
    def after_create(reminder)
      if reminder.user.confirmation_email?
-       Resque.enqueue(SendConfirmationWorker, reminder.id) 
+       Resque.enqueue(SendConfirmationJob, reminder.id) 
      end
    end
 end

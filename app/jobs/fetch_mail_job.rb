@@ -1,4 +1,4 @@
-class FetchMailWorker
+class FetchMailJob
   # This class is responsible for fetching the emails.
   # It then delegates any further actions to the other classes
   

@@ -12,9 +12,9 @@ describe SnoozeController do
       method = :snooze_notification_email
       @reminder.fetched_mail.cc = ["pimpchains@rus.com", "tapped@datass.yo"]; @reminder.fetched_mail.save
       get :show, id: @reminder.id
-      NotificationWorker.should have_queue_size_of(1)
+      NotificationJob.should have_queue_size_of(1)
       response.should render_template('informed_of_snooze')
-      NotificationWorker.perform(@reminder.id)
+      NotificationJob.perform(@reminder.id)
       unread_emails_for('pimpchains@rus.com').size.should >= parse_email_count(1)
       unread_emails_for('tapped@datass.yo').size.should >= parse_email_count(1)
     end

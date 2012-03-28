@@ -1,4 +1,4 @@
-class QueueMailWorker
+class QueueMailJob
   # This class will poll the database every minute looking
   # for the mails that need to be sent this minute
 

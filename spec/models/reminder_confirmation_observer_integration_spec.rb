@@ -7,11 +7,11 @@ describe ReminderConfirmationObserver do
 
   it "should send a confirmation email" do
     reminder = Factory :reminder
-    SendConfirmationWorker.should have_queue_size_of(1)
+    SendConfirmationJob.should have_queue_size_of(1)
   end
 
   it "should not send a confirmation email if user doesnt want" do
     reminder = Factory :reminder, user: Factory(:user, confirmation_email: false)
-    SendConfirmationWorker.should have_queue_size_of(0)
+    SendConfirmationJob.should have_queue_size_of(0)
   end
 end

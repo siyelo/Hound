@@ -1,7 +1,7 @@
 require 'queuer'
 
 module Resque; end
-class SendReminderWorker; end
+class SendReminderJob; end
 
 describe Queuer do
   it "should enqueue multiple reminders" do

@@ -1,14 +1,14 @@
 require  'spec_helper_lite'
-$: << File.join(APP_ROOT, "app/workers")
-require 'error_notification_worker'
+$: << File.join(APP_ROOT, "app/jobs")
+require 'error_notification_job'
 require 'ostruct'
 
 class FetchedMail; end
 class UserMailer; end
 
-describe ErrorNotificationWorker do
+describe ErrorNotificationJob do
   it "should use the error queue" do
-    ErrorNotificationWorker.instance_variable_get(:@queue).should == :error_queue
+    ErrorNotificationJob.instance_variable_get(:@queue).should == :error_queue
   end
 
   it "should fetch the FetchedMail by id" do
@@ -17,7 +17,7 @@ describe ErrorNotificationWorker do
     FetchedMail.stub(:find_by_id).and_return nil
     UserMailer.stub(:send_error_notification).and_return mail
     FetchedMail.should_receive(:find_by_id).with(1).once
-    ErrorNotificationWorker.perform(1)
+    ErrorNotificationJob.perform(1)
   end
 end
 
