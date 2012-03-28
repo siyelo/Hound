@@ -3,12 +3,8 @@ class Queuer
     def add_all_to_send_queue(reminders)
       reminders ||= []
       reminders.each do |r|
-        self.add_to_send_queue(r)
+        Resque.enqueue(SendReminderWorker, r.id)
       end
-    end
-
-    def add_to_send_queue(reminder)
-      Resque.enqueue(SendReminderWorker, reminder.id)
     end
 
     # sends emails to the people cc'd on an email when the main one is snoozed
@@ -16,10 +12,6 @@ class Queuer
       unless reminder.cc.empty? && reminder.fetched_mail.cc.empty?
         Resque.enqueue(NotificationWorker, reminder.id, :snooze_notification_email)
       end
-    end
-
-    def queue_error_notification(email)
-      Resque.enqueue(ErrorNotificationWorker, email)
     end
   end
 end
