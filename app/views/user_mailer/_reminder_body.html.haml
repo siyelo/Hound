@@ -7,7 +7,7 @@
     %h2 Snooze Count:
     %p{:style => "font-size:16px"}#{@reminder.snooze_count}
   %td{:style => "width:50%"}
-    - if @reminder.email == @recipient
+    - if @reminder.fetched_mail.from == @recipient
       = render 'snooze_box'
     - else
       = render 'cc_box'

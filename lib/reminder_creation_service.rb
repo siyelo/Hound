@@ -34,5 +34,4 @@ class ReminderCreationService
       Resque.enqueue(ErrorNotificationWorker, fetched_mail)
     end
   end
-
 end
