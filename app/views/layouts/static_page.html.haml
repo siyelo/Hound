@@ -13,9 +13,10 @@
           = link_to 'Hound.cc', '/'
 
         %nav#main-nav
-          %li= link_to 'Home', '/', :class=>"active"
-          %li= link_to 'Pricing', '/pricing'
-          %li= link_to 'FAQ', '/faq'
+          %li= link_to 'Home', '/', :class => cp("/")
+          %li= link_to 'How To', '/how-to', :class => cp("how-to")
+          %li= link_to 'FAQ', '/faq', :class => cp("faq")
+          %li= link_to 'Pricing', '/pricing', :class => cp("pricing")
           - unless user_signed_in?
             %li= link_to 'Sign up', new_user_registration_path
             %li= link_to 'Login', new_user_session_path
