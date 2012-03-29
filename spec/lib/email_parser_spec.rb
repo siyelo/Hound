@@ -3,7 +3,7 @@ require 'email_parser'
 describe EmailParser do
   it "parses adverb addresses (defaulting to 8am)" do
     Time.zone = "Harare"
-    EmailParser.parse('tomorrow@hound.cc').should == (Time.zone.now + 1.day).change(hour: 8)
+    EmailParser.parse('tomorrow@hound.cc').should == (Time.now.utc + 1.day).change(hour: 8)
   end
 
   it "parses incremental addresses" do

@@ -4,12 +4,12 @@ module EmailParser
   require 'email_parser/adverb_parser'
   require 'email_parser/incremental_time'
 
-  def self.parse(address)
+  def self.parse(address, timezone = 'UTC')
     #http://en.wikipedia.org/wiki/Email_address#Local_part
     local_part = address.split('@')[0]
 
     send_at = if local_part.match /(?!months)[a-z]{6,10}/
-                EmailParser::AdverbParser.parse(address)
+                EmailParser::AdverbParser.parse(address, timezone)
               elsif local_part.match /\d+[a-z]+/
                 EmailParser::IncrementalTime.parse(address)
               end
