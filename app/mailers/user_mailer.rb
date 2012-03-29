@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
   def send_reminder(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
+    reply_to = reminder.owner_recipient == recipient ? "reminder@hound.cc" : reminder.owner_recipient
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
@@ -32,14 +32,14 @@ class UserMailer < ActionMailer::Base
   def send_snooze_notification(reminder, recipient)
     @reminder = reminder
     @recipient = recipient
-    reply_to = reminder.email == recipient ? "reminder@hound.cc" : reminder.email
+    reply_to = reminder.owner_recipient == recipient ? "reminder@hound.cc" : reminder.owner_recipient
     mail(to: recipient, subject: "Re: #{reminder.subject}",
          reply_to: reply_to, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
 
-  def send_error_notification(email)
-    @email = email
-    mail(to: email.from, subject: "Error: #{email.subject}",
-         in_reply_to: "<#{email.message_id}>")
+  def send_error_notification(fetched_mail)
+    @email = fetched_mail
+    mail(to: fetched_mail.from, subject: "Error: #{fetched_mail.subject}",
+         in_reply_to: "<#{fetched_mail.message_id}>")
   end
 end
