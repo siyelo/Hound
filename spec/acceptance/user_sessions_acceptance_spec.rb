@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-feature 'User sessions' do
+describe 'User', type: :request do
 
-  background do
+  before :each do
     @user = Factory(:user)
   end
 
-  scenario 'user should receive an email and successfully reset password' do
+  it 'receives an email and successfully reset password' do
     reset_mailer
     visit '/users/password/new'
     fill_in "user[email]", :with=>@user.email
@@ -30,7 +30,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to login' do
+  it 'is able to login' do
     visit '/users/sign_in'
     fill_in "user[email]", :with => @user.email
     fill_in "user[password]", :with=> 'testing'
@@ -41,7 +41,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to login with alias' do
+  it 'is able to login with alias' do
     alias_email = Factory :email_alias, user: @user, email: 't@test.com'
     visit '/users/sign_in'
     fill_in "user[email]", :with => alias_email.email
@@ -54,7 +54,7 @@ feature 'User sessions' do
 
   end
 
-  scenario 'user should be able to sign-up' do
+  it 'is able to sign-up' do
     visit '/users/sign_up'
     within('body') do
       page.should have_content('Sign up')
@@ -69,7 +69,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should not be able to sign-up if email used as someones alias' do
+  it 'is able to sign-up if email used as someones alias' do
     alias_email = Factory :email_alias, user: @user, email: 't@test.com'
     visit '/users/sign_up'
     within('body') do
@@ -85,7 +85,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to edit their details excl. password' do
+  it 'is able to edit their details excl. password' do
     visit '/users/sign_in'
     fill_in "user[email]", :with => @user.email
     fill_in "user[password]", :with=> 'testing'
@@ -103,7 +103,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to edit their details incl. password' do
+  it 'is able to edit their details incl. password' do
     visit '/users/sign_in'
     fill_in "user[email]", :with => @user.email
     fill_in "user[password]", :with=> 'testing'
@@ -123,7 +123,7 @@ feature 'User sessions' do
     end
   end
 
-  scenario 'user should be able to change their timezone when accepting invite' do
+  it 'is able to change their timezone when accepting invite' do
     @user.invitation_token = '1234'
     @user.save
     visit '/users/invitation/accept?invitation_token=1234'

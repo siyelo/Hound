@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem "airbrake"
-gem 'awesome_nested_set'
 gem 'chronic'
 gem 'devise'
 gem "devise_invitable"
@@ -11,10 +10,9 @@ gem 'haml', '~> 3.1.4'
 gem 'jquery-rails'
 gem 'mail'
 gem 'pg'
-gem 'rails', '3.2.0'
+gem 'rails', '3.2.2'
 gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', require: "resque/server"
-gem 'therubyracer'
 gem 'tinymce-rails'
 gem 'unicorn'
 gem 'haml-rails'
@@ -47,7 +45,6 @@ group :test do
   gem 'resque_spec'
   gem 'rspec-mocks'
   gem 'shoulda-matchers'
-  gem 'steak'
   gem 'turn', '0.8.2', :require => false
 end
 

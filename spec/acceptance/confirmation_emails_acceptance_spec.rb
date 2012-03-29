@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe "confirmation emails" do
+describe "confirmation emails", type: :request do
   before(:each) do
     ResqueSpec.reset!
     reset_mailer
