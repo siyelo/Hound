@@ -55,7 +55,7 @@ group :development, :test do
   gem 'guard-coffeescript'
   gem "guard-jasmine"
   gem 'jasmine'
-  gem "linecache19", "~> 0.5.12"
+  gem "linecache19", "~> 0.5.13"
   gem 'ruby-debug19'
-  gem 'ruby-debug-base19x', '~> 0.11.30.pre10'
+  gem 'ruby-debug-base19x'
 end
