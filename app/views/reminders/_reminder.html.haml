@@ -4,5 +4,4 @@
   %td.large= reminder.send_at.to_formatted_s(:short_with_day)
   %td.small
     = form_tag reminder_path(reminder.id), method: :put, remote: true do
-      = check_box_tag 'reminder_mail[delivered]', '', reminder.delivered?, class: 'mark_as_complete', disabled: allow_changes(reminder)
-
+      = check_box_tag 'reminder[delivered]', '', reminder.delivered?, class: 'mark_as_complete', disabled: allow_changes(reminder)

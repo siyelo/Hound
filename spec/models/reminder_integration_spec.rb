@@ -22,75 +22,39 @@ describe Reminder do
   end
 
   it "should send reminders to the From address on the creation mail" do
-    mail = Factory :fetched_mail, from: ['sender@g.com']
+    mail = Factory :fetched_mail, from: 'sender@g.com'
     r = Factory :reminder, fetched_mail: mail
-    r.email.should == 'sender@g.com'
+    r.owner_recipient.should == 'sender@g.com'
   end
 
-  it "should send reminders to the From address on the creation mail" do
-    pending
-    mail = Factory :fetched_mail, to: ['recipient@g.com', '1h@hound.cc'],
-      cc: ['recipient2@g.com', '2h@hound.cc']
-    r = Factory :reminder, fetched_mail: mail
-    r.cc.should == ['recipient@g.com', 'recipient2@g.com']
-  end
+  describe 'other_recipients as string or array' do
+    let (:r) { Factory :reminder, other_recipients: nil }
 
-  describe 'cc as string or array' do
-    let (:r) { Factory :reminder, cc: nil }
-
-    it "should return the cc's or an empty array" do
-      r.cc.should == []
+    it "should return the other_recipients's or an empty array" do
+      r.other_recipients.should == []
     end
 
-    it "should accept an array of cc's and return an array" do
-      r.cc = ['cc@example.com']
+    it "should accept an array of other recipients and return an array" do
+      r.other_recipients = ['cc@example.com']
       r.save!
       r.reload
-      r.cc.should == ['cc@example.com']
+      r.other_recipients.should == ['cc@example.com']
     end
 
-    it "should accept a cc as a string" do
-      r.cc = 'cc@example.com'
+    it "should accept an other recipient as a string" do
+      r.other_recipients = 'cc@example.com'
       lambda do
         r.save!
       end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
     end
 
-    it "should allow multiple cc's to be created with a string" do
-      r.cc = 'cc@abc.com, cc1@abc.com'
+    it "should allow multiple other_recipients to be created with a string" do
+      r.other_recipients = 'cc@abc.com, cc1@abc.com'
       lambda do
         r.save!
       end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
     end
   end
-
-  #describe "bcc" do
-    #describe "with hound in the bcc field" do
-      #let(:reminder) { Factory :reminder, is_bcc: true, fetched_mail: Factory(:fetched_mail, to: ['recipient@g.com'], bcc: ['2h@hound.cc']) }
-
-      #it "should return whether the hound address that created the reminder was bcc'ed" do
-        #reminder.is_bcc.should == true
-      #end
-
-      #it "should not cc anyone in the reminder if the Hound address is bcc'ed" do
-        #reminder.cc.should be_empty
-      #end
-
-      #describe "without hound in the bcc field" do
-        #let(:reminder) { Factory :reminder, is_bcc: false, fetched_mail: Factory(:fetched_mail, to: ['recipient@g.com'], cc: ['gogoaction@robot.cc']) }
-        #it "should return whether the hound address that created the reminder was bcc'ed" do
-          #reminder.is_bcc.should == false
-        #end
-
-        #it "should have email addresses in the cc field" do
-          #reminder.cc.should_not be_empty
-          #reminder.cc.size.should == 2
-          #reminder.cc.should include 'recipient@g.com'
-          #reminder.cc.should include 'gogoaction@robot.cc'
-        #end
-      #end
-    #end
-  #end
 
   describe "snoozing" do
     let(:reminder) { Factory.build :reminder, fetched_mail: Factory(:fetched_mail, to: ['recipient@g.com'], bcc: ['2h@hound.cc']) }

@@ -9,13 +9,13 @@ describe Notifier do
   end
 
   it "should send a reminder to a person cc'ed on original mail" do
-    reminder = Factory :reminder, fetched_mail: Factory(:fetched_mail, cc:['pimpcc@juice.com'])
+    reminder = Factory :reminder, other_recipients: ['pimpcc@juice.com']
     Notifier.send_reminder_email(reminder)
     unread_emails_for('pimpcc@juice.com').size.should >= parse_email_count(1)
   end
 
   it "should send a reminder to the person who created original mail" do
-    reminder = Factory :reminder, fetched_mail: Factory(:fetched_mail, to:['pimpto@juice.com'])
+    reminder = Factory :reminder, fetched_mail: Factory(:fetched_mail, from:'pimpto@juice.com')
     Notifier.send_reminder_email(reminder)
     unread_emails_for('pimpto@juice.com').size.should >= parse_email_count(1)
   end

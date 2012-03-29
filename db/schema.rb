@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309124003) do
+ActiveRecord::Schema.define(:version => 20120329092028) do
 
   create_table "email_aliases", :force => true do |t|
     t.string   "email"
@@ -42,15 +42,14 @@ ActiveRecord::Schema.define(:version => 20120309124003) do
 
   create_table "reminders", :force => true do |t|
     t.string   "email"
-    t.boolean  "is_bcc",          :default => false
-    t.string   "cc"
+    t.string   "other_recipients"
     t.integer  "fetched_mail_id"
     t.datetime "send_at"
-    t.boolean  "delivered",       :default => false, :null => false
+    t.boolean  "delivered",        :default => false, :null => false
     t.string   "snooze_token"
-    t.integer  "snooze_count",    :default => 0
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.integer  "snooze_count",     :default => 0
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   add_index "reminders", ["fetched_mail_id"], :name => "index_reminders_on_fetched_mail_id"

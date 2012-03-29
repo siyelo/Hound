@@ -81,6 +81,23 @@ describe ReminderCreationService do
       end
     end
 
+    describe "should assign the correct recipients to the reminder" do
+      it "should return an array of all reminder recipients" do
+        @mail.to = '1h@hound.cc, he@man.com'
+        @mail.cc = 'boo@radleys.com'
+        @service.create! @mail
+        Reminder.last.other_recipients.size.should == 2
+        Reminder.last.other_recipients.should_not include '1h@hound.cc'
+      end
+
+      it "reminder cc should be empty if hound was bcc'ed" do
+        @mail.to = 'he@man.com'
+        @mail.bcc = '1h@hound.cc'
+        @service.create! @mail
+        Reminder.last.other_recipients.size.should == 0
+      end
+    end
+
     it "should save the Mail", type: 'integration' do
       user = Factory :user
       User.stub(:find_or_invite!).and_return user
@@ -125,38 +142,6 @@ describe ReminderCreationService do
         @service.create! @child
         Reminder.count.should == 2
       end
-
-      #root.to = ['5min@hound.cc', '10min@hound.cc']
-      #@child.to = ['5min@hound.cc', '8days@hound.cc']
     end
-
-    it "should flag reminders that are created with a bcc'ed Hound address" do
-      Time.zone = "Harare"
-      fm = Factory.build :fetched_mail,
-                         to: ['to@mail.com'],
-                         bcc: ['tomorrow@hound.cc']
-
-      User.stub!(:find_or_invite!).and_return(fm.user)
-      FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
-
-      Reminder.should_receive(:create!).with(send_at: (DateTime.now + 1.day).change(hour: 8),
-                                             fetched_mail: fm, is_bcc: true )
-      @service.create! Mail.new
-    end
-
-    it "should not flag reminders that are not created with a bcc'ed Hound address" do
-      Time.zone = "Harare"
-      fm = Factory.build :fetched_mail,
-                         to: ['to@mail.com'],
-                         cc: ['tomorrow@hound.cc']
-
-      User.stub!(:find_or_invite!).and_return(fm.user)
-      FetchedMail.stub_chain(:create_from_mail!).and_return(fm)
-
-      Reminder.should_receive(:create!).with(send_at: (DateTime.now + 1.day).change(hour: 8),
-                                             fetched_mail: fm, is_bcc: false )
-      @service.create! Mail.new
-    end
-
   end
 end

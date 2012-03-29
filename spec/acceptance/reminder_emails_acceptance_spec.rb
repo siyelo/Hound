@@ -16,7 +16,7 @@ describe "User", type: :request do
   end
 
   it "receives a reminder email with cc explanation" do
-    reminder = Factory :reminder, fetched_mail: Factory(:fetched_mail, cc: 'cc@cc.yo')
+    reminder = Factory :reminder, other_recipients: 'cc@cc.yo'
     Notifier.send_reminder_email(reminder)
     unread_emails_for('cc@cc.yo').size.should == parse_email_count(1)
     open_email('cc@cc.yo')

@@ -4,7 +4,7 @@
 
 class Reminder
   @get_params_for_update_delivered: (is_checked) ->
-    { reminder_mail: { 'delivered': is_checked } }
+    { reminder: { 'delivered': is_checked } }
 
   @validate_cc_emails: (value)   ->
     regex = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
@@ -39,8 +39,8 @@ class Reminder
 (exports ? this).Reminder = Reminder
 
 $(document).ready ->
-  if ($('#reminder_mail_body').length > 0)
-    $('#reminder_mail_body').tinymce
+  if ($('#reminder_body').length > 0)
+    $('#reminder_body').tinymce
       theme: "advanced",
       theme_advanced_buttons1: "bold,italic,underline, strikethrough",
       theme_advanced_buttons2: "",
@@ -60,7 +60,7 @@ $(document).ready ->
   #Validate the form of the cc email addresses before submitting
   $('.js_submit').live "click", ->
     $('.errors').html('')
-    unless Reminder.validate_cc_emails($('#reminder_mail_cc').val())
+    unless Reminder.validate_cc_emails($('#reminder_other_recipients').val())
       $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>')
       event.preventDefault()
 

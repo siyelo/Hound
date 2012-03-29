@@ -8,8 +8,8 @@ describe Reminder do
 
 
   it "should not include the snooze links for cc'ed users" do
-    reminder = Factory :reminder, subject: "mehpants", cc: "wat@wiggle.com"
-    @email = UserMailer.send_reminder(reminder, reminder.cc.first)
+    reminder = Factory :reminder, subject: "mehpants", other_recipients: "wat@wiggle.com"
+    @email = UserMailer.send_reminder(reminder, reminder.other_recipients.first)
     @email.should_not have_body_text('/Snooze for:/')
   end
 

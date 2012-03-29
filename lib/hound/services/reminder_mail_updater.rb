@@ -2,11 +2,9 @@ require 'active_support/core_ext/time/zones'
 require 'active_support/values/time_zone'
 require 'active_support/core_ext/date_time/calculations'
 
-require 'reminder_mail'
-
 module Hound
   class ReminderMailUpdater
-    REMINDER_ATTRIBUTES = [:send_at, :delivered, :cc]
+    REMINDER_ATTRIBUTES = [:send_at, :delivered, :other_recipients]
     MAIL_ATTRIBUTES = [:subject, :body]
 
     attr_reader :reminder
@@ -16,24 +14,19 @@ module Hound
       return false unless @reminder
       @fetched_mail = @reminder.fetched_mail
       parse_send_at! params
-      update_fields params[:reminder_mail]
+      update_fields params[:reminder]
       save_entities
     end
 
     def errors
-      _errors = {}
-      [@reminder, @fetched_mail].each do |object|
-        unless object.valid?
-          object.errors.each do |key, values|
-            _errors[key] = values
-          end
+      @reminder.valid?
+      unless @fetched_mail.valid?
+        @fetched_mail.errors.each do |key, values|
+         @reminder.errors[key] = values
         end
       end
-      _errors
-    end
 
-    def reminder_mail
-      ReminderMail.new(@reminder, errors)
+      @reminder.errors
     end
 
     private
@@ -56,18 +49,19 @@ module Hound
           @fetched_mail.save!
         end
       rescue Exception => e
+        errors
         false
       end
     end
 
     def parse_send_at!(params)
-      if params[:reminder_mail] && !params[:reminder_mail][:send_at]
+      if params[:reminder] && !params[:reminder][:send_at]
         if params[:formatted_date] || params[:formatted_time]
           date_string = params.delete(:formatted_date) +' '+
             params.delete(:formatted_time)
           date = DateTime.parse date_string
-          params[:reminder_mail][:send_at] = date.change(offset:
-                                                         Time.zone.formatted_offset)
+          params[:reminder][:send_at] = date.change(offset:
+                                                    Time.zone.formatted_offset)
         end
       end
     end

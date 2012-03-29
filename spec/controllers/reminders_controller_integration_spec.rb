@@ -35,16 +35,16 @@ describe RemindersController do
     end
 
     it "should update a reminder as delivered" do
-      put 'update', id: reminder.id, reminder_mail: { delivered: "true" }
+      put 'update', id: reminder.id, reminder: { delivered: "true" }
       flash[:notice].should == "You have successfully updated your reminder"
       response.should redirect_to(reminders_path)
     end
 
     describe "ReminderMailUpdater" do
       before :each do
-        @params = { "id" => "1", "reminder_mail" => { "send_at" => 'some date' },
+        @params = { "id" => "1", "reminder" => { "send_at" => 'some date' },
           "controller"=>"reminders", "action"=>"update" }
-        @updater = mock perform: true, reminder_mail: mock(errors: [])
+        @updater = mock perform: true, reminder: mock(errors: [])
         Hound::ReminderMailUpdater.stub(:new).and_return @updater
       end
 
@@ -56,13 +56,13 @@ describe RemindersController do
       it "should call the update service" do
         @updater.should_receive(:perform).with(user, @params).and_return true
         put :update, @params
-        assigns[:reminder_mail].should_not be_nil
+        assigns[:reminder].should_not be_nil
       end
 
       it "should populate a ReminderMail object with any errors" do
         @updater.stub(:perform).and_return false
         put :update, @params
-        assigns[:reminder_mail].should_not be_nil
+        assigns[:reminder].should_not be_nil
       end
 
       # some csrf weirdness with devise.

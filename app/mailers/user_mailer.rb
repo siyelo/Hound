@@ -10,19 +10,22 @@ class UserMailer < ActionMailer::Base
   end
 
   def send_confirmation(reminder, recipient = nil)
-    recipient ||= reminder.fetched_mail.from
-    @send_at = reminder.send_at
+    recipient ||= reminder.owner_recipient
+    @send_at = reminder.send_at.in_time_zone(reminder.user.timezone)
     @edit_reminder_url = edit_reminder_url(reminder.id)
     @edit_notification_url = edit_notification_url(reminder.user.id,
                                                    token: reminder.user.modify_token)
     @user_active = reminder.user.active?
+
     #TODO smell - refactor
     if @user_active
       subject = "Confirmation"
     else
-      @accept_user_invitation_url = accept_user_invitation_url(invitation_token:reminder.user.invitation_token)
+      @accept_user_invitation_url = accept_user_invitation_url(
+        invitation_token: reminder.user.invitation_token)
       subject = "Welcome to Hound.cc"
     end
+
     mail(:to => recipient, subject: "#{subject}: #{reminder.subject}")
   end
 

@@ -8,10 +8,9 @@ class RemindersController < ApplicationController
   end
 
   def edit
-    reminder = current_user.reminders.find(params[:id])
-    @reminder_mail = ReminderMail.new(reminder) if reminder
+    @reminder = current_user.reminders.find(params[:id])
     respond_to do |format|
-      format.html { redirect_to reminders_path unless @reminder_mail }
+      format.html { redirect_to reminders_path unless @reminder }
       format.js
     end
   end
@@ -19,11 +18,11 @@ class RemindersController < ApplicationController
   def update
     updater = Hound::ReminderMailUpdater.new
     updater.perform(current_user, params)
-    @reminder_mail = updater.reminder_mail
+    @reminder = updater.reminder
     respond_to do |format|
       format.js
       format.html do
-        if @reminder_mail.errors.empty?
+        if @reminder.errors.empty?
           flash[:notice] = "You have successfully updated your reminder"
           redirect_to reminders_path
         else

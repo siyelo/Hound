@@ -10,5 +10,4 @@ class FetchMailJob
     service = ReminderCreationService.new
     service.fetch_all_mails
   end
-
 end

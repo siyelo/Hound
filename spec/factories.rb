@@ -2,6 +2,7 @@ Factory.define :reminder do |f|
   f.fetched_mail { Factory :fetched_mail }
   f.send_at      { 1.minute.from_now }
   f.delivered    { false }
+  f.other_recipients { ["another@sorad.com"] }
  end
 
 Factory.define :user do |f|

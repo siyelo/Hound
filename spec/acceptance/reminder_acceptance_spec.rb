@@ -11,21 +11,21 @@ describe 'User', type: :request do
 
     it 'can mark a reminder as completed', js: true do
       page.should have_content('You have 1 upcoming reminder')
-      check 'reminder_mail_delivered'
+      check 'reminder_delivered'
       page.should have_content('Saving')
       visit '/'
       page.should have_content('You have 0 upcoming reminder')
     end
 
     it 'cannot change the status of an old reminder which has been delivered' do
-      find('#reminder_mail_delivered')['disabled'].should == nil #sanity - not disabled
+      find('#reminder_delivered')['disabled'].should == nil #sanity - not disabled
       @reminder.send_at -= 1.month
       @reminder.delivered = true
       @reminder.save
 
       click_link 'Completed'
       page.should have_content('reminder1')
-      find('#reminder_mail_delivered')['disabled'].should == 'disabled'
+      find('#reminder_delivered')['disabled'].should == 'disabled'
     end
   end
 
@@ -39,7 +39,7 @@ describe 'User', type: :request do
     end
 
     it 'can edit the reminder subject' do
-      fill_in 'reminder_mail_subject', with: 'new subject'
+      fill_in 'reminder_subject', with: 'new subject'
       click_button 'submit'
       @reminder.reload
       @reminder.subject.should == 'new subject'
@@ -54,7 +54,7 @@ describe 'User', type: :request do
     end
 
     it 'can edit the reminder body' do
-      fill_in 'reminder_mail_body', with: 'new body'
+      fill_in 'reminder_body', with: 'new body'
       click_button 'submit'
       @reminder.reload
       @reminder.body.should == 'new body'
@@ -71,26 +71,26 @@ describe 'User', type: :request do
 
     it 'can add multiple comma or semi-colon seperated email addresses', js: true do
       click_link 'reminder1'
-      fill_in 'reminder_mail_cc', with: 'test@test1.com'
+      fill_in 'reminder_other_recipients', with: 'test@test1.com'
       click_button 'submit'
       click_link 'reminder1'
-      find_field('reminder_mail_cc').value.should == 'test@test1.com'
+      find_field('reminder_other_recipients').value.should == 'test@test1.com'
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_mail_cc', with: 'test@test1.com; test@test2.com, test@test3.com'
+      fill_in 'reminder_other_recipients', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
       page.should_not have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_mail_cc', with: 'test'
+      fill_in 'reminder_other_recipients', with: 'test'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_mail_cc', with: 'test@test1.com; test@sdva, test3.com'
+      fill_in 'reminder_other_recipients', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
       page.should have_content('Not all cc addresses are properly formed.')
     end

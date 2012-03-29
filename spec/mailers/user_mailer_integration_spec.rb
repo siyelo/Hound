@@ -34,8 +34,8 @@ describe UserMailer do
   end
 
   describe '#send_confirmation - confirmations' do
-    let(:in_1_hour) { Time.now.utc + 1.hour }
     let(:user){ Factory :user }
+    let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
     let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'orig_sender@a.com',
       :subject => 'orig subject', cc: ['cc@a.com'] , user: user }
     let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: user,

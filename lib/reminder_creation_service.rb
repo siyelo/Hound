@@ -29,9 +29,17 @@ class ReminderCreationService
     begin
       send_at = EmailParser.parse(to)
       Reminder.create!(send_at: send_at, fetched_mail: fetched_mail,
-                       is_bcc: fetched_mail.is_address_bcc?(to))
+                       other_recipients: reminder_recipients(to, fetched_mail))
     rescue ArgumentError
       Resque.enqueue(ErrorNotificationJob, fetched_mail.id)
+    end
+  end
+
+  def reminder_recipients(to, fetched_mail)
+    unless fetched_mail.is_address_bcc?(to)
+      fetched_mail.all_addresses - HoundAddressList.new(fetched_mail)
+    else
+      []
     end
   end
 end

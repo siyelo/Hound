@@ -1,10 +1,10 @@
 describe "Reminder", ->
   it "updates a reminder", ->
-    params = { reminder_mail : { 'delivered' : 'false' }}
+    params = { reminder : { 'delivered' : 'false' }}
     expect(Reminder.get_params_for_update_delivered('false')).toEqual(params)
 
   it "updates a reminder to true", ->
-    params = { reminder_mail : { 'delivered' : 'true' }}
+    params = { reminder : { 'delivered' : 'true' }}
     expect(Reminder.get_params_for_update_delivered('true')).toEqual(params)
 
   describe "validate_cc_emails", ->
@@ -42,7 +42,7 @@ describe "Reminder", ->
       expect($.ajax.mostRecentCall.args[0]["type"]).toEqual('PUT')
       expect($.ajax.mostRecentCall.args[0]["dataType"]).toEqual('json')
       expect($.ajax.mostRecentCall.args[0]["data"]).toEqual(
-        { reminder_mail: { 'delivered': true } }
+        { reminder: { 'delivered': true } }
       )
 
     it "should execute callback on successful completion of AJAX request", ->

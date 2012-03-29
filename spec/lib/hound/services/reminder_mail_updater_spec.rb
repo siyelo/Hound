@@ -6,8 +6,8 @@ module ActiveRecord
 end
 
 describe Hound::ReminderMailUpdater do
-  let(:params) { { id: 1, reminder_mail: { send_at: "some date", delivered: 'true',
-    subject: 'subject', body: 'body', cc: 'cc'} } }
+  let(:params) { { id: 1, reminder: { send_at: "some date", delivered: 'true',
+    subject: 'subject', body: 'body', other_recipients: 'cc'} } }
   let(:fetched_mail) { OpenStruct.new save!: true, errors: {} }
   let(:reminder) { OpenStruct.new fetched_mail: fetched_mail, save!: true, errors: {}}
   let(:reminders) { mock(:scope, find_by_id: reminder) }
@@ -28,7 +28,7 @@ describe Hound::ReminderMailUpdater do
   it 'should assign reminder related fields' do
     reminder.should_receive(:send_at=).with("some date")
     reminder.should_receive(:delivered=).with("true")
-    reminder.should_receive(:cc=).with("cc")
+    reminder.should_receive(:other_recipients=).with("cc")
     updater.perform(user, params)
   end
 
@@ -97,27 +97,19 @@ describe Hound::ReminderMailUpdater do
       updater.errors.should == errors
     end
 
-    it 'should build a valid reminder mail' do
-      updater.perform(user, params)
-      rm = updater.reminder_mail
-      rm.reminder.should == reminder
-      rm.fetched_mail.should == fetched_mail
-    end
-
-    it 'should assign errors to the reminder mail presenter' do
+    it 'should assign errors to the reminder presenter' do
       fetched_mail.stub(:save!).and_raise Exception.new
       errors = {some_error: 'some error'}
       fetched_mail.stub(:errors).and_return errors
       updater.perform(user, params)
-      rm = updater.reminder_mail
-      rm.errors.should == errors
+      updater.reminder.errors.should == errors
     end
   end
 
   it "should combine formatted date & time params into UTC time" do
     Time.zone = "Harare"
     params = { id: 1, formatted_date: '2012-12-31', formatted_time: '02:45',
-      reminder_mail: { subject: 'subject' } }
+      reminder: { subject: 'subject' } }
     updater.perform(user, params)
     updater.reminder.send_at.should == DateTime.parse('2012-12-31 00:45')
   end
