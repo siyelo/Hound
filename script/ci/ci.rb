@@ -29,7 +29,7 @@ end
 
 def run_specs
   setup_specs
-  run_or_die "rake test"
+  run_or_die "xvfb-run bundle exec rake test"
 end
 
 #http://blog.kabisa.nl/2010/05/24/headless-cucumbers-and-capybaras-with-selenium-and-hudson/
