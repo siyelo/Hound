@@ -20,6 +20,13 @@ then you need to start your workers:
 
 and BAM. you're off to the racez.
 
+## Setup
+
+  - Define email username and password as ENV variables
+
+  `ENV['HOUND_USERNAME']`
+  `ENV['HOUND_PASSWORD']`
+
 
 ## Deploy
 

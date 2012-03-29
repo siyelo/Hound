@@ -1,11 +1,4 @@
 class ReminderCreationService
-  def fetch_all_mails
-    emails = Mail.all
-    emails.each do |mail|
-      create!(mail)
-    end
-  end
-
   def create!(mail)
     @user = User.find_or_invite!(mail)
     @fetched_mail = FetchedMail.create_from_mail!(mail, @user)

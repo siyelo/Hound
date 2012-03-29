@@ -55,4 +55,5 @@ group :development, :test do
   gem "linecache19", "~> 0.5.13"
   gem 'ruby-debug19'
   gem 'ruby-debug-base19x'
+  gem 'interactive_editor'
 end

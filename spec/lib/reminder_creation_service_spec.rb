@@ -1,26 +1,6 @@
 require 'spec_helper'
 
 describe ReminderCreationService do
-
-  describe "#fetch_all_mails" do
-    it "should process all waiting mails" do
-      @m1 = Mail.new(from: 'sachin@siyelo.com', cc: ['cc@mail.com'],
-                       to: ['2days@hound.cc'], message_id: '1234')
-
-      @m2 = Mail.new(from: 'cc@mail.com', cc: ['sachin@siyelo.com'],
-                        to: ['2days@hound.cc'], in_reply_to: '1234',
-                        message_id: '5678')
-      Mail.stub(:all).and_return [@m1, @m2]
-      @service = ReminderCreationService.new
-      @service.should_receive(:create!).twice
-      @service.fetch_all_mails
-    end
-
-    it "should handle errors without losing the queue" do
-      pending
-    end
-  end
-
   describe "#create!" do
     before :each do
       @now = Time.now.utc

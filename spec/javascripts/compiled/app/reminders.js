@@ -7,7 +7,7 @@
 
     Reminder.get_params_for_update_delivered = function(is_checked) {
       return {
-        reminder_mail: {
+        reminder: {
           'delivered': is_checked
         }
       };
@@ -26,9 +26,10 @@
     };
 
     Reminder.mark_as_complete = function(form, element) {
+      element.attr("disabled", true);
       return $.ajax({
         type: 'PUT',
-        url: form.action,
+        url: form.attr('action'),
         data: Reminder.get_params_for_update_delivered(element.is(':checked')),
         dataType: 'json',
         complete: function() {
@@ -44,7 +45,7 @@
       $('.status').fadeOut(2000);
       if (element.closest("tr").hasClass("completed_row")) {
         return element.closest("tr").removeClass("completed_row");
-      } else {
+      } else if (element.is(':checked')) {
         return element.closest("tr").addClass("completed_row");
       }
     };
@@ -56,7 +57,7 @@
   (typeof exports !== "undefined" && exports !== null ? exports : this).Reminder = Reminder;
 
   $(document).ready(function() {
-    if (($('#reminder_body').length)) {
+    if ($('#reminder_body').length > 0) {
       $('#reminder_body').tinymce({
         theme: "advanced",
         theme_advanced_buttons1: "bold,italic,underline, strikethrough",
@@ -73,13 +74,12 @@
     $(".mark_as_complete").live("click", function() {
       var element, form;
       element = $(this);
-      element.attr("disabled", true);
-      form = element.parent("td").siblings("form")[0];
+      form = element.parents("form:first");
       return Reminder.mark_as_complete(form, element);
     });
     $('.js_submit').live("click", function() {
       $('.errors').html('');
-      if (!Reminder.validate_cc_emails($('#reminder_mail_cc').val())) {
+      if (!Reminder.validate_cc_emails($('#reminder_other_recipients').val())) {
         $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>');
         return event.preventDefault();
       }
