@@ -36,6 +36,8 @@
         %ul
           %li= link_to 'Terms of Use', 'terms-of-use'
           %li= link_to 'Privacy Policy', 'privacy-policy'
-          %li= mail_to 'info@hound.cc', 'Contact Us'
+          %li= link_to 'Contact Us', 'https://hound.uservoice.com/', :class => 'js_uservoice_link'
+
         = render 'layouts/twitter_button'
+
     = javascript_include_tag "application"
