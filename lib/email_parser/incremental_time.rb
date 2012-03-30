@@ -20,12 +20,13 @@ module EmailParser
       weeks:  /(\d{1,2})we?e?k?s?/,
       days:  /(\d{1,2})da?y?s?/,
       hours:  /(\d{1,2})ho?u?r?s?/,
-      minutes:  /(\d{1,2})(?!mo)m[a-zA-Z]*/
+      minutes:  /(\d{1,2})(?!(mo|mar))m[a-zA-Z]*/
     }
 
     class << self
       def parse(email)
-        match_and_return_time(email).from_now
+        increment = match_and_return_time(email.downcase)
+        increment == 0.seconds ? nil : increment.from_now
       end
 
       def match_and_return_time(email)

@@ -90,4 +90,22 @@ describe EmailParser::IncrementalTime do
     email = "1d1mo1y@sorad.cc"
     EmailParser::IncrementalTime.parse(email).to_i.should == Time.parse('31-04-2012').to_i
   end
+
+  it "should return nil if unparseable" do
+    email = "jiosj@sorad.cc"
+    EmailParser::IncrementalTime.parse(email).should be_nil
+  end
+
+  it "should not try parse Mar / March as minutes" do
+    email = "31mar@sorad.cc"
+    EmailParser::IncrementalTime.parse(email).should be_nil
+
+    email = "31march@sorad.cc"
+    EmailParser::IncrementalTime.parse(email).should be_nil
+  end
+
+  it "should downcase email before parsing" do
+    email = "5M@sorad.cc"
+    EmailParser::IncrementalTime.parse("5min@sorad.cc").to_i.should == 5.minutes.from_now.to_i
+  end
 end
