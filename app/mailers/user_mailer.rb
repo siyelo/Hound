@@ -1,3 +1,5 @@
+require 'active_support/time_with_zone'
+
 class UserMailer < ActionMailer::Base
   default from: "reminder@hound.cc"
 
@@ -11,22 +13,23 @@ class UserMailer < ActionMailer::Base
 
   def send_confirmation(reminder, recipient = nil)
     recipient ||= reminder.owner_recipient
-    @send_at = reminder.send_at.in_time_zone(reminder.user.timezone)
+    @send_at = reminder.send_at.in_time_zone(reminder.user.timezone).to_formatted_s(:rfc822_with_zone)
     @edit_reminder_url = edit_reminder_url(reminder.id)
     @edit_notification_url = edit_notification_url(reminder.user.id,
                                                    token: reminder.user.modify_token)
+    @original_subject = reminder.subject || "<No subject>"
     @user_active = reminder.user.active?
 
     #TODO smell - refactor
     if @user_active
-      subject = "Confirmation"
+      subject = "Confirmed: #{@original_subject}"
     else
       @accept_user_invitation_url = accept_user_invitation_url(
         invitation_token: reminder.user.invitation_token)
       subject = "Welcome to Hound.cc"
     end
 
-    mail(:to => recipient, subject: "#{subject}: #{reminder.subject}")
+    mail(:to => recipient, subject: subject)
   end
 
   def send_snooze_notification(reminder, recipient)

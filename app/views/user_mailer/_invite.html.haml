@@ -1,8 +1,10 @@
-%h1 Welcome to Hound.cc
-%p= "We've automatically created an account for you and we've scheduled your reminder for #{@send_at}."
+%h1 Welcome to Hound.cc!
 
-%p Before we can start sending out reminders we need you to please activate your account by clicking the link below:
+= render 'send_at'
 
-%p=link_to 'Activate my account!', @accept_user_invitation_url
+%p
+  Since this is the first time we've seen you on Hound, please verify your
+  email address by opening the link below:
 
-%p Please note that if you don't activate your account, no reminder emails will be sent out.
+%p=link_to "Yes it's me! Activate my account!", @accept_user_invitation_url
+

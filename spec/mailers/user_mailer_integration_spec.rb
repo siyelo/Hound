@@ -43,7 +43,7 @@ describe UserMailer do
     let(:mail) { UserMailer.send_confirmation(reminder, orig_mail.from) }
 
     it 'renders the subject' do
-      mail.subject.should == 'Confirmation: orig subject'
+      mail.subject.should == 'Confirmed: orig subject'
     end
 
     it 'renders the receiver email' do
@@ -55,7 +55,7 @@ describe UserMailer do
     end
 
     it 'assigns send_at' do
-      mail.body.should match(in_1_hour.to_formatted_s(:short_with_day))
+      mail.body.should match(in_1_hour.to_formatted_s(:rfc822_with_zone))
     end
 
     it 'assigns edit_reminder_url' do

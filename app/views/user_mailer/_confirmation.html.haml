@@ -1,6 +1,6 @@
--# TODO use a presenter
 %h1 We've set your reminder!
-You'll get it on:
-%strong=@send_at.to_formatted_s(:short_with_day)
+
+= render 'send_at'
+
 %p= link_to "Edit/Delete this reminder", @edit_reminder_url
 %p= link_to "Turn off confirmation emails", @edit_notification_url

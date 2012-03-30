@@ -1,5 +1,6 @@
 require 'reminder_creation_service'
 require 'net/imap'
+require 'mail'
 
 class FetchMailJob
   SERVER   = 'imap.gmail.com'
