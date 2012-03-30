@@ -5,14 +5,56 @@ require 'fetch_mail_job'
 class ReminderCreationService; end
 
 describe FetchMailJob do
-  it "should use the fetch queue" do
-    FetchMailJob.instance_variable_get(:@queue).should == :fetch_queue
+  let(:imap) { mock('imap') }
+
+  before :each do
+    Net::IMAP.should_receive(:new).with(FetchMailJob::SERVER, :ssl => true).and_return(imap)
+    imap.should_receive(:login).with(FetchMailJob::USERNAME, FetchMailJob::PASSWORD)
+    imap.should_receive(:select).with(FetchMailJob::FOLDER)
   end
 
-  it "should delegate to the reminder service" do
-    service = mock fetch_all_mails: true
-    ReminderCreationService.stub(:new).and_return service
-    service.should_receive(:fetch_all_mails)
-    FetchMailJob.perform
+  describe "#save_mail" do
+    it "creates a reminder from a received mail" do
+      mail = Mail.new(from: "from@example.com", to: "1d@hound.cc",
+               body: "abcdefg", subject: "asubject", cc: "cc@example.com",
+               bcc: "bcc@example.com", in_reply_to: "in_reply_to@example.com")
+      service = FetchMailJob.new
+      service.save_mail(mail)
+      FetchedMail.count.should == 1
+      Reminder.count.should == 1
+    end
+  end
+
+  describe "#fetch_messages" do
+    it "can fetch messages" do
+      mail      = mock('Mail object')
+      rfc_data  = mock('RFC822')
+      fetched_data = mock('fetched_data', attr: {'RFC822' => rfc_data})
+
+      imap.should_receive(:search).with(["ALL"]).and_return(['1'])
+      imap.should_receive(:fetch).with('1', ['RFC822']).and_return([fetched_data])
+      Mail.should_receive(:new).with(rfc_data).and_return(mail)
+
+      service = FetchMailJob.new
+
+      service.should_receive(:save_mail).with(mail)
+      imap.should_receive(:store).with('1', "+FLAGS", [:Deleted])
+
+      service.fetch_messages
+    end
+  end
+
+  describe "#wait_for_messages" do
+    it "keep an active connection" do
+      resp = mock("resp", name: "EXISTS", data: '1')
+      resp.should_receive(:"kind_of?").with(Net::IMAP::UntaggedResponse).and_return(true)
+      imap.should_receive(:idle).and_yield(resp)
+      imap.should_receive(:idle_done)
+      service = FetchMailJob.new
+
+      service.should_receive(:fetch_messages)
+
+      service.wait_for_messages
+    end
   end
 end

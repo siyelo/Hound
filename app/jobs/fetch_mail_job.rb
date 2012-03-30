@@ -11,7 +11,7 @@ class FetchMailJob
 
   def initialize
     @imap = Net::IMAP.new SERVER, :ssl => true
-    @imap.login USERNAME, PASSWORD
+    @imap.login(USERNAME, PASSWORD)
     @imap.select(FOLDER)
   end
 
@@ -22,29 +22,28 @@ class FetchMailJob
 
   def fetch_messages
     imap.search(["ALL"]).each do |message_id|
-      puts message_id
-      fetchdata = imap.fetch(message_id, ['RFC822'])[0]
-      mail = Mail.new(fetchdata.attr['RFC822'])
+      fetched_data = imap.fetch(message_id, ['RFC822'])[0]
+      mail = Mail.new(fetched_data.attr['RFC822'])
 
       save_mail(mail)
 
-      puts "deleting #{message_id}"
       imap.store(message_id, "+FLAGS", [:Deleted])
     end
   end
 
   def start
-    puts 'Starting engines...'
     loop do
-      puts 'waiting...'
-      imap.idle do |resp|
-        if resp.kind_of?(Net::IMAP::UntaggedResponse) and resp.name == "EXISTS"
-          puts "Mailbox now has #{resp.data} messages"
-          imap.idle_done
-        end
-      end
-
-      fetch_messages
+      wait_for_messages
     end
+  end
+
+  def wait_for_messages
+    imap.idle do |resp|
+      if resp.kind_of?(Net::IMAP::UntaggedResponse) && resp.name == "EXISTS"
+        imap.idle_done
+      end
+    end
+
+    fetch_messages
   end
 end
