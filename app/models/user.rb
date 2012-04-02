@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
 
   ### Associations
   has_many :reminders, through: :fetched_mails
-  has_many :fetched_mails
-  has_many :email_aliases
+  has_many :fetched_mails, dependent: :destroy
+  has_many :email_aliases, dependent: :destroy
 
   ### Callbacks
   before_validation :generate_new_token, on: :create

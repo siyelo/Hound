@@ -2,7 +2,7 @@ class FetchedMail < ActiveRecord::Base
 
   ### Associations
   belongs_to :user
-  has_many :reminders
+  has_many :reminders, dependent: :destroy
 
   ### Attributes
   attr_accessible :to, :from, :subject, :body, :cc, :bcc, :user, :message_id,

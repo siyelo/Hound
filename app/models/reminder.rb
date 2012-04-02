@@ -2,7 +2,6 @@ class Reminder < ActiveRecord::Base
   include ScopesReminders
 
   ### Associations
-  belongs_to :message_thread
   belongs_to :fetched_mail
 
   ### Attributes
