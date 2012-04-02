@@ -10,8 +10,6 @@
 
   %p Double-check your timezone
   = f.label :timezone
-  = f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)"
+  = f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)"
 
   = f.submit "Start using Hound →"
-
-

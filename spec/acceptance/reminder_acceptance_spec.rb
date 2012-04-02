@@ -45,6 +45,14 @@ describe 'User', type: :request do
       @reminder.subject.should == 'new subject'
     end
 
+    it 'can remove the reminder subject' do
+      fill_in 'reminder_subject', with: ""
+      click_button 'submit'
+      @reminder.reload
+      @reminder.subject.should == ''
+      page.should have_content('<No Subject>')
+    end
+
     it 'can edit the reminder time' do
       fill_in 'reminder_formatted_time', with: '20:30'
       click_button 'submit'
