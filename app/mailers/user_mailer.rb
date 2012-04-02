@@ -24,7 +24,7 @@ class UserMailer < ActionMailer::Base
     if @user_active
       subject = "Confirmed: #{@original_subject}"
     else
-      @accept_user_invitation_url = accept_user_invitation_url(
+      @activate_url = activate_url(
         invitation_token: reminder.user.invitation_token)
       subject = "Welcome to Hound.cc"
     end

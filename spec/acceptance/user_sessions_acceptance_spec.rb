@@ -126,7 +126,7 @@ describe 'User', type: :request do
   it 'is able to change their timezone when accepting invite' do
     @user.invitation_token = '1234'
     @user.save
-    visit '/users/invitation/accept?invitation_token=1234'
+    visit '/activate?invitation_token=1234'
     page.should have_content('Timezone')
   end
 end

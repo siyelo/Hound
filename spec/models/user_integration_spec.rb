@@ -44,12 +44,17 @@ describe User do
 
   describe "account status" do
     it "returns false if invitation has not been accepted" do
-      user = User.invite!(email: 'a@b.com', timezone: "+02:00")
+      # invite! is not used in our app, but we use it for test convenience here
+      user = User.invite!(email: 'a@b.com', timezone: "+02:00") do |u|
+        u.skip_invitation = true
+      end
       user.active?.should be_false
     end
 
     it "returns true if invitation has been accepted" do
-      user = User.invite!(email: 'a@b.com', timezone: "+02:00")
+      user = User.invite!(email: 'a@b.com', timezone: "+02:00") do |u|
+        u.skip_invitation = true
+      end
       User.accept_invitation!(invitation_token: user.invitation_token,
                               password: "password")
       user.reload
