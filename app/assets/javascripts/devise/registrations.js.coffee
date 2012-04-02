@@ -1,4 +1,6 @@
 $(document).ready ->
+  $("#user_timezone").chosen()
+
   $("#add_alias").live "click", ->
     $(this).disabled
 
@@ -9,5 +11,5 @@ $(document).ready ->
       $.ajax
         type: 'DELETE'
         url: $(this).attr('data-link')
-        success: (data, textStatus, jqXHR) ->
+        success: (data, textStatus, data) ->
           element.remove()

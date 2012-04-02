@@ -3,6 +3,7 @@
 - * the top of the compiled file, but it's generally better to create a new file per style scope.
 - *= require jquery-ui-1.8.18.custom
 - *= require timePicker
+- *= require chosen
 - *= require_self
 - *= require ./screen
 - *= require_tree .
