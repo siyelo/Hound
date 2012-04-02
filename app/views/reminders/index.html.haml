@@ -1,12 +1,12 @@
 %h2 Your Reminders
 
-=render 'sidebar'
+=render 'sidenav'
 
-.content_right
+.content.right
   .reminder_container
     .inline_reminder
   .reminder_list
-    %table{class: 'modern'}
+    %table.modern
       %tr
         %th.large= "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
         %th.large Reminder Date

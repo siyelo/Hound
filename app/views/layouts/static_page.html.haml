@@ -2,42 +2,39 @@
 %html
   %head
     = render 'layouts/head'
-    %link{:href => "http://fonts.googleapis.com/css?family=Lobster|Amaranth", :rel => "stylesheet", :type => "text/css"}
 
   %body
-    = render "layouts/chromeframe"
-    %header#header
-      .wrapper
+    #container
+      = render "layouts/chromeframe"
+      %header#header
+        .wrapper
 
-        %h1#logo
-          = link_to 'Hound.cc', '/'
+          %h1#logo
+            = link_to 'Hound.cc', '/'
 
-        %nav#main-nav
-          %li= link_to 'How To', '/how-to', :class => cp("how-to")
-          %li= link_to 'FAQ', '/faq', :class => cp("faq")
-          %li= link_to 'About', '/about', :class => cp("about")
-          - unless user_signed_in?
-            %li= link_to 'Login', new_user_session_path
-          - else
-            %li= link_to current_user.email, edit_user_registration_path
-            %li= link_to 'Logout', destroy_user_session_path, :method => :delete
+          %nav#main-nav
+            %li= link_to 'How To', '/how-to', :class => cp("how-to")
+            %li= link_to 'FAQ', '/faq', :class => cp("faq")
+            %li= link_to 'About', '/about', :class => cp("about")
+            - unless user_signed_in?
+              %li= link_to 'Login', new_user_session_path
+            - else
+              %li= link_to current_user.email, edit_user_registration_path
+              %li= link_to 'Logout', destroy_user_session_path, :method => :delete
 
-        = content_for :header
-
-    %section#content
-      - flash.each do |name, msg|
-        = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
-      .wrapper
-        = yield
+          = content_for :header
+    
+      = yield
+      .push
 
     %footer#footer
       .wrapper
-        %p &copy; Copyright 2012 Siyelo
-        %ul
+        
+        %ul.horizontal
           %li= link_to 'Terms of Use', 'terms-of-use'
           %li= link_to 'Privacy Policy', 'privacy-policy'
           %li= link_to 'Contact Us', 'https://hound.uservoice.com/', :class => 'js_uservoice_link'
-
+        %p &copy; Copyright 2012 Siyelo
         = render 'layouts/twitter_button'
 
     = javascript_include_tag "application"

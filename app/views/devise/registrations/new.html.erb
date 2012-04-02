@@ -1,19 +1,20 @@
-<h2>Sign up</h2>
+<div id="devise">
+  <h2>Sign up</h2>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+    <div><%= f.label :email %><br />
+    <%= f.email_field :email %></div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+    <div><%= f.label :password %><br />
+    <%= f.password_field :password %></div>
 
-  <div><%= f.label :timezone %><br />
-    <%= f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)" %></div><br />
+    <div><%= f.label :timezone %><br />
+      <%= f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)" %></div>
 
-  <div><%= f.submit "Sign up" %></div>
-  <br />
-<% end %>
+    <div><%= f.submit "Sign up", :class =>"button medium alt" %></div>
+  <% end %>
+</div>
 
 <%= render :partial => "devise/shared/links" %>

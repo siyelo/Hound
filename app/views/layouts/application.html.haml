@@ -4,25 +4,41 @@
     = render 'layouts/head'
     
   %body
-    = render "layouts/chromeframe"
-    .topbar
-      .container-fluid
-        .brand
-          = link_to 'Hound.cc', '/'
-        %ul.nav
-        %p.pull-right
-          - unless user_signed_in?
-            =link_to 'Sign up', new_user_registration_path
-            = " | "
-            =link_to 'Login', new_user_session_path
-          - else
-            =link_to current_user.email, edit_user_registration_path
-            =" | "
-            =link_to 'Logout', destroy_user_session_path, :method => :delete
+    #container
+      = render "layouts/chromeframe"
+      %header#header
+        .wrapper
 
-    .container-fluid
-      - flash.each do |name, msg|
-        = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
-      = yield
+          %h1#logo
+            = link_to 'Hound.cc', '/'
+            
+          %nav#main-nav
+            %li= link_to 'How To', '/how-to', :class => cp("how-to")
+            %li= link_to 'FAQ', '/faq', :class => cp("faq")
+            %li= link_to 'About', '/about', :class => cp("about")
+            - unless user_signed_in?
+              %li=link_to 'Sign up', new_user_registration_path
+              %li= link_to 'Login', new_user_session_path
+            - else
+              %li= link_to current_user.email, edit_user_registration_path
+              %li= link_to 'Logout', destroy_user_session_path, :method => :delete
+
+      %section.app
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
+        .wrapper
+          = yield
+          
+      .push
+
+    %footer#footer
+      .wrapper
+        
+        %ul.horizontal
+          %li= link_to 'Terms of Use', 'terms-of-use'
+          %li= link_to 'Privacy Policy', 'privacy-policy'
+          %li= link_to 'Contact Us', 'https://hound.uservoice.com/', :class => 'js_uservoice_link'
+        %p &copy; Copyright 2012 Siyelo
+        = render 'layouts/twitter_button'
 
     = javascript_include_tag "application"

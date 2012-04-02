@@ -1,66 +1,69 @@
-%h1 How To
+%section#how-to
+  .wrapper
 
-To get started with Hound.cc, all you have to do is send us an email!
+    %h2 How To
 
-%ul
-  %li Compose a new email
-  %li
-    Include [time format]@hound.cc in the To/Cc/Bcc field(s)
+    To get started with Hound.cc, all you have to do is send us an email!
+
+    %ul
+      %li Compose a new email
+      %li
+        Include [time format]@hound.cc in the To/Cc/Bcc field(s)
+        %ul
+          %li
+            %span To: or Cc:
+            Hound sends a reminder to you (the sender) and
+            the other recipients (if any).
+          %li
+            %span Bcc:
+            Hound only sends you a reminder.
+
+    %h3 Time Formats
+
+    Hound has a simple (yet powerful) time formatting scheme;
+
+    %h4 From Now
+
+    %ul
+      %li= mail_to '2minutes@hound.cc'
+      %li= mail_to '3hours@hound.cc'
+      %li= mail_to '1day@hound.cc'
+      %li= mail_to '2weeks@hound.cc'
+      %li= mail_to '3months@hound.cc'
+
+    %h4 Composite
     %ul
       %li
-        %span To: or Cc:
-        Hound sends a reminder to you (the sender) and
-        the other recipients (if any).
+        = mail_to '1day2hours@hound.cc'
+
+    %h4 Weekdays
+    %ul
+      %li= mail_to 'friday@hound.cc'
+      %li= mail_to 'nexttuesday@hound.cc'
+      %li= mail_to 'nextweek@hound.cc'
+
+    %h4 Handy
+    %ul
       %li
-        %span Bcc:
-        Hound only sends you a reminder.
+        = mail_to 'tomorrow@hound.cc'
+        (8am tomorrow)
+      %li
+        = mail_to 'endofday@hound.cc'
+        (5pm today)
 
-%h2 Time Formats
+    %h4 Actual Date
+    %ul
+      %li
 
-Hound has a simple (yet powerful) time formatting scheme;
-
-%h3 From Now
-
-%ul
-  %li= mail_to '2minutes@hound.cc'
-  %li= mail_to '3hours@hound.cc'
-  %li= mail_to '1day@hound.cc'
-  %li= mail_to '2weeks@hound.cc'
-  %li= mail_to '3months@hound.cc'
-
-%h3 Composite
-%ul
-  %li
-    = mail_to '1day2hours@hound.cc'
-
-%h3 Weekdays
-%ul
-  %li= mail_to 'friday@hound.cc'
-  %li= mail_to 'nexttuesday@hound.cc'
-  %li= mail_to 'nextweek@hound.cc'
-
-%h3 Handy
-%ul
-  %li
-    = mail_to 'tomorrow@hound.cc'
-    (8am tomorrow)
-  %li
-    = mail_to 'endofday@hound.cc'
-    (5pm today)
-
-%h3 Actual Date
-%ul
-  %li
-
-%h3 Abbreviations
-%ul
-  %li
-    = mail_to '2m@hound.cc'
-    (2 minutes)
-  %li
-    = mail_to '1mo@hound.cc'
-    (1 month)
-  %li
-    = mail_to 'tom@hound.cc'
-    (tomorrow)
+    %h4 Abbreviations
+    %ul
+      %li
+        = mail_to '2m@hound.cc'
+        (2 minutes)
+      %li
+        = mail_to '1mo@hound.cc'
+        (1 month)
+      %li
+        = mail_to 'tom@hound.cc'
+        (tomorrow)
 

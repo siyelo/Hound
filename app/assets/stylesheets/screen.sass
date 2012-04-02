@@ -4,30 +4,68 @@
 
 $one:   #e88300
 $two:   #febd69
-$three: #2c1900
+$three: #331a03
+
+html, body
+  height: 100%
 
 body
   background: url(image_path("bg.png"))
   font-family: sans-serif
+  
+a
+  color: $three
+  font-size: 12px
+  text-decoration: none
+  &:hover, &:focus
+    text-decoration: underline
 
-h1, h2, h3
-  font-family: 'Lobster', cursive
+h1, h2, h3, h4
+  color: $three
+  font-family: 'Lobster', sans-serif
   font-weight: normal
+  
+h2
+  font-size: 36px
+  +text-shadow(rgba(0, 0, 0, 0.5) 0 1px 2px)
+h3
+  font-size: 24px
+h4
+  font-size: 18px
 
 .wrapper
   margin: 0 auto
   max-width: 1000px
+  position: relative
   width: 80%
+  
+.horizontal
+  +pie-clearfix
+  li
+    display: inline
+    float: left
+    padding-right: 15px
+    
+#container
+  height: auto !important
+  margin: 0 auto -142px
+  min-height: 100%
+  
+.push, #footer
+  height: 142px
 
 #header
-  background: url(image_path("bg-header.jpg")) repeat-x bottom center
-  height: 850px
+  background: url(image_path("bg-brown.png"))
+  .wrapper
+    overflow-y: hidden
   h2
     clear: both
     color: $two
     font-size: 60px
     font-style: italic
     padding: 20px 0 25px
+    position: relative
+    z-index: 10
     +text-shadow(rgba(0, 0, 0, 0.5) 0 5px 1px)
   h3
     color: $one
@@ -35,16 +73,18 @@ h1, h2, h3
     font-size: 20px
     font-style: italic
     line-height: 1.4
-    padding: 0 15px 10px
-    width: 50%
+    padding: 0 15px
+    width: 55%
     +text-shadow(rgba(0, 0, 0, 0.5) 0 3px 1px)
+  .hound
+    bottom: -80px
+    position: absolute
+    right: 10px
+    z-index: 5
 
 #logo
   float: left
-  left: -50px
   padding: 40px 0 60px
-  position: relative
-
   a
     background: url(image_path("logo.png")) no-repeat center
     display: block
@@ -53,9 +93,9 @@ h1, h2, h3
     overflow: hidden
     text-indent: -9999px
     width: 178px
+    +transition(all 0.5s ease)
     &:hover, &:focus
       opacity: 1
-      +transition(all 0.5s ease)
 
 #main-nav
   float: right
@@ -66,6 +106,7 @@ h1, h2, h3
   a
     color: $one
     display: block
+    font-size: 18px
     font-family: 'Lobster'
     padding: 70px 20px 30px
     text-decoration: none
@@ -77,29 +118,53 @@ h1, h2, h3
 
 .button
   background: $two
+  border: none
   color: $three
+  cursor: pointer
   display: block
   font-family: Lobster
   font-size: 22px
   padding: 11px 0
   text-decoration: none
   +border-radius(2px)
-  +box-shadow(rgba(0, 0, 0, 0.4) 0 5px 1px)
-  +text-shadow(#fff 0 1px 0)
+  +box-shadow(rgba(0, 0, 0, 0.4) 0 5px 0)
+  +text-shadow(rgba(255, 255, 255, 0.6) 0 1px 0)
+  +transition(background 0.5s ease)
+  &.signup
+    text-align: center
+    +transition(background 1s ease)
+  &.medium
+    font-size: 18px
+    padding: 5px 40px
   &:hover, &:focus
     background: $two + #111
     color: #000
-    +box-shadow(rgba(0, 0, 0, 0.7) 0 5px 1px)
-    +transition(all 0.5s ease)
+    text-decoration: none
+    +box-shadow(rgba(0, 0, 0, 0.7) 0 5px 0)
+    
+  &.alt
+    background: $one
+    color: #fff
+    +box-shadow(rgba(0, 0, 0, 0.1) 0 5px 0)
+    +text-shadow(rgba(0, 0, 0, 0.2) 0 1px 0)
+    +transition(background 0.5s ease)
+    &:hover, &:focus
+      background: $three + #222
+      text-decoration: none
   &:active
     position: relative
     top: 3px
-    +box-shadow(rgba(0, 0, 0, 0.4) 0 2px 1px)
+    +box-shadow(rgba(0, 0, 0, 0.1) 0 2px 0)
+  
 
 .signup-wrap
-  margin: 50px 15px
+  margin: 40px 15px 60px
   text-align: center
   width: 40%
+  &.wide
+    margin: 0 0 40px
+    padding: 40px 30%
+  
   span
     color: $one
     display: block
@@ -107,16 +172,22 @@ h1, h2, h3
     opacity: 0.3
     padding: 15px 0 0
     +text-shadow(rgba(0, 0, 0, 0.3) 0 1px 0)
+    +transition(all 1s ease)
   &:hover, &:focus
     span
       opacity: 1
-      +transition(all 1s ease)
-
-.signup
-  text-align: center
+  
+#guide
+  background: url(image_path('bg-light.png'))
+  padding: 60px 0 40px
+  position: relative
+  z-index: 15
+  +box-shadow(rgba(0, 0, 0, 0.1) 0 -2px 3px)
+  h4
+    color: #331a03
+    font-family: Amaranth
 
 .short-guide
-  margin-top: 150px
   +pie-clearfix
   li
     display: inline-block
@@ -135,7 +206,6 @@ h1, h2, h3
   p
     color: $three + #222
     font: normal 14px Amaranth
-
 
 .tour
   padding-top: 20px
@@ -162,7 +232,7 @@ h1, h2, h3
     color: $three
     font-size: 36px
     margin: 5px 0 20px
-    +text-shadow(rgba(0, 0, 0, 0.4) 0 2px 2px)
+    +text-shadow(rgba(0, 0, 0, 0.4) 0 1px 2px)
   p
     font: normal 14px/1.4 Amaranth
     float: left
@@ -171,11 +241,110 @@ h1, h2, h3
   img
     float: right
     width: 45%
+    
+#signup
+  background: url(image_path('bg-light.png')) repeat center
+  +box-shadow(rgba(0, 0, 0, 0.05) 0 0 9px inset)
+  
+#benefits
+  padding: 40px 0 60px
+  text-align: center
+  h2
+    border-bottom: 3px dotted rgba(0, 0, 0, 0.1)
+    margin: 0 0 10px
+    padding-bottom: 15px
+    +text-shadow(rgba(0, 0, 0, 0.4) 0 1px 2px)
+    
+.benefits
+  line-height: 1.3
+  padding: 20px 0
+  +pie-clearfix
+  li
+    display: inline
+    float: left
+    padding: 0 1.3%
+    width: 14%
+  h3
+    color: $one
+    font-size: 18px
+    padding-bottom: 10px
+    +text-shadow(rgba(0, 0, 0, 0.2) 0 1px 1px)
+  p
+    color: $three
+    font: 14px Amaranth
+  a
+    font-size: 14px
 
 #footer
-  background: $two
-  color: rgba(0, 0, 0, 0.5)
-  font: 14px Amaranth
-  margin-top: 50px
-  padding: 30px 0
-  +text-shadow(rgba(255, 255, 255, 0.5) 0 1px 1px)
+  background: url(image_path('bg-brown.png'))
+  color: rgba(255, 255, 255, 0.6)
+  font: 13px Amaranth
+  +text-shadow(rgba(0, 0, 0, 0.5) 0 1px 1px)
+  a
+    color: $one
+    font-size: 14px
+  ul
+    padding: 50px 0 7px 0
+  .twitter-follow-button
+    position: absolute
+    right: 0
+    top: 65px
+    
+    
+// Unsorted SASS
+.flash
+  font-size: 12px
+  margin: 0 0 20px
+  padding: 10px 5px
+  text-align: center
+#devise
+  background: #fff
+  margin: 50px auto 10px
+  padding: 40px 40px 20px
+  width: 266px
+  +border-radius(3px)
+  +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+  form
+    padding-bottom: 20px
+  
+  h2
+    margin-bottom: 20px
+  label
+    color: rgba(0, 0, 0, 0.5)
+    font: 14px Amaranth
+  input[type=email], input[type=password]
+    border: 1px solid rgba(0, 0, 0, 0.4)
+    font-size: 18px
+    margin-bottom: 10px
+    padding: 5px 10px
+    width: 246px
+    +box-shadow(rgba(0, 0, 0, 0.1) 1px 1px 3px inset)
+    &:hover, &:focus, &:active
+      border-color: $one
+  input[type=submit]
+    margin-top: 20px
+#links
+  margin-bottom: 40px
+  text-align: center
+  
+.app
+  padding: 50px 0
+  h2
+    margin-bottom: 20px
+.sidenav
+  display: inline
+  float: left
+  font-size: 14px
+  width: 15%
+  li
+    padding: 5px
+  a
+    font-size: 14px
+.content
+  display: inline
+  float: right
+  width: 85%
+  
+.modern
+  font-size: 12px
+  width: 100%
