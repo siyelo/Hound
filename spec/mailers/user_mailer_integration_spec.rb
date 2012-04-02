@@ -29,8 +29,38 @@ describe UserMailer do
     end
   end
 
-  describe '#send_confirmation - welcome/invites' do
-    pending
+  describe '#send_confirmation - welcome emails' do
+    let(:user){ Factory :user, invitation_token: 'testtoken' }
+    let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
+    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'orig_sender@a.com',
+      :subject => 'orig subject', cc: ['cc@a.com'] , user: user }
+    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: user,
+      send_at: in_1_hour}
+    let(:mail) { UserMailer.send_confirmation(reminder, orig_mail.from) }
+
+    it 'renders the subject' do
+      mail.subject.should == 'Welcome to Hound.cc'
+    end
+
+    it 'renders the receiver email' do
+      mail.to.should == ['orig_sender@a.com']
+    end
+
+    it 'renders the sender email' do
+      mail.from.should == ['reminder@hound.cc']
+    end
+
+    it 'assigns send_at' do
+      mail.body.should match(in_1_hour.to_formatted_s(:rfc822_with_zone))
+    end
+
+    it 'assigns edit_reminder_url' do
+      mail.body.should match("/reminders/#{reminder.id}/edit")
+    end
+
+    it 'assigns edit_notification_url' do
+      mail.body.should match(/\/activate\?invitation_token=testtoken/)
+    end
   end
 
   describe '#send_confirmation - confirmations' do
