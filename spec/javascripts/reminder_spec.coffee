@@ -31,9 +31,13 @@ describe "Reminder", ->
   describe "mark_as_complete", ->
     it "should make a correctly formed AJAX request to the form's URL", ->
       form = {}
-      form.action = 'form_action'
+      form.attr = (e, f) ->
+        return 'form_action'
+
       element = {}
       element.is = (e) ->
+        return true
+      element.attr = (e, f) ->
         return true
 
       spyOn($, 'ajax')
@@ -47,9 +51,13 @@ describe "Reminder", ->
 
     it "should execute callback on successful completion of AJAX request", ->
       form = {}
-      form.action = 'form_action'
+      form.attr = (e, f) ->
+        return 'form_action'
+
       element = {}
       element.is = (e) ->
+        return true
+      element.attr = (e, f) ->
         return true
 
       spyOn($, "ajax").andCallFake (options) ->

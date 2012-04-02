@@ -4,7 +4,7 @@
     it("updates a reminder", function() {
       var params;
       params = {
-        reminder_mail: {
+        reminder: {
           'delivered': 'false'
         }
       };
@@ -13,7 +13,7 @@
     it("updates a reminder to true", function() {
       var params;
       params = {
-        reminder_mail: {
+        reminder: {
           'delivered': 'true'
         }
       };
@@ -49,9 +49,14 @@
       it("should make a correctly formed AJAX request to the form's URL", function() {
         var element, form;
         form = {};
-        form.action = 'form_action';
+        form.attr = function(e, f) {
+          return 'form_action';
+        };
         element = {};
         element.is = function(e) {
+          return true;
+        };
+        element.attr = function(e, f) {
           return true;
         };
         spyOn($, 'ajax');
@@ -60,7 +65,7 @@
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual('PUT');
         expect($.ajax.mostRecentCall.args[0]["dataType"]).toEqual('json');
         return expect($.ajax.mostRecentCall.args[0]["data"]).toEqual({
-          reminder_mail: {
+          reminder: {
             'delivered': true
           }
         });
@@ -68,9 +73,14 @@
       return it("should execute callback on successful completion of AJAX request", function() {
         var element, form;
         form = {};
-        form.action = 'form_action';
+        form.attr = function(e, f) {
+          return 'form_action';
+        };
         element = {};
         element.is = function(e) {
+          return true;
+        };
+        element.attr = function(e, f) {
           return true;
         };
         spyOn($, "ajax").andCallFake(function(options) {
