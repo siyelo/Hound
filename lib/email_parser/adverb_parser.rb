@@ -10,7 +10,6 @@ module EmailParser
     ### Constants
     STARTOFDAY = 8
     ENDOFDAY = 17
-    SECONDS_IN_HOUR = 3600
 
     DAYSOFWEEK = [:monday, :tuesday, :wednesday,
                   :thursday, :friday, :saturday, :sunday]

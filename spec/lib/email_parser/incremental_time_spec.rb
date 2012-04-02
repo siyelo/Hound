@@ -105,7 +105,6 @@ describe EmailParser::IncrementalTime do
   end
 
   it "should downcase email before parsing" do
-    email = "5M@sorad.cc"
-    EmailParser::IncrementalTime.parse("5min@sorad.cc").to_i.should == 5.minutes.from_now.to_i
+    EmailParser::IncrementalTime.parse("5Min@sorad.cc").to_i.should == 5.minutes.from_now.to_i
   end
 end
