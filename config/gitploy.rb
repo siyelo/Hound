@@ -36,6 +36,7 @@ deploy do
     run "rvmsudo foreman export upstart /etc/init -a hound -u deployer"
     run "sudo service hound_unicorn restart"
     run "sudo restart hound"
-    #run "touch tmp/restart.txt"
+    # run "touch tmp/restart.txt"
+    run "echo FINISHED."
   end
 end
