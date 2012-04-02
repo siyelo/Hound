@@ -1,8 +1,3 @@
-fetchmail:
-  cron: "* * * * *"
-  class: FetchMailJob
-  description: Fetch Mail
-  queue: fetch_queue
 queuemail:
   cron: "* * * * *"
   class: QueueMailJob
