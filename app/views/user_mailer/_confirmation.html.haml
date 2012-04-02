@@ -1,6 +1,10 @@
 %h1 We've set your reminder!
+%ul
+  %li= link_to "Upcoming", reminders_url
+  %li= link_to "Settings", settings_url
 
 = render 'send_at'
 
-%p= link_to "Edit/Delete this reminder", @edit_reminder_url
-%p= link_to "Turn off confirmation emails", @edit_notification_url
+%p
+  Don't need a confirmation every time you schedule a reminder?
+  = link_to "Turn off confirmation emails", @edit_notification_url

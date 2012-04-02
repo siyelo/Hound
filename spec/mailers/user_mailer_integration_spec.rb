@@ -88,11 +88,19 @@ describe UserMailer do
       mail.body.should match(in_1_hour.to_formatted_s(:rfc822_with_zone))
     end
 
+    it 'allows user to go directly to upcoming reminders' do
+      mail.body.should match /\/reminders(.*)Upcoming(.*)$/
+    end
+
+    it 'allows user to go directly to settings' do
+      mail.body.should match /\/settings(.*)Settings(.*)$/
+    end
+
     it 'assigns edit_reminder_url' do
       mail.body.should match("/reminders/#{reminder.id}/edit")
     end
-
-    it 'assigns edit_notification_url' do
+    it 'allows user to turn confirmations off' do
+      mail.body.should match /Don\'t need a confirmation every time you schedule a reminder\?/
       mail.body.should match("/notifications/#{user.id}/edit") #{user.modify_token}")
     end
   end

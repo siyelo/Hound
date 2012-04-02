@@ -1,7 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'User', type: :request do
-
   before :each do
     @user = Factory(:user)
   end
@@ -31,10 +30,7 @@ describe 'User', type: :request do
   end
 
   it 'is able to login' do
-    visit '/users/sign_in'
-    fill_in "user[email]", :with => @user.email
-    fill_in "user[password]", :with=> 'testing'
-    click_button 'Sign in'
+    log_in_with @user
 
     within('body') do
       page.should have_content('Signed in successfully')
@@ -43,10 +39,7 @@ describe 'User', type: :request do
 
   it 'is able to login with alias' do
     alias_email = Factory :email_alias, user: @user, email: 't@test.com'
-    visit '/users/sign_in'
-    fill_in "user[email]", :with => alias_email.email
-    fill_in "user[password]", :with=> 'testing'
-    click_button 'Sign in'
+    log_in_with @user
 
     within('body') do
       page.should have_content('Signed in successfully')
@@ -85,41 +78,48 @@ describe 'User', type: :request do
     end
   end
 
-  it 'is able to edit their details excl. password' do
-    visit '/users/sign_in'
-    fill_in "user[email]", :with => @user.email
-    fill_in "user[password]", :with=> 'testing'
-    click_button 'Sign in'
-
-    visit '/users/edit'
+  def test_settings_page
     within('body') do
-      page.should have_content('Edit your profile')
+      page.should have_content 'Settings'
+      page.should have_content 'General'
+      page.should have_content 'Your other email addresses'
+      page.should have_content 'Change Password'
+      page.should have_content 'Close Account'
     end
 
     find(:css, "#user_confirmation_email").set(true)
-    click_button 'Update'
+    click_button 'Save'
     within('body') do
-      page.should have_content('You updated your account successfully.')
+      page.should have_content 'You have successfully updated your settings.'
     end
   end
 
+  it 'is able to edit their details excl. password (old devise redirect!)' do
+    log_in_with(@user)
+    visit '/users/edit'
+    test_settings_page
+  end
+
+  it 'is able to edit their details excl. password via /settings' do
+    log_in_with(@user)
+    visit '/settings'
+    test_settings_page
+  end
+
   it 'is able to edit their details incl. password' do
-    visit '/users/sign_in'
-    fill_in "user[email]", :with => @user.email
-    fill_in "user[password]", :with=> 'testing'
-    click_button 'Sign in'
+    log_in_with(@user)
 
     visit '/users/edit'
     within('body') do
-      page.should have_content('Edit your profile')
+      page.should have_content('Settings')
     end
     fill_in "user[password]", with: 'password'
     fill_in "user[current_password]", with: 'testing'
 
     find(:css, "#user_confirmation_email").set(true)
-    click_button 'Update'
+    click_button 'Change my password'
     within('body') do
-      page.should have_content('You updated your account successfully.')
+      page.should have_content('You have successfully updated your password.')
     end
   end
 
@@ -129,4 +129,5 @@ describe 'User', type: :request do
     visit '/activate?invitation_token=1234'
     page.should have_content('Timezone')
   end
+
 end

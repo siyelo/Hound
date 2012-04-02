@@ -6,7 +6,7 @@
   %body
     #container
       = render "layouts/chromeframe"
-      
+
       %header#header
         - flash.each do |name, msg|
           = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
@@ -22,17 +22,17 @@
             - unless user_signed_in?
               %li= link_to 'Login', new_user_session_path
             - else
-              %li= link_to current_user.email, edit_user_registration_path
+              %li= link_to 'Settings', settings_path
               %li= link_to 'Logout', destroy_user_session_path, :method => :delete
 
           = content_for :header
-    
+
       = yield
       .push
 
     %footer#footer
       .wrapper
-        
+
         %ul.horizontal
           %li= link_to 'Terms of Use', 'terms-of-use'
           %li= link_to 'Privacy Policy', 'privacy-policy'
