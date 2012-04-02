@@ -53,5 +53,11 @@ module Hound
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
       g.template_engine :haml
     end
+
+    # don't access the DB or load models when precompiling assets.
+    config.assets.initialize_on_precompile = false
+
+    # config.assets.precompile << /(^[^_]|\/[^_])[^\/]*/
+    config.assets.precompile += ['polyfills.js']
   end
 end
