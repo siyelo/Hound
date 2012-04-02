@@ -25,8 +25,6 @@
         %h4 Stay on top of your todo list
 
 %section#content
-  - flash.each do |name, msg|
-    = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
   .wrapper
     %ul.tour
       %li
