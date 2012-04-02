@@ -8,7 +8,7 @@ class EmailAliasesController < ApplicationController
       else
         flash.now[:alert] = "Sorry! We couldn't create your email alias"
       end
-      format.html { redirect_to edit_user_registration_path }
+      format.html { redirect_to settings_path }
       format.js
     end
   end
@@ -23,7 +23,7 @@ class EmailAliasesController < ApplicationController
         else
           flash.now[:alert] = "Sorry! We couldn't delete your email alias"
         end
-        format.html { redirect_to edit_user_registration_path }
+        format.html { redirect_to settings_path }
       end
     end
   end
