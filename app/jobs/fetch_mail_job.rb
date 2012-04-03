@@ -1,7 +1,6 @@
-require 'reminder_creation_service'
 require 'net/imap'
-require 'mail'
 require 'singleton'
+require 'logger'
 
 class FetchMailJob
   include Singleton
@@ -21,7 +20,7 @@ class FetchMailJob
     @imap.login(USERNAME, PASSWORD)
     @imap.select(FOLDER)
 
-    @logger = Logger.new(STDOUT)
+    @logger = Logger.new(File.join(Rails.root, 'log', 'fetch_mail_job.log'))
   end
 
   def save_mail(mail)
