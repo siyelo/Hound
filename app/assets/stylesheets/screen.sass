@@ -39,6 +39,11 @@ h4
   position: relative
   width: 80%
   
+.fourth
+  display: inline
+  float: left
+  width: 25%
+  
 .horizontal
   +pie-clearfix
   li
@@ -56,14 +61,21 @@ h4
 
 #header
   background: url(image_path("bg-brown.png"))
+  text-align: center
+  .flash
+    left: 45%
+    position: absolute
+    top: 0
+    width: 10%
   .wrapper
-    overflow-y: hidden
+    overflow: hidden
+    text-align: left
   h2
     clear: both
     color: $two
     font-size: 60px
     font-style: italic
-    padding: 20px 0 25px
+    padding: 60px 0 25px
     position: relative
     z-index: 10
     +text-shadow(rgba(0, 0, 0, 0.5) 0 5px 1px)
@@ -84,7 +96,7 @@ h4
 
 #logo
   float: left
-  padding: 40px 0 60px
+  padding: 40px 0 0
   a
     background: url(image_path("logo.png")) no-repeat center
     display: block
@@ -104,6 +116,7 @@ h4
     display: inline
     float: left
   a
+    border-bottom: 1px solid transparent
     color: $one
     display: block
     font-size: 18px
@@ -162,7 +175,7 @@ h4
   text-align: center
   width: 40%
   &.wide
-    margin: 0 0 40px
+    margin: 0
     padding: 40px 30%
   
   span
@@ -208,11 +221,17 @@ h4
     font: normal 14px Amaranth
 
 .tour
-  padding-top: 20px
   +pie-clearfix
   li
-    margin: 40px 0 25px
+    padding: 20px 0 15px
     +pie-clearfix
+  > li
+    padding: 50px 0 25px
+    &.odd
+      background: url(image_path('bg-white.png'))
+    &:first-child
+      padding-top: 60px
+  
   span.number
     background: $one
     color: #fff
@@ -243,17 +262,19 @@ h4
     width: 45%
     
 #signup
-  background: url(image_path('bg-light.png')) repeat center
+  background: url(image_path('bg-dark.png')) repeat center
   +box-shadow(rgba(0, 0, 0, 0.05) 0 0 9px inset)
-  
 #benefits
+  background: url(image_path('bg-brown.png')) repeat center
   padding: 40px 0 60px
   text-align: center
   h2
-    border-bottom: 3px dotted rgba(0, 0, 0, 0.1)
+    border-bottom: 3px dotted rgba(0, 0, 0, 0.2)
     margin: 0 0 10px
     padding-bottom: 15px
     +text-shadow(rgba(0, 0, 0, 0.4) 0 1px 2px)
+  h2, p
+    color: $two
     
 .benefits
   line-height: 1.3
@@ -273,10 +294,11 @@ h4
     color: $three
     font: 14px Amaranth
   a
+    color: $two
     font-size: 14px
 
 #footer
-  background: url(image_path('bg-brown.png'))
+  background: url(image_path('bg-dark.png'))
   color: rgba(255, 255, 255, 0.6)
   font: 13px Amaranth
   +text-shadow(rgba(0, 0, 0, 0.5) 0 1px 1px)
@@ -294,7 +316,6 @@ h4
 // Unsorted SASS
 .flash
   font-size: 12px
-  margin: 0 0 20px
   padding: 10px 5px
   text-align: center
 #devise
@@ -324,7 +345,6 @@ h4
   input[type=submit]
     margin-top: 20px
 #links
-  margin-bottom: 40px
   text-align: center
   
 .app

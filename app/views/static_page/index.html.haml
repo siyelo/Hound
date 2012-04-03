@@ -25,9 +25,10 @@
         %h4 Stay on top of your todo list
 
 %section#content
-  .wrapper
-    %ul.tour
-      %li
+  
+  %ul.tour
+    %li.odd
+      .wrapper
         %span.number 1
         .tour-content
           %h2 Create fast email reminders (and help clear out your inbox)
@@ -36,23 +37,24 @@
               = image_tag('100x100.gif', :width=>"550px", :height=>"300px")
               Schedule reminders using your favourite email application. Its
               fast and simple using Hound's flexible addresses;
-            %li
+            %li.fourth
               = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
               %span Sends you a reminder in 2 minutes
               = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li
+            %li.fourth
               = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
               %span Sends both you and your recipient a reminder tomorrow, first thing.
               = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li
+            %li.fourth
               = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
               %span Sends only you a reminder next Friday.
               = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li
+            %li.fourth
               Get control of your inbox by forwarding emails to Hound.
-              = image_tag('100x100.gif', :width=>"60px", :height=>"30px")
+              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
 
-      %li
+    %li
+      .wrapper
         %span.number 2
         .tour-content
           %h2 Get reminded (and never miss an opportunity to follow up)
@@ -71,7 +73,8 @@
               too!
               = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
 
-      %li
+    %li.odd
+      .wrapper
         %span.number 3
         .tour-content
           %h2 Snooze it (or do it :-)
@@ -86,7 +89,8 @@
               delete that reminder email from your nice and clean inbox).
               = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
 
-      %li
+    %li
+      .wrapper
         %span.number 4
         .tour-content
           %h2 Stay on top of your todo list
@@ -101,7 +105,7 @@
 %section#signup
   .wrapper
     %p.signup-wrap.wide
-      = mail_to '2minutes@hound.cc', "Try it now - free!", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button alt"
+      = mail_to '2minutes@hound.cc', "Try it now - free!", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
 
 
 %section#benefits

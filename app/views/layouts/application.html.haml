@@ -6,7 +6,7 @@
   %body
     #container
       = render "layouts/chromeframe"
-      %header#header
+      %header#header.mini
         .wrapper
 
           %h1#logo
@@ -22,10 +22,9 @@
             - else
               %li= link_to current_user.email, edit_user_registration_path
               %li= link_to 'Logout', destroy_user_session_path, :method => :delete
-
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
       %section.app
-        - flash.each do |name, msg|
-          = content_tag :div, msg, :id => "flash_#{name}", :class => 'flash'
         .wrapper
           = yield
           
