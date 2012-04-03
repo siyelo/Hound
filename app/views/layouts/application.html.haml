@@ -9,7 +9,7 @@
       %header#header.mini
         - if landing_page?
           = render 'layouts/flashes'
-
+          
         .wrapper
           %h1#logo
             = link_to 'Hound.cc', '/'
@@ -32,7 +32,6 @@
       %section.app
         .wrapper
           = yield
-
       .push
 
     %footer#footer
