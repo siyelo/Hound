@@ -1,19 +1,22 @@
-%h2 Your Reminders
+%section.app
+  .wrapper
 
-=render 'sidenav'
+    %h2 Your Reminders
 
-.content.right
-  .reminder_container
-    .inline_reminder
-  .reminder_list
-    %table.modern
-      %tr
-        %th.large= "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
-        %th.large Reminder Date
-        %th.small Mark as complete?
+    =render 'sidenav'
 
-    - if @reminder_filter.filter == 'completed'
-      = render 'reminders', :reminders => @reminder_filter.filtered_reminders
-    - else
-      = render 'upcoming_reminders'
-  .status
+    .content.right
+      .reminder_container
+        .inline_reminder
+      .reminder_list
+        %table.modern
+          %tr
+            %th.large= "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
+            %th.large Reminder Date
+            %th.small Mark as complete?
+
+        - if @reminder_filter.filter == 'completed'
+          = render 'reminders', :reminders => @reminder_filter.filtered_reminders
+        - else
+          = render 'upcoming_reminders'
+      .status

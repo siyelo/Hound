@@ -54,6 +54,7 @@ h4
 .main
   font-size: 14px
   line-height: 1.4
+  padding: 40px 0
   h2
     margin-bottom: 20px
   p
@@ -76,11 +77,14 @@ h4
 #header
   background: url(image_path("bg-brown.png"))
   text-align: center
+  +pie-clearfix
   .flash
     left: 45%
     position: absolute
     top: 0
     width: 10%
+#featured
+  background: url(image_path("bg-brown.png"))
   .wrapper
     overflow: hidden
     text-align: left
@@ -341,7 +345,7 @@ h4
   text-align: center
 #devise
   background: #fff
-  margin: 0 auto 10px
+  margin: 50px auto 10px
   padding: 40px 40px 20px
   width: 266px
   +border-radius(3px)

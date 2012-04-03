@@ -6,7 +6,7 @@
   %body
     #container
       = render "layouts/chromeframe"
-      %header#header.mini
+      %header#header
         - if landing_page?
           = render 'layouts/flashes'
           
@@ -29,9 +29,7 @@
       - unless landing_page?
         = render 'layouts/flashes'
 
-      %section.app
-        .wrapper
-          = yield
+      = yield
       .push
 
     %footer#footer
