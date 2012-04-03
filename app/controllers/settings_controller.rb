@@ -19,8 +19,8 @@ class SettingsController < ApplicationController
   def update_password
     @resource = User.find(current_user.id)
     if @resource.update_with_password(params[:user])
-      flash[:notice] = "You have successfully updated your password."
       sign_in :user, @resource, :bypass => true
+      flash[:notice] = "You have successfully updated your password."
       redirect_to settings_path
     else
       flash[:alert] = "Sorry, we couldn't update your password."
