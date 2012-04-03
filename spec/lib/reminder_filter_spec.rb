@@ -49,13 +49,13 @@ describe ReminderFilter do
       it "groups reminders in 3-7 days in next week" do
         reminders = setup_reminder 4.days.from_now
         groups   = ReminderFilter.new(reminders).grouped_by_periods
-        groups[:next_week].count.should == 1
+        groups[:next_7_days].count.should == 1
       end
 
       it "groups reminders in 8-30 days in next month" do
         reminders = setup_reminder 9.days.from_now
         groups   = ReminderFilter.new(reminders).grouped_by_periods
-        groups[:next_month].count.should == 1
+        groups[:next_30_days].count.should == 1
       end
 
       it "groups all reminders further than a month in later" do
@@ -72,8 +72,8 @@ describe ReminderFilter do
         groups = ReminderFilter.new(user).grouped_by_periods
         groups[:today].count.should == 2
         groups[:tomorrow].count.should == 0
-        groups[:next_week].count.should == 0
-        groups[:next_month].count.should == 0
+        groups[:next_7_days].count.should == 0
+        groups[:next_30_days].count.should == 0
         groups[:later].count.should == 0
       end
 
@@ -83,8 +83,8 @@ describe ReminderFilter do
         groups = ReminderFilter.new(user).grouped_by_periods
         groups[:today].count.should == 0
         groups[:tomorrow].count.should == 2
-        groups[:next_week].count.should == 0
-        groups[:next_month].count.should == 0
+        groups[:next_7_days].count.should == 0
+        groups[:next_30_days].count.should == 0
         groups[:later].count.should == 0
       end
 
@@ -94,8 +94,8 @@ describe ReminderFilter do
         groups = ReminderFilter.new(user).grouped_by_periods
         groups[:tomorrow].count.should == 0
         groups[:today].count.should == 0
-        groups[:next_week].count.should == 2
-        groups[:next_month].count.should == 0
+        groups[:next_7_days].count.should == 2
+        groups[:next_30_days].count.should == 0
         groups[:later].count.should == 0
       end
 
@@ -105,8 +105,8 @@ describe ReminderFilter do
         groups = ReminderFilter.new(user).grouped_by_periods
         groups[:tomorrow].count.should == 0
         groups[:today].count.should == 0
-        groups[:next_week].count.should == 0
-        groups[:next_month].count.should == 2
+        groups[:next_7_days].count.should == 0
+        groups[:next_30_days].count.should == 2
         groups[:later].count.should == 0
       end
 
@@ -116,8 +116,8 @@ describe ReminderFilter do
         groups = ReminderFilter.new(user).grouped_by_periods
         groups[:tomorrow].count.should == 0
         groups[:today].count.should == 0
-        groups[:next_week].count.should == 0
-        groups[:next_month].count.should == 0
+        groups[:next_7_days].count.should == 0
+        groups[:next_30_days].count.should == 0
         groups[:later].count.should == 2
       end
     end

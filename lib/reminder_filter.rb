@@ -8,8 +8,8 @@ class ReminderFilter
   PERIODS           = {
     today:      0.days,
     tomorrow:   1.day,
-    next_week:  1.week,
-    next_month: 1.month,
+    next_7_days:  1.week,
+    next_30_days: 1.month,
     later:      1000.years
   }
 
