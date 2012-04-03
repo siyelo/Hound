@@ -27,11 +27,11 @@ describe FetchMailJob do
       mail      = mock('Mail object', message_id: 'message id')
       rfc_data  = mock('RFC822')
       fetched_data = mock('fetched_data', attr: {'RFC822' => rfc_data})
-      imap.should_receive(:search).with(["ALL"]).and_return(['1'])
+      imap.should_receive(:search).with(["NOT", "SEEN"]).and_return(['1'])
       imap.should_receive(:fetch).with('1', ['RFC822']).and_return([fetched_data])
       Mail.should_receive(:new).with(rfc_data).and_return(mail)
       @fmj.instance.should_receive(:save_mail).with(mail)
-      imap.should_receive(:store).with('1', "+FLAGS", [:Deleted])
+      imap.should_receive(:store).with('1', "+FLAGS", [:Seen])
 
       @fmj.instance.fetch_messages
     end

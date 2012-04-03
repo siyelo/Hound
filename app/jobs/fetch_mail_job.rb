@@ -29,13 +29,13 @@ class FetchMailJob
   end
 
   def fetch_messages
-    imap.search(["ALL"]).each do |message_id|
+    imap.search(["NOT", "SEEN"]).each do |message_id|
       fetched_data = imap.fetch(message_id, ['RFC822'])[0]
       mail = Mail.new(fetched_data.attr['RFC822'])
 
       save_mail(mail)
 
-      imap.store(message_id, "+FLAGS", [:Deleted])
+      imap.store(message_id, "+FLAGS", [:Seen])
 
       logger.info "#{Time.now} Saved mail with message id: #{mail.message_id}."
     end
