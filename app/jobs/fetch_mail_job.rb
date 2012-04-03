@@ -37,11 +37,13 @@ class FetchMailJob
       save_mail(mail)
 
       imap.store(message_id, "+FLAGS", [:Deleted])
+
+      logger.info "#{Time.now} Saved mail with message id: #{mail.message_id}."
     end
   end
 
   def start
-    logger.info "FetchMailJob started."
+    logger.info "#{Time.now} FetchMailJob started."
 
     fetch_messages
 
@@ -61,7 +63,7 @@ class FetchMailJob
   end
 
   def stop
-    logger.info "FetchMailJob stopped."
+    logger.info "#{Time.now} FetchMailJob stopped."
     imap.idle_done
     exit
   end
