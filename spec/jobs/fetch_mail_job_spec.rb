@@ -30,8 +30,6 @@ describe FetchMailJob do
       imap.should_receive(:search).with(["ALL"]).and_return(['1'])
       imap.should_receive(:fetch).with('1', ['RFC822']).and_return([fetched_data])
       Mail.should_receive(:new).with(rfc_data).and_return(mail)
-      Rails.logger
-      Rails.logger.info "Saved mail with message id: #{mail.message_id}."
       @fmj.instance.should_receive(:save_mail).with(mail)
       imap.should_receive(:store).with('1', "+FLAGS", [:Deleted])
 
@@ -45,11 +43,10 @@ describe FetchMailJob do
       resp.should_receive(:"kind_of?").with(Net::IMAP::UntaggedResponse).and_return(true)
       imap.should_receive(:idle).and_yield(resp)
       imap.should_receive(:idle_done)
-      service = FetchMailJob.instance
 
-      service.should_receive(:fetch_messages)
+      @fmj.instance.should_receive(:fetch_messages)
 
-      service.wait_for_messages
+      @fmj.instance.wait_for_messages
     end
   end
 end
