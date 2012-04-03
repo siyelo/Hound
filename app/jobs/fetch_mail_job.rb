@@ -11,7 +11,8 @@ class FetchMailJob
   PASSWORD = ENV['HOUND_PASSWORD']
   FOLDER   = 'INBOX'
 
-  attr_accessor :imap
+
+  attr_accessor :imap, :logger
 
   def initialize
     register_signals
@@ -19,6 +20,8 @@ class FetchMailJob
     @imap = Net::IMAP.new SERVER, :ssl => true
     @imap.login(USERNAME, PASSWORD)
     @imap.select(FOLDER)
+
+    @logger = Logger.new(STDOUT)
   end
 
   def save_mail(mail)
@@ -38,9 +41,9 @@ class FetchMailJob
   end
 
   def start
-    puts "#{Time.now} FetchMailJob started."
+    logger.info "FetchMailJob started."
 
-    # fetch_messages
+    fetch_messages
 
     loop do
       wait_for_messages
@@ -58,7 +61,7 @@ class FetchMailJob
   end
 
   def stop
-    puts "#{Time.now} FetchMailJob stopped."
+    logger.info "FetchMailJob stopped."
     imap.idle_done
     exit
   end
