@@ -4,11 +4,11 @@
       %tr
         %td{:colspan => "2", :style => "text-align:left"}
           %b Created by:
-          = @reminder.email
+          = @reminder.owner_recipient
       %tr
         %td{:colspan => "2", :style => "text-align:left"}
           %b Created at:
-          = @reminder.created_at
+          = @reminder.formatted_send_at
       %tr
         %td{:colspan => "2", :style => "text-align:left"}
           You are receiving this email because you were listed as a recipient on the original email that was sent to hound.cc.

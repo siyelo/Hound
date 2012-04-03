@@ -13,7 +13,7 @@ class UserMailer < ActionMailer::Base
 
   def send_confirmation(reminder, recipient = nil)
     recipient ||= reminder.owner_recipient
-    @send_at = reminder.send_at.in_time_zone(reminder.user.timezone).to_formatted_s(:rfc822_with_zone)
+    @send_at = reminder.formatted_send_at
     @edit_reminder_url = edit_reminder_url(reminder.id)
     @edit_notification_url = edit_notification_url(reminder.user.id,
                                                    token: reminder.user.modify_token)

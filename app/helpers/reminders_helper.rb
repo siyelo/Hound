@@ -6,4 +6,8 @@ module RemindersHelper
   def reminder_subject(reminder)
     reminder.subject.blank? ? '<No Subject>' : reminder.subject
   end
+
+  def formatted_send_at(reminder)
+    reminder.send_at.in_time_zone(reminder.user.timezone).to_formatted_s(:rfc822_with_zone)
+  end
 end
