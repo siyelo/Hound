@@ -1,7 +1,7 @@
 require 'active_support/time_with_zone'
 
 class UserMailer < ActionMailer::Base
-  default from: "reminder@hound.cc"
+  default from: "noreply@hound.cc"
 
   def send_reminder(reminder, recipient)
     @reminder = reminder
@@ -41,8 +41,9 @@ class UserMailer < ActionMailer::Base
   end
 
   def send_error_notification(fetched_mail)
-    @email = fetched_mail
-    mail(to: fetched_mail.from, subject: "Error: #{fetched_mail.subject}",
+    @hounds = HoundAddressList.new(fetched_mail)
+    @original_subject = fetched_mail.subject || "<No subject>"
+    mail(to: fetched_mail.from, subject: "Date problem: #{@original_subject}",
          in_reply_to: "<#{fetched_mail.message_id}>")
   end
 end

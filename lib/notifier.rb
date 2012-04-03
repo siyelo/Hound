@@ -1,3 +1,7 @@
+#TODO - this is a bit of a nothing class right now - move mailer methods here
+# and make this an ActionMailer. use method nouns and remove the redundnant
+# "send_" because ActionMailer provides .deliver()
+#
 class Notifier
   class << self
     def send_reminder_email(reminder)

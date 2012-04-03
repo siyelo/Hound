@@ -1,5 +1,11 @@
-%h1 Sorry, we have failed to update your preferences
-%h3
-  Click
-  = link_to 'here', new_user_session_path
-  to login and edit your profile
+%h1 Hmm, it looks like you've already turned confirmations off.
+
+%p
+  This usually happens if you already clicked the 'turn off confirmations'
+  link, in which case - you're all set.
+
+%p
+  Remember, if you wish to update any of your preferences, please visit
+  = link_to "Settings", settings_path
+
+%p Thank you for using Hound.cc!

@@ -1,0 +1,45 @@
+%h4 From Now
+
+%ul
+  %li= mail_to '2minutes@hound.cc'
+  %li= mail_to '3hours@hound.cc'
+  %li= mail_to '1day@hound.cc'
+  %li= mail_to '2weeks@hound.cc'
+  %li= mail_to '3months@hound.cc'
+
+%h4 Composite
+%ul
+  %li
+    = mail_to '1day2hours@hound.cc'
+
+%h4 Weekdays
+%ul
+  %li= mail_to 'friday@hound.cc'
+  %li= mail_to 'nexttuesday@hound.cc'
+  %li= mail_to 'nextweek@hound.cc'
+
+%h4 Handy
+%ul
+  %li
+    = mail_to 'tomorrow@hound.cc'
+    (8am tomorrow)
+  %li
+    = mail_to 'endofday@hound.cc'
+    (5pm today)
+
+%h4 Actual Date
+%ul
+  %li
+
+%h4 Abbreviations
+%ul
+  %li
+    = mail_to '2m@hound.cc'
+    (2 minutes)
+  %li
+    = mail_to '1mo@hound.cc'
+    (1 month)
+  %li
+    = mail_to 'tom@hound.cc'
+    (tomorrow)
+
