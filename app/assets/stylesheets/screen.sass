@@ -89,9 +89,9 @@ h4
     width: 55%
     +text-shadow(rgba(0, 0, 0, 0.5) 0 3px 1px)
   .hound
-    bottom: -80px
+    bottom: 0px
     position: absolute
-    right: 10px
+    right: 30px
     z-index: 5
 
 #logo
@@ -171,7 +171,7 @@ h4
   
 
 .signup-wrap
-  margin: 40px 15px 60px
+  margin: 50px 15px 60px
   text-align: center
   width: 40%
   &.wide
@@ -182,6 +182,7 @@ h4
     color: $one
     display: block
     font-size: 11px
+    line-height: 1.4
     opacity: 0.3
     padding: 15px 0 0
     +text-shadow(rgba(0, 0, 0, 0.3) 0 1px 0)
@@ -191,13 +192,13 @@ h4
       opacity: 1
   
 #guide
-  background: url(image_path('bg-light.png'))
-  padding: 60px 0 40px
+  background: url(image_path('bg-dark.png'))
+  padding: 40px 0
   position: relative
   z-index: 15
-  +box-shadow(rgba(0, 0, 0, 0.1) 0 -2px 3px)
+  +box-shadow(rgba(0, 0, 0, 0.1) 0 0 7px inset)
   h4
-    color: #331a03
+    color: $two
     font-family: Amaranth
 
 .short-guide
@@ -210,8 +211,8 @@ h4
     width: 23%
   img
     display: inline-block
-    height: 70px
     margin-bottom: 18px
+    width: 50%
   h4
     color: $three
     font-size: 18px
@@ -301,6 +302,7 @@ h4
   background: url(image_path('bg-dark.png'))
   color: rgba(255, 255, 255, 0.6)
   font: 13px Amaranth
+  +box-shadow(rgba(0, 0, 0, 0.05) 0 0 9px inset)
   +text-shadow(rgba(0, 0, 0, 0.5) 0 1px 1px)
   a
     color: $one
