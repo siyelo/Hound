@@ -3,8 +3,6 @@ $: << File.join(APP_ROOT, "app/jobs")
 require 'queue_mail_job'
 require 'ostruct'
 
-class Reminder; end
-class Queuer; end
 
 describe QueueMailJob do
   it "should fetch and enqueue due&unsent reminders for active users" do

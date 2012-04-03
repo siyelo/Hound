@@ -43,32 +43,29 @@ class Reminder < ActiveRecord::Base
     end
   end
 
+  def formatted_send_at
+    send_at.in_time_zone(fetched_mail.user.timezone).to_formatted_s(:rfc822_with_zone)
+  end
+
   private
     def generate_snooze_token
       self.snooze_token = Token.new(8)
     end
 end
 
-#TODO remove fields!
-#
 # == Schema Information
 #
 # Table name: reminders
 #
-#  id                :integer         not null, primary key
-#  email             :string(255)
-#  subject           :string(255)
-#  body              :text
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
-#  send_at           :datetime
-#  user_id           :integer
-#  delivered         :boolean         default(FALSE), not null
-#  snooze_token      :string(255)
-#  snooze_count      :integer         default(0)
-#  cc                :string(255)
-#  message_id        :string(255)
-#  message_thread_id :integer
-#  sent_to           :string(255)
+#  id               :integer         not null, primary key
+#  email            :string(255)
+#  other_recipients :string(255)
+#  fetched_mail_id  :integer         indexed
+#  send_at          :datetime
+#  delivered        :boolean         default(FALSE), not null
+#  snooze_token     :string(255)
+#  snooze_count     :integer         default(0)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
 #
 

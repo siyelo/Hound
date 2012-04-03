@@ -1,8 +1,4 @@
-require  'spec_helper_lite'
-$: << File.join(APP_ROOT, "app/jobs")
-require 'fetch_mail_job'
-
-
+require  'spec_helper'
 
 describe FetchMailJob do
   let(:imap) { mock('imap') }
@@ -28,7 +24,7 @@ describe FetchMailJob do
 
   describe "#fetch_messages" do
     it "can fetch messages" do
-      mail      = mock('Mail object')
+      mail      = mock('Mail object', message_id: 'message id')
       rfc_data  = mock('RFC822')
       fetched_data = mock('fetched_data', attr: {'RFC822' => rfc_data})
       imap.should_receive(:search).with(["ALL"]).and_return(['1'])
@@ -47,11 +43,10 @@ describe FetchMailJob do
       resp.should_receive(:"kind_of?").with(Net::IMAP::UntaggedResponse).and_return(true)
       imap.should_receive(:idle).and_yield(resp)
       imap.should_receive(:idle_done)
-      service = FetchMailJob.instance
 
-      service.should_receive(:fetch_messages)
+      @fmj.instance.should_receive(:fetch_messages)
 
-      service.wait_for_messages
+      @fmj.instance.wait_for_messages
     end
   end
 end
