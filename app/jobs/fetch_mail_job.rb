@@ -1,8 +1,11 @@
 require 'reminder_creation_service'
 require 'net/imap'
 require 'mail'
+require 'singleton'
 
 class FetchMailJob
+  include Singleton
+
   SERVER   = 'imap.gmail.com'
   USERNAME = ENV['HOUND_USERNAME']
   PASSWORD = ENV['HOUND_PASSWORD']
@@ -11,6 +14,8 @@ class FetchMailJob
   attr_accessor :imap
 
   def initialize
+    register_signals
+
     @imap = Net::IMAP.new SERVER, :ssl => true
     @imap.login(USERNAME, PASSWORD)
     @imap.select(FOLDER)
@@ -33,6 +38,10 @@ class FetchMailJob
   end
 
   def start
+    puts "#{Time.now} FetchMailJob started."
+
+    # fetch_messages
+
     loop do
       wait_for_messages
     end
@@ -47,4 +56,21 @@ class FetchMailJob
 
     fetch_messages
   end
+
+  def stop
+    puts "#{Time.now} FetchMailJob stopped."
+    imap.idle_done
+    exit
+  end
+
+  private
+    def register_signals
+      Signal.trap("SIGINT") do
+        FetchMailJob.instance.stop
+      end
+
+      Signal.trap("SIGTERM") do
+        FetchMailJob.instance.stop
+      end
+    end
 end
