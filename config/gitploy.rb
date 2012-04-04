@@ -3,7 +3,7 @@ require 'gitploy/script'
 configure do |c|
   c.path = '/home/deployer/apps/hound'
 
-  stage :staging do
+  stage :production do
     c.host = 'mrpink.siyelo.com'
     c.user = 'deployer'
   end
