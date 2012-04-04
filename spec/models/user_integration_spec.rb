@@ -84,7 +84,7 @@ describe User do
       user.reload.confirmation_email.should be_false
     end
 
-    it "regenerates when confirmation email is set to true" do
+    it "should be regenerated when confirmation email is set to true" do
       user.modify_token = nil
       user.save
 

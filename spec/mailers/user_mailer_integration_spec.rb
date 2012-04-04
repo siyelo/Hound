@@ -59,7 +59,7 @@ describe UserMailer do
     end
 
     it 'assigns edit_notification_url' do
-      mail.body.should match(/\/activate\?t=testtoken/)
+      mail.body.should match(/\/activate\?invitation_token=testtoken/)
     end
   end
 
