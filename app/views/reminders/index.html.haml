@@ -9,12 +9,14 @@
       .reminder_container
         .inline_reminder
       .reminder_list
-        .table-wrap.box
+        .table-wrap.heading
           %table.modern
             %tr
-              %th.large= "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
+              %th.large
+                = image_tag"reminders.png"
+                = "You have #{pluralize(@reminder_filter.filtered_reminders.count, "#{@reminder_filter.filter} reminder")}"
               %th.large Reminder Date
-              %th.small Mark as complete?
+              %th.small Completed
 
         - if @reminder_filter.filter == 'completed'
           = render 'reminders', :reminders => @reminder_filter.filtered_reminders
