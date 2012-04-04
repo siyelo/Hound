@@ -6,5 +6,11 @@
 - *= require chosen
 - *= require_self
 - *= require ./screen
-- *= require_tree .
+- *= require ./buttons
+- *= require ./devise
+- *= require ./flashes
+- *= require ./notifications
+- *= require ./reminders
+- *= require_tree ./application
 - */
+

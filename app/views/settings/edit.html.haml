@@ -1,40 +1,47 @@
-%h1 Settings
+%section#settings
+  .wrapper.main
+    
+    .content
 
-%h2 General
-= form_for(resource, as: resource_name, url: settings_url, html: { method: :put, autocomplete: :off  }) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :email, 'Primary Email Address'
-    = f.email_field :email
+      %h2 Settings
 
-  %div
-    = f.label :timezone
-    = f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)"
+      .box
+        %h3 General
+        = form_for(resource, as: resource_name, url: settings_url, html: { method: :put, autocomplete: :off  }) do |f|
+          = devise_error_messages!
+          %div
+            = f.label :email, 'Primary Email Address'
+            = f.email_field :email
 
-  %div
-    = f.check_box :confirmation_email
-    = f.label "Receive confirmation emails?"
+          %div
+            = f.label :timezone
+            = f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)"
 
-  %div= f.submit "Save"
+          %div
+            = f.check_box :confirmation_email
+            = f.label "Receive confirmation emails?", :style => "display: inline;"
 
+          %div= f.submit "Save", :class => 'button medium alt'
 
-%h2 Your other email addresses
-%ul{ id:'email_aliases' }
-  - resource.email_aliases.each do |email_alias|
-    = render '/email_aliases/email_alias', email_alias: email_alias
-= render '/email_aliases/new_alias'
+      .box
+        %h3 Your other email addresses
+        %ul{ id:'email_aliases' }
+          - resource.email_aliases.each do |email_alias|
+            = render '/email_aliases/email_alias', email_alias: email_alias
+        = render '/email_aliases/new_alias'
 
+      .box
+        %h3 Change Password
+        = form_for(resource, as: resource_name, url: update_password_settings_url, html: { method: :put, autocomplete: :off  }) do |f|
+          = render 'change_password', f: f
 
-%h2 Change Password
-= form_for(resource, as: resource_name, url: update_password_settings_url, html: { method: :put, autocomplete: :off  }) do |f|
-  = render 'change_password', f: f
+    .sidebar.styled.pushed
+      %h3 Close Account
+      %p We're sorry to see you go!
 
-%h2 Close Account
-%p We're sorry to see you go!
+      %p
+        Before you proceed, please keep in mind that once you close your account,
+        %b all of your account information, reminders and emails will be permanently deleted.
 
-%p
-  Before you proceed, please keep in mind that once you close your account,
-  %b all of your account information, reminders and emails will be permanently deleted.
-
-= link_to "Permanently Close This Account", registration_path(resource_name), :confirm => "Are you sure you want to close your account?", :method => :delete
+      = link_to "Permanently Close This Account", registration_path(resource_name), :confirm => "Are you sure you want to close your account?", :method => :delete
 

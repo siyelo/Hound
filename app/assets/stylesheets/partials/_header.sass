@@ -1,0 +1,53 @@
+#header
+  background: url(image_path("bg-brown.png"))
+  text-align: center
+  +pie-clearfix
+  .flash
+    left: 45%
+    position: absolute
+    top: 0
+    width: 10%
+    
+#featured
+  background: url(image_path("bg-brown.png"))
+  .wrapper
+    overflow: hidden
+    text-align: left
+  h2
+    clear: both
+    color: $two
+    font-size: 60px
+    font-style: italic
+    padding: 60px 0 25px
+    position: relative
+    z-index: 10
+    +text-shadow(rgba(0, 0, 0, 0.5) 0 5px 1px)
+  h3
+    color: $one
+    font-family: Amaranth
+    font-size: 20px
+    font-style: italic
+    line-height: 1.4
+    padding: 0 15px
+    width: 55%
+    +text-shadow(rgba(0, 0, 0, 0.5) 0 3px 1px)
+  .hound
+    bottom: 0px
+    position: absolute
+    right: 30px
+    z-index: 5
+
+#logo
+  float: left
+  padding: 40px 0 0
+  a
+    background: url(image_path("logo.png")) no-repeat center
+    display: block
+    height: 53px
+    opacity: 0.8
+    overflow: hidden
+    text-indent: -9999px
+    width: 178px
+    +transition(all 0.5s ease)
+    &:hover, &:focus
+      opacity: 1
