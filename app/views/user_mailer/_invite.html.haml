@@ -1,10 +1,16 @@
-%h1 Welcome to Hound.cc!
+%tr
+  %td
+    %h1 Welcome to Hound.cc!
 
 = render 'send_at'
 
-%p
-  Since this is the first time we've seen you on Hound, please verify your
-  email address by opening the link below:
+%tr
+  %td
+    %p
+      Since this is the first time we've seen you on Hound, please verify your
+      email address by opening the link below:
 
-%p=link_to "Yes it's me! Activate my account!", @activate_url
+%tr
+  %td
+    %p=link_to "Yes it's me! Activate my account!", @activate_url
 

@@ -4,7 +4,12 @@
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
   %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
     -# this is a smell - TODO refactor into separate views
-    - unless @user_active
-      = render 'invite'
-    - else
-      = render 'confirmation'
+    %table
+      %tbody
+        %tr
+          %td
+            = image_tag"logo.png"
+        - unless @user_active
+          = render 'invite'
+        - else
+          = render 'confirmation'
