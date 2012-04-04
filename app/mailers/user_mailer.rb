@@ -1,7 +1,7 @@
 require 'active_support/time_with_zone'
 
 class UserMailer < ActionMailer::Base
-  default from: "noreply@hound.cc"
+  default from: "reminder@hound.cc"
 
   def send_reminder(reminder, recipient)
     @reminder = reminder

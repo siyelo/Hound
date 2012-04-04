@@ -20,7 +20,7 @@ describe UserMailer do
 
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@hound.cc']
+      mail.from.should == ['reminder@hound.cc']
     end
 
     #ensure that the @name variable appears in the email body
@@ -47,7 +47,7 @@ describe UserMailer do
     end
 
     it 'renders the sender email' do
-      mail.from.should == ['noreply@hound.cc']
+      mail.from.should == ['reminder@hound.cc']
     end
 
     it 'assigns send_at' do
@@ -81,7 +81,7 @@ describe UserMailer do
     end
 
     it 'renders the sender email' do
-      mail.from.should == ['noreply@hound.cc']
+      mail.from.should == ['reminder@hound.cc']
     end
 
     it 'assigns send_at' do
@@ -121,7 +121,7 @@ describe UserMailer do
     end
 
     it 'renders the sender email' do
-      mail.from.should == ['noreply@hound.cc']
+      mail.from.should == ['reminder@hound.cc']
     end
 
     it 'apologizes for their stupidity' do
