@@ -48,12 +48,10 @@ class User < ActiveRecord::Base
     write_attribute(:confirmation_email, value)
   end
 
-  def disable_confirmation_emails(token)
-    if token == modify_token
-      self.confirmation_email = false
-      self.modify_token = nil
-      self.save
-    end
+  def disable_confirmation_emails
+    self.confirmation_email = false
+    self.modify_token = nil
+    self.save
   end
 
   def generate_new_token

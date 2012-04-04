@@ -75,23 +75,13 @@ describe User do
     end
 
     it "can remove modify token" do
-      user.disable_confirmation_emails(user.modify_token)
+      user.disable_confirmation_emails
       user.modify_token.should be_nil
     end
 
-    it "cannot remove modify token if token is invalid" do
-      user.disable_confirmation_emails(nil)
-      user.modify_token.should_not be_nil
-    end
-
     it "can change confirmation email" do
-      user.disable_confirmation_emails(user.modify_token)
+      user.disable_confirmation_emails
       user.reload.confirmation_email.should be_false
-    end
-
-    it "cannot change confirmation email if token is invalid" do
-      user.disable_confirmation_emails(nil)
-      user.reload.confirmation_email.should be_true
     end
 
     it "should be regenerated when confirmation email is set to true" do

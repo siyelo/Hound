@@ -3,7 +3,7 @@ module FindsOrInvitesUsers
   UTC_ZONE = 0
 
   included do
-    devise :invitable 
+    devise :invitable
   end
 
   module ClassMethods
@@ -23,7 +23,8 @@ module FindsOrInvitesUsers
     end
 
     def invite_without_invitation!(email)
-      params = {email: from_address(email), timezone: email_time_zone(email)}
+      params = {email: from_address(email), timezone: email_time_zone(email),
+                modify_token: Token.new}
       params_valid_for_user!(params)
       User.invite!(params){ |u| u.skip_invitation = true }
     end
@@ -33,7 +34,7 @@ module FindsOrInvitesUsers
       test_user.valid?
       test_user.errors.delete(:password)
       unless test_user.errors.empty?
-        raise(ActiveRecord::RecordInvalid.new(test_user)) 
+        raise(ActiveRecord::RecordInvalid.new(test_user))
       end
     end
   end

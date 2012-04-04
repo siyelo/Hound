@@ -99,9 +99,10 @@ describe UserMailer do
     it 'assigns edit_reminder_url' do
       mail.body.should match("/reminders/#{reminder.id}/edit")
     end
+
     it 'allows user to turn confirmations off' do
       mail.body.should match /Don\'t need a confirmation every time you schedule a reminder\?/
-      mail.body.should match("/notifications/#{user.id}/edit") #{user.modify_token}")
+      mail.body.should include(confirmations_disable_url(token: user.modify_token))
     end
   end
 

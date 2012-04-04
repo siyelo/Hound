@@ -9,7 +9,9 @@ Hound::Application.routes.draw do
   mount Resque::Server, :at => "/resque"
 
   resources :reminders
-  resources :notifications, only: [:update, :edit]
+
+  match 'confirmations/disable' => 'confirmations#disable', via: :get
+
   resource :settings, only: [:update, :edit] do
     put :update_password
   end
