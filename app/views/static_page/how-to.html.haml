@@ -1,25 +1,32 @@
 %section#how-to
   .wrapper.main
+    .content.indent
 
-    %h2 How To
+      %h2 How To
 
-    %p To get started with Hound.cc, all you have to do is send us an email!
+      %p To get started with Hound.cc, all you have to do is send us an email!
 
-    %ul
-      %li Compose a new email
-      %li
-        Include [time format]@hound.cc in the To/Cc/Bcc field(s)
-        %ul
-          %li
-            %span To: or Cc:
-            Hound sends a reminder to you (the sender) and
-            the other recipients (if any).
-          %li
-            %span Bcc:
-            Hound only sends you a reminder.
+      %ul
+        %li Compose a new email
+        %li
+          Include [time format]@hound.cc in the To/Cc/Bcc field(s)
+        %li
+          %span To: or Cc:
+          Hound sends a reminder to you (the sender) and
+          the other recipients (if any).
+        %li
+          %span Bcc:
+          Hound only sends you a reminder.
 
-    %h3 Time Formats
+      %h3 Time Formats
 
-    %p Hound has a simple (yet powerful) time formatting scheme;
+      %p Hound has a simple (yet powerful) time formatting scheme;
 
-    = render :partial => '/shared/supported_date_formats'
+      = render :partial => '/shared/supported_date_formats'
+
+
+    .sidebar.styled
+      = image_tag('icon-help.png')
+      %p
+        Learn more about our 
+        = link_to 'Terms of Use', 'terms-of-use'

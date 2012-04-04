@@ -24,7 +24,6 @@ h1, h2, h3, h4
   color: $three
   font-family: 'Lobster', sans-serif
   font-weight: normal
-  
 h2
   font-size: 36px
   +text-shadow(rgba(0, 0, 0, 0.5) 0 1px 2px)
@@ -38,6 +37,7 @@ h4
   max-width: 1000px
   position: relative
   width: 80%
+  +pie-clearfix
   
 .fourth
   display: inline
@@ -57,8 +57,12 @@ h4
   padding: 40px 0
   h2
     margin-bottom: 20px
+  h3
+    color: $one
+    margin-bottom: 10px
   p
-    color: #666
+    color: 444
+    font-size: 13px
     margin-bottom: 20px
   a
     color: $three
@@ -164,7 +168,7 @@ h4
   &.signup
     background: url(image_path('paw.png')) no-repeat 90% 50% $two
     text-align: center
-    +transition(background 1s ease)
+    +transition(background 0.3s ease)
     &:hover, &:focus
       background: url(image_path('paw.png')) no-repeat 92% 25% $two
   &.medium
@@ -232,11 +236,11 @@ h4
     width: 23%
   img
     display: inline-block
-    margin-bottom: 18px
-    width: 50%
+    margin-bottom: 10px
+    width: 40%
   h4
     color: $three
-    font-size: 18px
+    font-size: 16px
     margin-bottom: 7px
   p
     color: $three + #222
@@ -284,8 +288,8 @@ h4
     width: 45%
     
 #signup
-  background: url(image_path('bg-dark.png')) repeat center
-  +box-shadow(rgba(0, 0, 0, 0.05) 0 0 9px inset)
+  background: url(image_path('bg-brown.png')) repeat center
+  +box-shadow(rgba(0, 0, 0, 0.1) 0 -3px 9px inset)
 #benefits
   background: url(image_path('bg-brown.png')) repeat center
   padding: 50px 0 40px
@@ -350,6 +354,8 @@ h4
   width: 266px
   +border-radius(3px)
   +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+  
+#devise, #settings
   form
     padding-bottom: 20px
   
@@ -358,9 +364,9 @@ h4
   label
     color: rgba(0, 0, 0, 0.5)
     font: 14px Amaranth
-  input[type=email], input[type=password]
+  input[type=email], input[type=password], input[type=text]
     border: 1px solid rgba(0, 0, 0, 0.4)
-    font-size: 18px
+    font-size: 16px
     margin-bottom: 10px
     padding: 5px 10px
     width: 246px
@@ -369,7 +375,16 @@ h4
       border-color: $one
   input[type=submit]
     margin-top: 20px
+  .box
+    background: #fff
+    margin: 0 0 15px
+    padding: 20px 40px 10px
+    +border-radius(3px)
+    +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+    ul
+      margin: 0
 #links
+  padding-bottom: 30px
   text-align: center
   
 .app
@@ -380,15 +395,63 @@ h4
   display: inline
   float: left
   font-size: 14px
-  width: 15%
+  width: 20%
   li
     padding: 5px
   a
     font-size: 14px
 .content
   display: inline
+  float: left
+  padding-right: 5%
+  width: 75%
+  &.indent
+    width: 69%
+    padding-left: 6%
+  ul
+    list-style: square
+    padding-left: 20px
+    li
+      color: #666
+      font-size: 12px
+      padding-bottom: 10px
+    a
+      font-size: 14px
+  h4
+    padding-bottom: 10px
+
+.sidebar
+  display: inline
   float: right
-  width: 85%
+  margin-top: 20px
+  width: 20%
+  +pie-clearfix
+  &.styled
+    background: url(image_path('bg-light.png'))
+    color: #fff
+    padding: 30px 2% 10px
+    width: 16%
+    +border-radius(3px)
+    +box-shadow(rgba(0, 0, 0, 0.05) 0 0 5px inset)
+    p
+      color: #444
+      font-family: Amaranth
+      +text-shadow(rgba(255, 255, 255, 0.4) 0 1px 1px)
+  &.pushed
+    margin-top: 70px
+    padding-bottom: 30px
+  h4
+    padding-bottom: 10px
+  a
+    color: $one
+    font-size: 14px
+    +text-shadow(rgba(255, 255, 255, 0.4) 0 1px 1px)
+  img
+    width: 100%
 .modern
   font-size: 12px
   width: 100%
+  
+#settings
+  label
+    display: block
