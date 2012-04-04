@@ -8,7 +8,10 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require h5bp
-//= require_tree .
 //= require chosen.jquery
 //= require jquery.timePicker
 //= require tinymce-jquery
+//= require ./reminders
+//= require ./uservoice
+//= require ./uservoice_contact_link
+//= require ./google_analytics

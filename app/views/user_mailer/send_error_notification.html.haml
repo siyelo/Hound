@@ -3,19 +3,30 @@
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
   %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
-    %h1 Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
+    %table
+      %tbody
+        %tr
+          %td
+            = image_tag"logo.png"
+        %tr
+          %td
+            %h1 Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
+        %tr
+          %td
 
-    %p
-      We've included a list of the date formats we currently recognize. If
-      you have a suggestion for a new format that isn't included, please don't
-      hesitate to
-      = link_to "contact us", 'https://hound.uservoice.com'
-      = "."
-
-    = render "/shared/supported_date_formats"
-
-    %p
-      We hope the above list helps. If you have a question that remains unanswered,
-      please
-      = link_to "contact us", 'https://hound.uservoice.com'
+            %p
+              We've included a list of the date formats we currently recognize. If
+              you have a suggestion for a new format that isn't included, please don't
+              hesitate to
+              = link_to "contact us", 'https://hound.uservoice.com'
+              = "."
+        %tr
+          %td
+            = render "/shared/supported_date_formats"
+        %tr
+          %td
+            %p
+              We hope the above list helps. If you have a question that remains unanswered,
+              please
+              = link_to "contact us", 'https://hound.uservoice.com'
 
