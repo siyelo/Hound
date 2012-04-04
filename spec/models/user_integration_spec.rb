@@ -94,4 +94,20 @@ describe User do
       user.modify_token.should_not be_nil
     end
   end
+
+  describe 'find_and_validate_password' do
+    let (:user) { Factory :user }
+
+    it "returns the user if the password is valid" do
+      User.find_and_validate_password(user.email, 'testing').should == user
+    end
+
+    it "returns nil if the user is not found" do
+      User.find_and_validate_password('123@igi.com', '123').should be_nil
+    end
+
+    it "returns nil if the password is not valid" do
+      User.find_and_validate_password(user.email, '123').should be_nil
+    end
+  end
 end

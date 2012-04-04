@@ -15,6 +15,7 @@ Hound::Application.routes.draw do
   resource :settings, only: [:update, :edit] do
     put :update_password
   end
+  resource :merge_users, only: [:create]
   get "settings" => "settings#edit", as: :settings
   resources :snooze, only: [:show, :edit]
   resources :email_aliases

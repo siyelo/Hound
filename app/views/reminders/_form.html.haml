@@ -1,21 +1,21 @@
-= form_tag reminder_path(@reminder.id), remote: true, method: :put
-.errors
-= label_tag :subject, 'Subject:'
-= text_field_tag 'reminder[subject]',  @reminder.subject
-%p
-= label_tag :other_recipients, 'Cc:'
-= text_field_tag 'reminder[other_recipients]', @reminder.other_recipients.join(',')
-%p
-= label_tag 'Reminder Date:'
-= text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
-%p
-= label_tag 'Reminder Time:'
-= text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time'
-= label_tag Time.zone
-%p
-  = text_area_tag 'reminder[body]', @reminder.body
-%br
-= submit_tag 'Submit', class:'js_submit', disable_with: 'Processing...', id: 'submit'
+= form_tag reminder_path(@reminder.id), remote: true, method: :put do
+  .errors
+  = label_tag :subject, 'Subject:'
+  = text_field_tag 'reminder[subject]',  @reminder.subject
+  %p
+  = label_tag :other_recipients, 'Cc:'
+  = text_field_tag 'reminder[other_recipients]', @reminder.other_recipients.join(',')
+  %p
+  = label_tag 'Reminder Date:'
+  = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
+  %p
+  = label_tag 'Reminder Time:'
+  = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time'
+  = label_tag Time.zone
+  %p
+    = text_area_tag 'reminder[body]', @reminder.body
+  %br
+  = submit_tag 'Submit', class:'js_submit', disable_with: 'Processing...', id: 'submit'
 = link_to 'cancel', root_path, id: 'js_cancel'
 
 %p= link_to 'Delete this reminder', reminder_path(@reminder), method: 'delete', confirm: 'Are you sure?'
