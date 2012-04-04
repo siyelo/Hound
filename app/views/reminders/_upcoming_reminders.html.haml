@@ -1,5 +1,23 @@
-- @reminder_filter.grouped_by_periods.each_pair do |period_name, reminders|
-  - if reminders.present?
-    %h3= period_name.to_s.titleize
+- groups = @reminder_filter.grouped_by_periods
+- unless groups.empty?
+  - groups.each_pair do |period_name, reminders|
+    - if reminders.present?
+      %h3= period_name.to_s.titleize
+      = render 'reminders', :reminders => reminders
 
-    = render 'reminders', :reminders => reminders
+- else
+  %h3 Schedule a new reminder now!
+  %ul
+    %li
+      = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
+      %span Sends you a reminder in 2 minutes
+    %li
+      = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
+      %span Sends both you and your recipient a reminder tomorrow, first thing.
+    %li
+      = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
+      %span Sends only you a reminder next Friday.
+  %p
+    See our
+    = link_to "How-To", "how-to"
+    for all the scheduling options!

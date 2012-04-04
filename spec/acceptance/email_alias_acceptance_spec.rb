@@ -1,13 +1,13 @@
 require 'spec_helper_acceptance'
 
-describe 'User', type: :request do
+describe 'Email aliasing', type: :request do
   before :each do
     @user = Factory(:user)
     log_in_with(@user)
   end
 
   it 'is able to add email addresses', js: true do
-    visit '/users/edit'
+    visit '/settings'
     page.should have_content('Your other email addresses')
     fill_in 'email_alias_email', with: 'test'
     click_button 'add_alias'
@@ -19,7 +19,7 @@ describe 'User', type: :request do
 
   it 'is able to delete alias addresses', js: true do
     Factory(:email_alias, email: 'test', user: @user)
-    visit '/users/edit'
+    visit '/settings'
     page.should have_content('test [delete]')
     click_link '[delete]'
     handle_js_confirm
