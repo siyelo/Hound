@@ -7,10 +7,15 @@
       %tbody
         %tr
           %td{:style=>"background: url(http://www.hound.cc/assets/bg-brown.png) #331A03; padding: 20px;"}
-            = link_to "http://hound.cc/", :target => "_blank", :style => "outline:none;" => do
+            = link_to "http://hound.cc/", :target => "_blank", :style => "outline:none;" do
               = image_tag"logo.png"
           %td
-            %h1{:style => "margin:40px 0 0;"} Sup yo! You are fortunate enough to have your reminder
-            = (@reminder.subject)
-            snoozed until:
-            = @reminder.send_at
+            %h1{:style => "margin:40px 0 0;"}= "Snoozed: #{@original_subject}"
+
+            %p== This reminder is now snoozed until #{@send_at}
+
+            %p== #{@owner} created this reminder for you on #{@created_at}
+
+            %p== It has been snoozed #{@snoozed} times.
+
+            = render 'body', body: @body

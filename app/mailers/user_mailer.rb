@@ -3,15 +3,22 @@ require 'active_support/time_with_zone'
 class UserMailer < ActionMailer::Base
   default from: "reminder@hound.cc"
 
-  def send_reminder(reminder, recipient)
-    @reminder = reminder
-    @recipient = recipient
-    reply_to = reminder.owner_recipient == recipient ? "reminder@hound.cc" : reminder.owner_recipient
-    mail(to: recipient, subject: "Re: #{reminder.subject}",
-         reply_to: reply_to, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
+  # reminder with snooze and admin links
+  def reminder(reminder, to)
+    setup_reminder(reminder, to)
+    mail(to: to, subject: "Re: #{reminder.subject}",
+         in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
 
-  def send_confirmation(reminder, recipient = nil)
+  # reminder without snooze or admin links
+  def recipient_reminder(reminder, to)
+    setup_reminder(reminder, to)
+    @owner = reminder.owner_recipient
+    mail(to: to, subject: "Re: #{reminder.subject}",
+         reply_to: @owner, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
+  end
+
+  def confirmation(reminder, recipient = nil)
     recipient ||= reminder.owner_recipient
     @send_at = reminder.formatted_send_at
     @edit_reminder_url = edit_reminder_url(reminder.id)
@@ -31,18 +38,29 @@ class UserMailer < ActionMailer::Base
     mail(:to => recipient, subject: subject)
   end
 
-  def send_snooze_notification(reminder, recipient)
-    @reminder = reminder
-    @recipient = recipient
-    reply_to = reminder.owner_recipient == recipient ? "reminder@hound.cc" : reminder.owner_recipient
-    mail(to: recipient, subject: "Re: #{reminder.subject}",
-         reply_to: reply_to, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
+  def snooze(reminder, to)
+    setup_reminder(reminder, to)
+    @send_at = reminder.formatted_send_at
+    @owner = reminder.owner_recipient
+    mail(to: to, subject: "Re: #{reminder.subject}",
+         reply_to: @owner, in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
 
-  def send_error_notification(fetched_mail)
+  def error(fetched_mail)
     @hounds = HoundAddressList.new(fetched_mail)
     @original_subject = fetched_mail.subject || "<No subject>"
     mail(to: fetched_mail.from, subject: "Date problem: #{@original_subject}",
          in_reply_to: "<#{fetched_mail.message_id}>")
+  end
+
+  private
+
+  # common view setup for both reminders and recipient reminders
+  def setup_reminder(reminder, to)
+    @reminder = reminder
+    @original_subject = reminder.subject || "<No subject>"
+    @body = reminder.body.html_safe
+    @created_at = reminder.created_at.strftime('%d-%b')
+    @snoozed = reminder.snooze_count
   end
 end

@@ -9,9 +9,9 @@ describe "Snooze", type: :request do
 
   it "allows user to snooze and notify participants" do
     reminder = Factory :reminder, user: @user, fetched_mail: Factory(:fetched_mail, from: 'pimp@macdaddy.yo')
-    Notifier.send_reminder_email(reminder)
+    Hound::Notifier.send_reminders(reminder)
     open_email(@user.email)
-    visit_in_email('15m')
+    visit_in_email('15min')
     page.should have_content("15 minutes from now")
     page.should have_content("Would you like to notify the other recipients")
   end
@@ -19,7 +19,7 @@ describe "Snooze", type: :request do
   it "does not show option to notify if there are no other participants" do
     reminder = Factory :reminder, user: @user, other_recipients: [],
       fetched_mail: Factory(:fetched_mail, from: 'pimp@macdaddy.yo')
-    Notifier.send_reminder_email(reminder)
+    Hound::Notifier.send_reminders(reminder)
     open_email(@user.email)
     visit_in_email('12h')
     page.should have_content("12 hours from now")
