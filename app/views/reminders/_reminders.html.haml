@@ -1,3 +1,4 @@
-%table{class: 'modern'}
-  - reminders.each do |reminder|
-    = render 'reminder', reminder: reminder
+.table-wrap
+  %table{class: 'modern'}
+    - reminders.each do |reminder|
+      = render 'reminder', reminder: reminder

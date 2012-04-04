@@ -1,4 +1,4 @@
 .sidenav.left
   %ul
     - %w(upcoming completed).each do |filter|
-      %li= @reminder_filter.filter == filter  ? filter.titleize : (link_to filter.titleize, reminders_path(filter: filter))
+      %li{:class => (@reminder_filter.filter == filter ? 'active' : nil)}= @reminder_filter.filter == filter  ? filter.titleize : (link_to filter.titleize, reminders_path(filter: filter))
