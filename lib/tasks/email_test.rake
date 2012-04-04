@@ -1,8 +1,8 @@
 desc "Email test"
 task :email_test => :environment do
 
-  # email    = ""
-  # password = ""
+  email    = ""
+  password = ""
   total    = 10
 
 
