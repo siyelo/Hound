@@ -63,7 +63,7 @@ class FetchMailJob
 
   def stop
     logger.info "#{Time.now} FetchMailJob stopped."
-    imap.idle_done
+    imap.disconnect
     exit
   end
 
