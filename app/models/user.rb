@@ -35,6 +35,12 @@ class User < ActiveRecord::Base
     def find_for_database_authentication(conditions={})
       find_by_email_or_alias(conditions[:email])
     end
+
+    def find_and_validate_password(email_address, password)
+      user = User.find_by_email_or_alias(email_address)
+      user if user && user.valid_password?(password)
+    end
+
   end
 
   ### Instance methods
@@ -61,8 +67,8 @@ class User < ActiveRecord::Base
   def all_email_addresses
     aliases.map { |a| a.email } << email
   end
-
 end
+
 # == Schema Information
 #
 # Table name: users

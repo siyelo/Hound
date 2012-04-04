@@ -65,6 +65,7 @@ class FetchedMail < ActiveRecord::Base
     fetched_mail
   end
 end
+
 # == Schema Information
 #
 # Table name: fetched_mails
