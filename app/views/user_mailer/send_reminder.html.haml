@@ -2,10 +2,15 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
-    %table{:style => "600px"}
-      %tr
-        %td{:colspan => "2"}
-          %strong Sup yo! Here's your reminder
-          %hr
-      =render 'reminder_body'
+  %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+    %table{:style => "margin: 0 auto;width:600px;"}
+      %tbody
+        %tr
+          %td{:style=>"background: url(http://www.hound.cc/assets/bg-brown.png) #331A03; padding: 20px;"}
+            = link_to "http://hound.cc/", :target => "_blank", :style => "outline:none;" => do
+              = image_tag"logo.png"
+        %tr
+          %td
+            %h1{:style => "margin:40px 0 20px;"} Sup yo! Here's your reminder
+            %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
+        =render 'reminder_body'

@@ -12,7 +12,7 @@
     - else
       = render 'cc_box'
 %tr
-  %td{:colspan => "2"}
-    %hr
+  %td
+    %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
     = @reminder.body.html_safe
 
