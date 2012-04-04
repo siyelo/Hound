@@ -11,7 +11,7 @@ module Hound
           delete_secondary_user!
           @primary_user.email_aliases.new(email: @secondary_user.email).save!
         end
-      rescue Exception => e
+      rescue ActiveRecord::ActiveRecordError => e
         false
       end
     end

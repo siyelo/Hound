@@ -49,16 +49,23 @@ describe Hound::UserMerger do
   end
 
   it "should return false if merger fails" do
-    FetchedMail.any_instance.stub(:save!).and_raise Exception.new
+    FetchedMail.any_instance.stub(:save!).and_raise ActiveRecord::StatementInvalid.new
     @merger_service.perform(@user1, @user2).should be_false
   end
 
   it "should rollback in the event of an error" do
-    @user2.stub(:destroy).and_raise Exception.new
+    @user2.stub(:destroy).and_raise ActiveRecord::RecordInvalid.new(@user2)
     @merger_service.perform(@user1, @user2).should be_false
     @user2.reload; @user1.reload
     @user2.fetched_mails.count.should == 1
     @user1.fetched_mails.count.should == 1
   end
 
+  it "should rollback in the event of an error" do
+    @user2.stub(:destroy).and_raise ActiveRecord::StatementInvalid.new
+    @merger_service.perform(@user1, @user2).should be_false
+    @user2.reload; @user1.reload
+    @user2.fetched_mails.count.should == 1
+    @user1.fetched_mails.count.should == 1
+  end
 end
