@@ -1,0 +1,9 @@
+%tr
+  %td
+    %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
+%tr
+  %td
+    - unless body.empty?
+      = body
+    - else
+      %div The message body is empty.

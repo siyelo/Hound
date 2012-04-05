@@ -4,7 +4,6 @@ class SendReminderJob
   @queue = :send_queue
 
   def self.perform(reminder_id)
-    reminder = Reminder.find_by_id(reminder_id)
-    Notifier.send_reminder_email(reminder)
+    Hound::Notifier.send_reminders(reminder_id)
   end
 end

@@ -79,14 +79,6 @@ describe Reminder do
       reminder.send_at.to_i.should == (now + 2.days).to_i #Ruby times have greater precision
     end
 
-    it "should mark a snoozed reminder as undelivered" do
-      reminder.save
-      Notifier.send_reminder_email(reminder)
-      reminder.delivered?.should == true
-      reminder.snooze_for('2months', reminder.snooze_token)
-      reminder.delivered?.should == false
-    end
-
     it "should increment the snooze count as the user snoozes" do
       reminder.snooze_count.should == 0 #sanity
       reminder.save
