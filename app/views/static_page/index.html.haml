@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag 'fancybox/jquery.fancybox-1.3.4.pack.js'
+
 %section#featured
   .wrapper
     %h2
@@ -7,11 +10,11 @@
       %br
       It helps you clear out your inbox and to focus on what’s important right now.
     %p.signup-wrap
-      = mail_to '2minutes@hound.cc', "Try it now - free!", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
+      = mail_to '2minutes@hound.cc', "Try it now !", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
       %span
-        Signing up is as easy as sending an email.
+        Get started within seconds.
         %br
-        Get started within seconds!
+        It's as easy as sending an email!
     = image_tag('hound.png', :class => "hound", :width => "320")
 
 %section#guide
@@ -19,7 +22,7 @@
     %ul.short-guide
       %li
         = image_tag('icon1.png')
-        %h4 Create fast email reminders
+        %h4 Create email reminders, fast
       %li
         = image_tag('icon2.png')
         %h4 Get reminded, on-time
@@ -36,28 +39,22 @@
       .wrapper
         %span.number 1
         .tour-content
-          %h2 Create fast email reminders (and help clear out your inbox)
+          %h2 Create email reminders (and help clear out your inbox)
           %ul
             %li
-              = image_tag('100x100.gif', :width=>"60%", :height=>"300px")
-              Schedule reminders using your favourite email application. Its
-              fast and simple using Hound's flexible addresses;
-            %li.fourth
-              = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
-              %span Sends you a reminder in 2 minutes
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li.fourth
-              = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
-              %span Sends both you and your recipient a reminder tomorrow, first thing.
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li.fourth
-              = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
-              %span Sends only you a reminder next Friday.
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-            %li.fourth
-              Get control of your inbox by forwarding emails to Hound.
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
+              Schedule reminders using your favourite email application. Get control of your inbox by forwarding emails to Hound.
+              %ul
+                %li
+                = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
+                %span Sends you a reminder in 2 minutes.
+              %li
+                = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
+                %span Sends both you and your recipient a reminder tomorrow.
+              %li
+                = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
+                %span Sends only you a reminder next Friday.
 
+          = link_to image_tag('screen_1day_sml.jpg', :width=>"60%", :height=>"300px"), 'assets/screen_1day_lrg.jpg', class: 'fbox'
     %li
       .wrapper
         %span.number 2
@@ -65,18 +62,13 @@
           %h2 Get reminded (and never miss an opportunity to follow up)
           %ul
             %li
-              Hound automatically sends (great-looking) reminders when they're due.
-              Other recipients can also receive reminders from Hound, helping you
+              Hound sends (great-looking) reminders when they're due.
+              You can have other recipients also receive reminders, helping you
               get a response to that important email.
-              = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
             %li
               We include the original email content, so all the information
-              you need is right there in the reminder.
-              = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
-            %li
-              Hound reminders also appear nicely inside threaded email conversations
-              too!
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
+              you need is right there.
+          = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
 
     %li.odd
       .wrapper
@@ -90,10 +82,7 @@
               from your inbox!
               = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
             %li
-              You can choose any one of several common snooze shortcuts (then
-              delete that reminder email from your nice and clean inbox).
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
-
+              (Snooze it, and discard it from your tidy inbox - let Hound worry about it for you!)
     %li
       .wrapper
         %span.number 4
@@ -102,15 +91,15 @@
           %ul
             %li
               Manage your upcoming reminders via our great web interface.
-              = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
             %li
-              Change your confirmation emails and timezone preferences.
-              = image_tag('100x100.gif', :width=>"200px", :height=>"100px")
+              Change your notification and timezone preferences. Manage multiple email addresses.
+
+        = link_to image_tag('screen_web_ui_sml.jpg', :width=>"60%", :height=>"300px"), 'assets/screen_web_ui_lrg.jpg', class: 'fbox'
 
 %section#signup
   .wrapper
     %p.signup-wrap.wide
-      = mail_to '2minutes@hound.cc', "Try it now - free!", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
+      = mail_to '2minutes@hound.cc', "Try it now !", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
 
 
 %section#benefits
@@ -118,27 +107,27 @@
     %h2 Benefits You'll Love
     %ul.benefits
       %li.sixth
-        %h3 Increase Productivity
+        %h3 Better Productivity
         %p Manage your todos more effectively.
       %li.sixth
         %h3 Increase Sales
         %p Follow up important leads on time.
       %li.sixth
         %h3 Safe and secure
-        %p Your privacy is important. And we don't spam you.
+        %p We don't share your data. We delete old emails.
       %li.sixth
         %h3 Nothing to Install
-        %p Works directly from your inbox (and browser).
+        %p Works directly from your inbox.
       %li.sixth
         %h3 Get Things Done
-        %p Get your inbox to zero.
+        %p Help get your inbox down to zero.
       %li.sixth
-        %h3 Get Started Immediately
+        %h3 Get Started Now
         %p
           Simply
           = mail_to '2minutes@hound.cc', 'click here', subject: 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!'
           to send your first email to Hound
 
     //%p.signup-wrap.wide
-    //  = mail_to '2minutes@hound.cc', "Try it now - free!", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
+    //  = mail_to '2minutes@hound.cc', "Try it now !", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
 

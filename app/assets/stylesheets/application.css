@@ -11,6 +11,7 @@
 - *= require ./flashes
 - *= require ./notifications
 - *= require ./reminders
+- *= require ../javascripts/fancybox/jquery.fancybox-1.3.4.css
 - *= require_tree ./application
 - */
 

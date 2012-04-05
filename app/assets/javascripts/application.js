@@ -16,3 +16,5 @@
 //= require ./uservoice
 //= require ./uservoice_contact_link
 //= require ./google_analytics
+//= require fancybox_load
+//= require ./fancybox/jquery.fancybox-1.3.4.pack
