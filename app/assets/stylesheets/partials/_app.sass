@@ -74,22 +74,28 @@
       &:first-child
         color: $three
         font-weight: bold
+      &.reminder_container
+        background: $two + #888
+        
     tr
       &:last-child td
         border: none
       &:hover, &:focus
         td
           background: $two + #888
+      &.reminder.active td
+        background: $two + #888
+        border-style: dotted
     input[type=checkbox]
       float: right
 
 .inline_reminder form
-  background: #fff
-  margin: 0 0 15px
-  padding: 30px 15px 20px
+  //background: #fff
+  //margin: 0 0 15px
+  //padding: 30px 15px 20px
   position: relative
-  +border-radius(3px)
-  +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+  //+border-radius(3px)
+  //+box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
   label
     color: rgba(0, 0, 0, 0.5)
     display: block
