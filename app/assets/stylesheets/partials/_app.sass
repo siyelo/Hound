@@ -5,11 +5,11 @@
   width: 266px
   +border-radius(3px)
   +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
-  
+
 #devise, #settings
   form
     padding-bottom: 20px
-  
+
   h2
     margin-bottom: 20px
   label
@@ -34,7 +34,10 @@
     +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
     ul
       margin: 0
-      
+
+  select#user_timezone
+    width: 266px
+
 #links
   padding-bottom: 30px
   text-align: center
@@ -42,7 +45,7 @@
 .table-wrap
   margin: 0 0 20px
   +border-radius(3px)
-  
+
   &.heading
     background: url(image_path('bg-light.png'))
     padding: 9px 15px
@@ -75,7 +78,7 @@
           background: $two + #888
     input[type=checkbox]
       float: right
-      
+
 .inline_reminder form
   background: #fff
   margin: 0 0 15px
@@ -93,13 +96,13 @@
     top: 30px
     table
       width: 60%
-      
+
 .reminder_list
   h3
     color: $one
     +text-shadow(rgba(255, 255, 255, 0.5) 0 1px 1px)
-        
-    
+
+
 .modern
   font-size: 12px
   width: 100%
@@ -107,7 +110,7 @@
     width: 45%
   .small
     width: 10%
-  
+
 #settings
   label
     display: block
