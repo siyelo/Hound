@@ -18,7 +18,8 @@ module Hound
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
     config.autoload_paths += %W(#{config.root}/lib)
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    # removed as per http://stackoverflow.com/questions/7081782/inconsistent-loaderror-behavior-with-lib-namespacing-autoloading
+    #config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{Rails.root}/app/models/**/"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).

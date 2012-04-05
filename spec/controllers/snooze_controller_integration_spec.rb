@@ -9,7 +9,7 @@ describe SnoozeController do
     end
 
     it "should inform the cc'd users that the reminder has been snoozed" do
-      method = :snooze_notification_email
+      method = :send_snooze_notifications
       @reminder.other_recipients = ["pimpchains@rus.com", "tapped@datass.yo"]; @reminder.save
       get :show, id: @reminder.id
       NotificationJob.should have_queue_size_of(1)

@@ -1,6 +1,7 @@
 (function() {
 
   $(document).ready(function() {
+    $("#user_timezone").chosen();
     $("#add_alias").live("click", function() {
       return $(this).disabled;
     });
@@ -12,7 +13,7 @@
         return $.ajax({
           type: 'DELETE',
           url: $(this).attr('data-link'),
-          success: function(data, textStatus, jqXHR) {
+          success: function(data, textStatus, data) {
             return element.remove();
           }
         });

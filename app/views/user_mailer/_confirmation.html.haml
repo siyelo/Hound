@@ -1,19 +1,15 @@
 %tr
   %td
     %h1{:style => "margin:40px 0 0;"} We've set your reminder!
-    
-%tr
-  %td
-    %ul
-      %li= link_to "Upcoming", reminders_url, :style => "color: #E88300"
-      %li= link_to "Settings", settings_url, :style => "color: #E88300"
+
+= render 'menu'
 
 = render 'send_at'
 
 %tr
   %td
     %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
-    
+
 %tr
   %td
     %p
