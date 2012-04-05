@@ -113,4 +113,12 @@ describe Hound::ReminderMailUpdater do
     updater.perform(user, params)
     updater.reminder.send_at.should == DateTime.parse('2012-12-31 00:45')
   end
+
+  it "should does not set send_at when formatted date & time are not set" do
+    Time.zone = "Harare"
+    params = { id: 1, formatted_date: '', formatted_time: '',
+      reminder: { subject: 'subject' } }
+    updater.perform(user, params)
+    updater.reminder.send_at.should be_nil
+  end
 end

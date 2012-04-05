@@ -1,10 +1,12 @@
 var reminder_row = $("#<%= dom_id(@reminder) %>");
-$('.reminder_row').hide();
+var inline_reminder = reminder_row.find(".inline_reminder");
+
+$('.reminder_row').addClass('hidden');
 $('.reminder_row').find('.inline_reminder').html('');
 
-reminder_row.find(".inline_reminder").html("<%=j render 'form' %>");
+reminder_row.removeClass('hidden');
+inline_reminder.html("<%=j render 'form' %>").fadeIn(300);
 
-reminder_row.fadeIn(300);
 reminder_row.find('.reminder_body').tinymce({
   theme: "advanced",
   theme_advanced_buttons1: "bold,italic,underline, strikethrough",

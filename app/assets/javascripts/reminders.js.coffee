@@ -36,6 +36,10 @@ class Reminder
       else if element.is(':checked')
         element.closest("tr").addClass "completed_row"
 
+  @hide_reminder_row: (reminder_row) ->
+    reminder_row.addClass('hidden')
+    reminder_row.prev('tr.reminder').removeClass('active')
+
 (exports ? this).Reminder = Reminder
 
 $(document).ready ->
@@ -48,10 +52,10 @@ $(document).ready ->
     $('tr.reminder').removeClass('active')
     reminder.addClass('active')
 
-    if (reminder_row.is(":visible"))
-      reminder_row.hide()
-    else
+    if (reminder_row.hasClass('hidden'))
       $.getScript(element.attr('href') + ".js")
+    else
+      Reminder.hide_reminder_row(reminder_row)
 
   $(".mark_as_complete").live "click", ->
     element = $(this)
@@ -65,6 +69,7 @@ $(document).ready ->
       $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>')
       event.preventDefault()
 
-  $('#js_cancel').live "click", ->
-    $('.inline_reminder').hide()
-    return false
+  $('#js_cancel').live "click", (event) ->
+    event.preventDefault()
+    reminder_row = $(this).parents('tr.reminder_row')
+    Reminder.hide_reminder_row(reminder_row)
