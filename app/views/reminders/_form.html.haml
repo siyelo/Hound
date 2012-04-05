@@ -1,5 +1,7 @@
 = form_tag reminder_path(@reminder.id), remote: true, method: :put do
-  .errors
+
+  %ul.errors
+
   .text-editor.right
     = label_tag "Content:"
     = text_area_tag 'reminder[body]', @reminder.body, class: 'reminder_body', style: "width: 100%;"
@@ -16,7 +18,7 @@
     = label_tag 'Reminder Time:'
     = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time', class: 'reminder_formatted_time'
   = label_tag Time.zone
-  
+
   %br
   %hr
   %p.left

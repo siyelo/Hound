@@ -63,10 +63,12 @@ $(document).ready ->
     Reminder.mark_as_complete(form, element)
 
   #Validate the form of the cc email addresses before submitting
-  $('.js_submit').live "click", ->
-    $('.errors').html('')
+  $('.js_submit').live "click", (event) ->
+    element = $(this)
+    errors_box = element.parents('.reminder_row').find('.errors')
     unless Reminder.validate_cc_emails($('#reminder_other_recipients').val())
-      $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>')
+      error = $('<li/>').text('Not all Cc addresses are well formatted')
+      errors_box.html('').append(error)
       event.preventDefault()
 
   $('#js_cancel').live "click", (event) ->
