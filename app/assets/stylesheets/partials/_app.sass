@@ -37,7 +37,7 @@
 
   select#user_timezone
     width: 266px
-    
+
   .error
     color: $red
     font: 14px Amaranth
@@ -77,7 +77,7 @@
       &.reminder_container
         background: $two + #777
         padding: 10px 20px
-        
+
     .modern > tbody > tr
       &:last-child td
         border: none
@@ -90,31 +90,34 @@
     input[type=checkbox]
       float: right
 
-.inline_reminder form
-  //background: #fff
-  //margin: 0 0 15px
-  //padding: 30px 15px 20px
-  padding-bottom: 10px
-  position: relative
-  //+border-radius(3px)
-  //+box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
-  +pie-clearfix
-  label
-    color: rgba(0, 0, 0, 0.5)
-    display: block
-    font: 14px Amaranth
-  .text-editor
-    width: 55%
+.inline_reminder
+  h2
+    margin: 40px 0 20px
+  form
+    //background: #fff
+    //margin: 0 0 15px
+    //padding: 30px 15px 20px
+    padding-bottom: 10px
+    position: relative
+    //+border-radius(3px)
+    //+box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+    +pie-clearfix
+    label
+      color: rgba(0, 0, 0, 0.5)
+      display: block
+      font: 14px Amaranth
+    .text-editor
+      width: 55%
 
-  input[type=email], input[type=password], input[type=text]
-    border: 1px solid rgba(0, 0, 0, 0.4)
-    font-size: 12px
-    margin-bottom: 10px
-    padding: 5px 10px
-    width: 246px
-    +box-shadow(rgba(0, 0, 0, 0.1) 1px 1px 3px inset)
-    &:hover, &:focus, &:active
-      border-color: $one
+    input[type=email], input[type=password], input[type=text]
+      border: 1px solid rgba(0, 0, 0, 0.4)
+      font-size: 12px
+      margin-bottom: 10px
+      padding: 5px 10px
+      width: 246px
+      +box-shadow(rgba(0, 0, 0, 0.1) 1px 1px 3px inset)
+      &:hover, &:focus, &:active
+        border-color: $one
 
 .reminder_list
   h3
@@ -135,7 +138,7 @@
 #settings
   label
     display: block
-    
+
 ul.errors
   li
     color: $red !important

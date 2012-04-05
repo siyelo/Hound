@@ -43,6 +43,16 @@ class Reminder
 (exports ? this).Reminder = Reminder
 
 $(document).ready ->
+  if ($('#reminder_body').length > 0)
+    $('#reminder_body').tinymce
+      theme: "advanced",
+      theme_advanced_buttons1: "bold,italic,underline, strikethrough",
+      theme_advanced_buttons2: "",
+      theme_advanced_buttons3: "",
+      theme_advanced_buttons4: "",
+      theme_advanced_toolbar_location: "top",
+      theme_advanced_toolbar_align: "left"
+
   $(".subject_link").live "click", (event) ->
     event.preventDefault()
     element = $(this)
