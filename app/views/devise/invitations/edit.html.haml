@@ -1,15 +1,16 @@
-%h2 Almost done! Just a few details...
+#devise
+  %h2 Almost done! Just a few details...
+  = form_for resource, :as => resource_name, :url => activate_url, :html => { :method => :put } do |f|
+    = f.hidden_field :invitation_token
 
-= form_for resource, :as => resource_name, :url => activate_url, :html => { :method => :put } do |f|
-  = devise_error_messages!
-  = f.hidden_field :invitation_token
+    %div
+      = f.label :password
+      = f.password_field :password
 
-  //%p Enter a password for your new account
-  = f.label :password
-  = f.password_field :password
+    %div
+      = f.label :timezone
+      = f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)"
 
-  //%p Double-check your timezone
-  = f.label :timezone
-  = f.time_zone_select :timezone, nil, :default => "Pacific Time (US & Canada)"
+    = f.submit "Start using Hound →", :class => "button medium alt"
 
-  = f.submit "Start using Hound →", :class => "button medium alt"
+%br
