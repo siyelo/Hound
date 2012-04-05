@@ -15,7 +15,7 @@ describe 'User sessions', type: :request do
     unread_emails_for(@user.email).size.should >= parse_email_count(1)
     open_email(@user.email)
     email_should_have_body("Someone has requested a link to change your password, and you can do this through the link below.")
-    click_first_link_in_email
+    visit_in_email("Change my password")
 
     within('body') do
       page.should have_content('Change your password')
@@ -57,7 +57,7 @@ describe 'User sessions', type: :request do
     unread_emails_for(@user.email).size.should >= parse_email_count(1)
     open_email(@user.email)
     email_should_have_body("Someone has requested a link to change your password, and you can do this through the link below.")
-    click_first_link_in_email
+    visit_in_email("Change my password")
 
     within('body') do
       page.should have_content('Change your password')
