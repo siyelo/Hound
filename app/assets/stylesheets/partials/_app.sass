@@ -121,6 +121,8 @@
     color: $one
     +text-shadow(rgba(255, 255, 255, 0.5) 0 1px 1px)
 
+.defaultSkin table.mceLayout
+  border: 1px solid #ccc !important
 
 .modern
   font-size: 12px
@@ -133,6 +135,14 @@
 #settings
   label
     display: block
+    
+ul.errors
+  li
+    color: $red !important
+    &:last-child
+      border-bottom: 1px dotted #eee
+      margin-bottom: 10px
+      padding-bottom: 8px
 
 .schedule
   background: #fff
