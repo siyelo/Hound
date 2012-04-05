@@ -1,5 +1,0 @@
-- Development setup (run this in rails console to setup reminder for user@example.com)
-
-  mail = Mail.new(from: 'user@company.com', to: '1w@hound.cc', subject: 'hello', body: 'test')
-  service = ReminderCreationService.new
-  service.create!(mail)
