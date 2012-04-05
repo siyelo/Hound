@@ -3,11 +3,13 @@
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
   %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
-    = render 'header'
-    %tr
-      %td
-        %h1{:style => "margin:40px 0 0;"}= "Reminder: #{@original_subject}"
+    %table
+      %tbody
+        = render 'header'
+        %tr
+          %td
+            %h1{:style => "margin:40px 0 0;"}= "Reminder: #{@original_subject}"
 
-    %p== #{@owner} created this reminder for you on #{@created_at}
+        %p== #{@owner} created this reminder for you on #{@created_at}
 
-    = render 'body', body: @body
+        = render 'body', body: @body
