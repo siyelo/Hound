@@ -7,21 +7,23 @@
       %tbody
         = render 'header'
         %tr
-          %td
+          %td{:colspan=>"2"}
             %h1{:style => "margin:40px 0 20px;"}= "Reminder: #{@original_subject}"
-
-            %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
-
-        = render 'menu'
+        
+        = render 'hr'
 
         %tr
-          %td{:style => "width:50%"}
-            %p{:style => "font-size:16px"}== You created this reminder on #{@created_at}
-            %p{:style => "font-size:16px"}== It has been snoozed #{@snoozed} times.
+          %td{:style => "width:50%; vertical-align: top;"}
+            %p{:style => "font-size:16px"}
+              == You created this reminder on #{@created_at}
+              %br
+              == It has been snoozed #{@snoozed} times.
+            %p More options:
+            %ul
+              %li= link_to "Upcoming", reminders_url, :style => "color: #E88300"
+              %li= link_to "Settings", settings_url, :style => "color: #E88300"
 
-          %td{:style => "width:50%"}
+          %td{:style => "width:50%;"}
             = render 'snooze_box'
 
         = render 'body', body: @body
-
-
