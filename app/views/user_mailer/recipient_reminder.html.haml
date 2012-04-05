@@ -2,11 +2,11 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
     = render 'header'
     %tr
       %td
-        %h1= "Reminder: #{@original_subject}"
+        %h1{:style => "margin:40px 0 0;"}= "Reminder: #{@original_subject}"
 
     %p== #{@owner} created this reminder for you on #{@created_at}
 
