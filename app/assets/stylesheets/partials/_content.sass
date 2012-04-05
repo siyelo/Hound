@@ -39,7 +39,7 @@
       opacity: 1
 
 #guide
-  background: url(image_path('bg-dark.png'))
+  background: url(image_path('bg-dark.png')) $three - #020202
   padding: 40px 0
   position: relative
   z-index: 15
@@ -71,7 +71,7 @@
 .tour
   +pie-clearfix
   li
-    padding: 20px 0 15px
+    padding: 5px 0 0
     +pie-clearfix
   > li
     padding: 50px 0 25px
@@ -79,6 +79,8 @@
       background: url(image_path('bg-white.png'))
     &:first-child
       padding-top: 60px
+    &:last-child .wrapper
+      padding-bottom: 40px
 
   span.number
     background: $one
@@ -102,18 +104,44 @@
     +text-shadow(rgba(0, 0, 0, 0.4) 0 1px 2px)
   p
     font: normal 14px/1.4 Amaranth
+    padding-top: 15px
+  .fbox
+    width: 53%
+    +box-shadow(rgba(0, 0, 0, 0.1) 0 0 6px)
+  .tour-text
+    color: #444
     float: left
-    padding-left: 0.5%
-    width: 45%
-  img
-    float: right
-    width: 45%
-
+    margin: 0 2% 2%
+    width: 43%
+  h3 a
+    color: $one
+    font-size: 18px
+  span
+    color: #777
+    display: block
+    font-size: 11px
+    padding: 3px 0 5px 5px
+    
+.tour-image
+  float: left
+  width: 50%
+  +border-radius(5px)
+  +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+  
+.left-arrow, .right-arrow
+  bottom: -60px
+  opacity: 0.6
+  position: absolute
+.left-arrow
+  left: 15%
+  
+.right-arrow
+  right: 15%
 #signup
-  background: url(image_path('bg-brown.png')) repeat center
+  background: url(image_path('bg-brown.png')) repeat center $three
   +box-shadow(rgba(0, 0, 0, 0.1) 0 -3px 9px inset)
 #benefits
-  background: url(image_path('bg-brown.png')) repeat center
+  background: url(image_path('bg-brown.png')) repeat center $three
   padding: 50px 0 40px
   text-align: center
   h2

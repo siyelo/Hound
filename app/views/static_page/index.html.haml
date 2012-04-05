@@ -35,72 +35,70 @@
 
 %section#content
   %ul.tour
-    %li.odd
+  
+    %li
       .wrapper
         %span.number 1
         .tour-content
           %h2 Create email reminders (and help clear out your inbox)
-          %ul
+          = link_to image_tag('screen_1day_sml.jpg', :width=>"100%"), 'assets/screen_1day_lrg.jpg', class: 'fbox left'
+          %p.tour-text Schedule reminders using your favorite email application. Get control of your inbox by forwarding emails to Hound.
+          %ul.tour-text
             %li
-              Schedule reminders using your favourite email application. Get control of your inbox by forwarding emails to Hound.
-              %ul
-                %li
-                = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
-                %span Sends you a reminder in 2 minutes.
-              %li
-                = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
-                %span Sends both you and your recipient a reminder tomorrow.
-              %li
-                = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
-                %span Sends only you a reminder next Friday.
-
-          = link_to image_tag('screen_1day_sml.jpg', :width=>"60%", :height=>"300px"), 'assets/screen_1day_lrg.jpg', class: 'fbox'
-    %li
+              %h3= mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
+              %span › Sends you a reminder in 2 minutes.
+            %li
+              %h3= mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
+              %span › Sends both you and your recipient a reminder tomorrow.
+            %li
+              %h3= mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
+              %span › Sends only you a reminder next Friday.
+        = image_tag("right-arrow.png", :width =>"50px", :class => "right-arrow")
+          
+    %li.odd
       .wrapper
         %span.number 2
         .tour-content
           %h2 Get reminded (and never miss an opportunity to follow up)
-          %ul
+          = link_to image_tag('screen_web_ui_sml.jpg', :width=>"100%"), 'assets/screen_web_ui_lrg.jpg', class: 'fbox right'
+          
+          %ul.tour-text
             %li
-              Hound sends (great-looking) reminders when they're due.
-              You can have other recipients also receive reminders, helping you
-              get a response to that important email.
+              %p Hound sends (great-looking) reminders when they're due. You can have other recipients also receive reminders, helping you get a response to that important email.
             %li
-              We include the original email content, so all the information
-              you need is right there.
-          = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
-
-    %li.odd
+              %p We include the original email content, so all the information you need is right there.
+        = image_tag("left-arrow.png", :width =>"50px", :class => "left-arrow")
+          
+    %li
       .wrapper
         %span.number 3
         .tour-content
           %h2 Snooze it (or do it :-)
-          %ul
+          = link_to image_tag('screen_1day_sml.jpg', :width=>"100%"), 'assets/screen_1day_lrg.jpg', class: 'fbox left'
+          %ul.tour-text
             %li
-              Need to put off 'til tomorrow what doesnt need to be done today?
-              Easy. Just snooze your Hound reminders with one click, right there
-              from your inbox!
-              = image_tag('100x100.gif', :width=>"400px", :height=>"200px")
+              %p Need to put off 'til tomorrow what doesnt need to be done today? Easy. Just snooze your Hound reminders with one click, right there from your inbox!
             %li
-              (Snooze it, and discard it from your tidy inbox - let Hound worry about it for you!)
-    %li
+              %p (Snooze it, and discard it from your tidy inbox - let Hound worry about it for you!)
+        = image_tag("right-arrow.png", :width =>"50px", :class => "right-arrow")
+            
+    %li.odd
       .wrapper
         %span.number 4
         .tour-content
           %h2 Stay on top of your todo list
-          %ul
+          = link_to image_tag('screen_web_ui_sml.jpg', :width=>"100%"), 'assets/screen_web_ui_lrg.jpg', class: 'fbox right'
+          %ul.tour-text
             %li
-              Manage your upcoming reminders via our great web interface.
+              %p Manage your upcoming reminders via our great web interface.
             %li
-              Change your notification and timezone preferences. Manage multiple email addresses.
-
-        = link_to image_tag('screen_web_ui_sml.jpg', :width=>"60%", :height=>"300px"), 'assets/screen_web_ui_lrg.jpg', class: 'fbox'
+              %p Change your notification and timezone preferences. Manage multiple email addresses.
+        = image_tag("left-arrow.png", :width =>"50px", :class => "left-arrow")
 
 %section#signup
   .wrapper
     %p.signup-wrap.wide
       = mail_to '2minutes@hound.cc', "Try it now !", :subject => 'Send me a reminder in 2 minutes!', body: 'Hound will automatically remind you about this email in 2 minutes!', :class=>"signup button"
-
 
 %section#benefits
   .wrapper
