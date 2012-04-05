@@ -88,19 +88,19 @@ describe 'User', type: :request do
       click_link 'reminder1'
       fill_in 'reminder_other_recipients', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
-      page.should_not have_content('Not all cc addresses are properly formed.')
+      page.should_not have_content('Not all Cc addresses are well formatted')
 
       visit '/'
       click_link 'reminder1'
       fill_in 'reminder_other_recipients', with: 'test'
       click_button 'submit'
-      page.should have_content('Not all cc addresses are properly formed.')
+      page.should have_content('Not all Cc addresses are well formatted')
 
       visit '/'
       click_link 'reminder1'
       fill_in 'reminder_other_recipients', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
-      page.should have_content('Not all cc addresses are properly formed.')
+      page.should have_content('Not all Cc addresses are well formatted')
     end
   end
 

@@ -55,13 +55,13 @@ module Hound
     end
 
     def parse_send_at!(params)
-      if params[:reminder] && !params[:reminder][:send_at]
-        if params[:formatted_date] || params[:formatted_time]
-          date_string = params.delete(:formatted_date) +' '+
+      if params[:reminder].present? && !params[:reminder][:send_at].present?
+        if params[:formatted_date].present? || params[:formatted_time].present?
+          date_string = params.delete(:formatted_date) + ' ' +
             params.delete(:formatted_time)
-          date = DateTime.parse date_string
-          params[:reminder][:send_at] = date.change(offset:
-                                                    Time.zone.formatted_offset)
+          date = DateTime.parse(date_string)
+          params[:reminder][:send_at] = date.
+            change(offset: Time.zone.formatted_offset)
         end
       end
     end

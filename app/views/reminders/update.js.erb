@@ -1,8 +1,10 @@
+var reminder_row = $("#<%= dom_id(@reminder) %>");
+
 <% if @reminder.errors.empty? %>
-  $('.inline_reminder').hide();
+  reminder_row.addClass('hidden');
   $("#reminder<%= @reminder.id %>_row").replaceWith("<%=j render @reminder %>")
   $('.status').show().html('saved');
   $('.status').fadeOut(2000).delay(1000);
 <% else %>
-  $('.errors').html("<%=j render('errors') %>")
+  reminder_row.find('.errors').html("<%=j render('errors') %>")
 <% end %>

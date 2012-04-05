@@ -36,6 +36,10 @@ class Reminder
       else if element.is(':checked')
         element.closest("tr").addClass "completed_row"
 
+  @hide_reminder_row: (reminder_row) ->
+    reminder_row.addClass('hidden')
+    reminder_row.prev('tr.reminder').removeClass('active')
+
 (exports ? this).Reminder = Reminder
 
 $(document).ready ->
@@ -49,8 +53,19 @@ $(document).ready ->
       theme_advanced_toolbar_location: "top",
       theme_advanced_toolbar_align: "left"
 
-  $(".subject_link").live "click", ->
-    $('.inline_reminder').hide()
+  $(".subject_link").live "click", (event) ->
+    event.preventDefault()
+    element = $(this)
+    reminder = element.parents('tr.reminder')
+    reminder_row = reminder.next("tr.reminder_row")
+
+    $('tr.reminder').removeClass('active')
+    reminder.addClass('active')
+
+    if (reminder_row.hasClass('hidden'))
+      $.getScript(element.attr('href') + ".js")
+    else
+      Reminder.hide_reminder_row(reminder_row)
 
   $(".mark_as_complete").live "click", ->
     element = $(this)
@@ -58,12 +73,15 @@ $(document).ready ->
     Reminder.mark_as_complete(form, element)
 
   #Validate the form of the cc email addresses before submitting
-  $('.js_submit').live "click", ->
-    $('.errors').html('')
+  $('.js_submit').live "click", (event) ->
+    element = $(this)
+    errors_box = element.parents('.reminder_row').find('.errors')
     unless Reminder.validate_cc_emails($('#reminder_other_recipients').val())
-      $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>')
+      error = $('<li/>').text('Not all Cc addresses are well formatted')
+      errors_box.html('').append(error)
       event.preventDefault()
 
-  $('#js_cancel').live "click", ->
-    $('.inline_reminder').hide()
-    return false
+  $('#js_cancel').live "click", (event) ->
+    event.preventDefault()
+    reminder_row = $(this).parents('tr.reminder_row')
+    Reminder.hide_reminder_row(reminder_row)
