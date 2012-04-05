@@ -2,7 +2,11 @@
   %td
     %h1{:style => "margin:40px 0 0;"} We've set your reminder!
 
-= render 'menu'
+%tr
+  %td{:colspan=>"2"}
+    %ul
+      %li= link_to "Upcoming", reminders_url, :style => "color: #{@link_color}"
+      %li= link_to "Settings", settings_url, :style => "color: #{@link_color}"
 
 = render 'send_at'
 
@@ -14,4 +18,4 @@
   %td
     %p
       Don't need a confirmation every time you schedule a reminder?
-      = link_to "Turn off confirmation emails", @disable_confirmations_url, :style => "color: #E88300"
+      = link_to "Turn off confirmation emails", @disable_confirmations_url, :style => "color: #{@link_color}"

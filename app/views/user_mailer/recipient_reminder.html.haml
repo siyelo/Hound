@@ -10,6 +10,6 @@
           %td
             %h1{:style => "margin:40px 0 0;"}= "Reminder: #{@original_subject}"
 
-        %p== #{@owner} created this reminder for you on #{@created_at}
+            %p== #{@owner} created this reminder for you on #{@created_at}
 
         = render 'body', body: @body
