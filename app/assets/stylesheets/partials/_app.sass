@@ -65,26 +65,26 @@
         margin-right: 3px
   &.list
     margin-top: 10px
-    +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+    +box-shadow(rgba(0, 0, 0, 0.07) 0 0 5px)
     td
       background: #fff
-      border-bottom: 1px solid #eee
+      border-bottom: 1px solid #e9e9e9
       color: #666
       padding: 8px 15px
       &:first-child
         color: $three
         font-weight: bold
       &.reminder_container
-        background: $two + #888
+        background: $two + #777
         
     tr
       &:last-child td
         border: none
       &:hover, &:focus
         td
-          background: $two + #888
+          background: $two + #777
       &.reminder.active td
-        background: $two + #888
+        background: $two + #777
         border-style: dotted
     input[type=checkbox]
       float: right
@@ -130,7 +130,7 @@
   color: #888
   font-size: 12px
   padding: 20px 15px
-  +box-shadow(rgba(0, 0, 0, 0.1) 0 0 5px)
+  +box-shadow(rgba(0, 0, 0, 0.07) 0 0 5px)
   li, span
     color: #888
   h3
