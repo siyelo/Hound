@@ -35,7 +35,8 @@ class UserMailer < ActionMailer::Base
       subject = "Welcome to Hound.cc"
     end
 
-    mail(:to => recipient, subject: subject)
+    mail(:to => recipient, subject: subject,
+         in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
 
   def snooze(reminder, to)

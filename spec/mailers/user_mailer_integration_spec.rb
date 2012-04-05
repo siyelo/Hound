@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe UserMailer do
+  let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
+    :subject => 'orig subject', cc: ['cc@a.com'], message_id: '42' }
+  let(:in_1_hour) { Time.now.in_time_zone(orig_mail.user.timezone) + 1.hour }
+  let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: orig_mail.user,
+   created_at: '2012-01-01', send_at: in_1_hour}
+  let(:recipient) { 'sender@a.com' }
+
   describe '#reminder' do
-    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] }
-    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user:orig_mail.user,
-     created_at: '2012-01-01' }
-    let(:recipient) { 'sender@a.com' }
     let(:mail) { UserMailer.reminder(reminder, recipient) }
 
     it 'renders the subject' do
@@ -19,6 +21,10 @@ describe UserMailer do
 
     it 'sends it from hound' do
       mail.from.should == ['reminder@hound.cc']
+    end
+
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
     end
 
     it "says its a reminder" do
@@ -44,10 +50,6 @@ describe UserMailer do
   end
 
   describe '#recipient_reminder' do
-    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] }
-    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user:orig_mail.user,
-     created_at: '2012-01-01' }
     let(:recipient) { 'cc@a.com' }
     let(:mail) { UserMailer.recipient_reminder(reminder, recipient) }
 
@@ -67,6 +69,10 @@ describe UserMailer do
       mail.reply_to.should == ['sender@a.com']
     end
 
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
+    end
+
     it "says its a reminder" do
       mail.body.should match /Reminder: orig subject/
     end
@@ -84,8 +90,8 @@ describe UserMailer do
   describe '#confirmation - welcome emails' do
     let(:user){ Factory :user, invitation_token: 'testtoken' }
     let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
-    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'orig_sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] , user: user }
+    let (:orig_mail) { Factory :fetched_mail, from: 'sender@a.com',
+      :subject => 'orig subject', user: user, message_id: '42'}
     let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: user,
       send_at: in_1_hour}
     let(:mail) { UserMailer.confirmation(reminder, orig_mail.from) }
@@ -95,11 +101,15 @@ describe UserMailer do
     end
 
     it 'renders the receiver email' do
-      mail.to.should == ['orig_sender@a.com']
+      mail.to.should == ['sender@a.com']
     end
 
     it 'renders the sender email' do
       mail.from.should == ['reminder@hound.cc']
+    end
+
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
     end
 
     it 'assigns send_at' do
@@ -116,12 +126,6 @@ describe UserMailer do
   end
 
   describe '#confirmation - confirmations' do
-    let(:user){ Factory :user }
-    let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
-    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'orig_sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] , user: user }
-    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: user,
-      send_at: in_1_hour}
     let(:mail) { UserMailer.confirmation(reminder, orig_mail.from) }
 
     it 'renders the subject' do
@@ -129,11 +133,15 @@ describe UserMailer do
     end
 
     it 'renders the receiver email' do
-      mail.to.should == ['orig_sender@a.com']
+      mail.to.should == ['sender@a.com']
     end
 
     it 'renders the sender email' do
       mail.from.should == ['reminder@hound.cc']
+    end
+
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
     end
 
     it 'assigns send_at' do
@@ -154,13 +162,11 @@ describe UserMailer do
 
     it 'allows user to turn confirmations off' do
       mail.body.should match /Don\'t need a confirmation every time you schedule a reminder\?/
-      mail.body.should include(confirmations_disable_url(token: user.modify_token))
+      mail.body.should include(confirmations_disable_url(token: orig_mail.user.modify_token))
     end
   end
 
   describe "#snooze" do
-    let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] }
     let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user:orig_mail.user,
      created_at: '2012-01-01', send_at: DateTime.parse("2012-01-01 08:00:00"), snooze_count: 1}
     let(:mail) { UserMailer.snooze(reminder, 'cc@a.com') }
@@ -181,6 +187,10 @@ describe UserMailer do
       mail.reply_to.should == ['sender@a.com']
     end
 
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
+    end
+
     it "says its a snooze notification " do
       mail.body.should match /Snoozed: orig subject/
     end
@@ -195,10 +205,6 @@ describe UserMailer do
   end
 
   describe '#error' do
-    let(:user){ Factory :user }
-    let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
-    let (:orig_mail) { Factory :fetched_mail, from: 'orig_sender@a.com',
-      :subject => 'orig subject', cc: ['cc@a.com'] , user: user }
     let(:mail) { UserMailer.error(orig_mail) }
 
     it 'renders the subject' do
@@ -206,11 +212,15 @@ describe UserMailer do
     end
 
     it 'renders the receiver email' do
-      mail.to.should == ['orig_sender@a.com']
+      mail.to.should == ['sender@a.com']
     end
 
     it 'renders the sender email' do
       mail.from.should == ['reminder@hound.cc']
+    end
+
+    it 'threads it with original mail' do
+      mail.in_reply_to.should == '<42>'
     end
 
     it 'apologizes for their stupidity' do
