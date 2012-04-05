@@ -6,18 +6,20 @@
       = render 'reminders', :reminders => reminders
 
 - else
-  %h3 Schedule a new reminder now!
-  %ul
-    %li
-      = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
-      %span Sends you a reminder in 2 minutes
-    %li
-      = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
-      %span Sends both you and your recipient a reminder tomorrow, first thing.
-    %li
-      = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
-      %span Sends only you a reminder next Friday.
-  %p
-    See our
-    = link_to "How-To", "how-to"
-    for all the scheduling options!
+  .schedule
+    %h3 Schedule a new reminder now!
+    %ul
+      %li
+        = mail_to '2minutes@hound.cc', 'To: 2minutes@hound.cc'
+        %span Sends you a reminder in 2 minutes
+      %li
+        = mail_to '', 'Cc: tomorrow@hound.cc', cc: 'tomorrow@hound.cc'
+        %span Sends both you and your recipient a reminder tomorrow, first thing.
+      %li
+        = mail_to '', 'Bcc: nextfriday@hound.cc', bcc: 'nextfriday@hound.cc'
+        %span Sends only you a reminder next Friday.
+    %hr
+    %p
+      See our
+      = link_to "How-To", "how-to"
+      for all the scheduling options!
