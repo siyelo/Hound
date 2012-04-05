@@ -3,7 +3,10 @@
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
   %body{:style => "font-size:12px;font-family:Helvetica,Arial,sans-serif"}
-    %h1= "Reminder: #{@original_subject}"
+    = render 'header'
+    %tr
+      %td
+        %h1= "Reminder: #{@original_subject}"
 
     %p== #{@owner} created this reminder for you on #{@created_at}
 
