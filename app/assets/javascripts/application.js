@@ -11,6 +11,7 @@
 //= require chosen.jquery
 //= require jquery.timePicker
 //= require tinymce-jquery
+//= require_tree ./devise
 //= require ./reminders
 //= require ./uservoice
 //= require ./uservoice_contact_link

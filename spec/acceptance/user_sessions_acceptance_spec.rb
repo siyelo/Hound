@@ -5,6 +5,30 @@ describe 'User sessions', type: :request do
     @user = Factory(:user)
   end
 
+  it 'receives an email and successfully reset password' do
+    reset_mailer
+    visit '/users/password/new'
+    fill_in "user[email]", :with=>@user.email
+    page.should have_content('Forgot your password?')
+    click_button "Reset Password"
+
+    unread_emails_for(@user.email).size.should >= parse_email_count(1)
+    open_email(@user.email)
+    email_should_have_body("Someone has requested a link to change your password, and you can do this through the link below.")
+    click_first_link_in_email
+
+    within('body') do
+      page.should have_content('Change your password')
+    end
+
+    fill_in "user[password]", :with=>"password"
+    click_button "Change my password"
+
+    within('body') do
+      page.should have_content('Your password was changed successfully.')
+    end
+  end
+
   it 'is able to login' do
     log_in_with @user
 

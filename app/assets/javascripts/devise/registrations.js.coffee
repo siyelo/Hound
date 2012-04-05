@@ -4,7 +4,7 @@ $(document).ready ->
   $("#add_alias").live "click", ->
     $(this).disabled
 
-  $(".delete_link").live "click", ->
+  $(".delete_link").live "click", (event) ->
     event.preventDefault()
     element = $(this).parent('li')
     if confirm( 'Are you sure?')
