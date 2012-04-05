@@ -7,13 +7,13 @@
   = text_field_tag 'reminder[other_recipients]', @reminder.other_recipients.join(',')
   %p
   = label_tag 'Reminder Date:'
-  = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id:'reminder_formatted_date'
+  = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id: 'reminder_formatted_date', class: 'reminder_formatted_date'
   %p
   = label_tag 'Reminder Time:'
-  = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time'
+  = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time', class: 'reminder_formatted_time'
   = label_tag Time.zone
   %p
-    = text_area_tag 'reminder[body]', @reminder.body
+    = text_area_tag 'reminder[body]', @reminder.body, class: 'reminder_body', style: "width: 300px;"
   %br
   = submit_tag 'Submit', class:'js_submit', disable_with: 'Processing...', id: 'submit'
 = link_to 'cancel', root_path, id: 'js_cancel'
