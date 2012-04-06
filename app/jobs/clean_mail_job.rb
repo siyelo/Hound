@@ -1,4 +1,8 @@
 class CleanMailJob
+  # This class is to clean private data from delivered reminders
+  # older than 2 weeks
+
+  @queue = :clean_queue
 
   def self.perform
     Reminder.old.delivered.each do |reminder|
