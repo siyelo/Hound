@@ -22,6 +22,9 @@ class Reminder < ActiveRecord::Base
   delegate :body, :body=, to: :fetched_mail
   delegate :user, :user=, to: :fetched_mail
 
+  scope :old, lambda { where("send_at < ?", Time.now - 2.weeks) }
+  scope :delivered, where(delivered: true)
+
   def owner_recipient
     fetched_mail.from
   end

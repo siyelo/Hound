@@ -3,3 +3,8 @@ queuemail:
   class: QueueMailJob
   description: Queue Mail for Sending
   queue: process_queue
+queueclean:
+  cron: "0 * * * *"
+  class: CleanMailJob
+  description: Queue for cleaning reminders
+  queue: clean_queue
