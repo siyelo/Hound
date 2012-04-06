@@ -10,17 +10,33 @@ class FetchMailJob
   PASSWORD = ENV['HOUND_PASSWORD']
   FOLDER   = 'INBOX'
 
-
   attr_accessor :imap, :logger
 
   def initialize
-    register_signals
-
     @imap = Net::IMAP.new SERVER, :ssl => true
     @imap.login(USERNAME, PASSWORD)
     @imap.select(FOLDER)
 
     @logger = Logger.new(File.join(Rails.root, 'log', 'fetch_mail_job.log'))
+
+    register_signals
+  end
+
+  def start
+    logger.info "#{Time.now} FetchMailJob started"
+
+    fetch_messages
+
+    loop do
+      wait_for_messages
+      fetch_messages
+    end
+  end
+
+  def stop
+    logger.info "#{Time.now} FetchMailJob stopped"
+    imap.disconnect
+    exit
   end
 
   def save_mail(mail)
@@ -37,17 +53,7 @@ class FetchMailJob
 
       imap.uid_store(message_id, "+FLAGS", [:Deleted])
 
-      logger.info "#{Time.now} Saved mail with message id: #{mail.message_id}."
-    end
-  end
-
-  def start
-    logger.info "#{Time.now} FetchMailJob started."
-
-    fetch_messages
-
-    loop do
-      wait_for_messages
+      logger.info "#{Time.now} Mail saved UID: #{message_id}"
     end
   end
 
@@ -57,22 +63,18 @@ class FetchMailJob
         imap.idle_done
       end
     end
-
-    fetch_messages
-  end
-
-  def stop
-    logger.info "#{Time.now} FetchMailJob stopped."
-    imap.disconnect
-    exit
+  rescue Net::IMAP::Error
+    # do nothing
   end
 
   private
     def register_signals
+      # signal when interruping the process from terminal (CTRL + c)
       Signal.trap("SIGINT") do
         FetchMailJob.instance.stop
       end
 
+      # default signal sent to a process by the kill or killall commands
       Signal.trap("SIGTERM") do
         FetchMailJob.instance.stop
       end
