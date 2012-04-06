@@ -5,7 +5,7 @@ class CleanMailJob
   @queue = :clean_queue
 
   def self.perform
-    Reminder.old.delivered.each do |reminder|
+    Reminder.old.delivered.uncleaned.each do |reminder|
       clean_reminder(reminder)
     end
   end
@@ -14,6 +14,7 @@ class CleanMailJob
     def self.clean_reminder(reminder)
       reminder.email = nil
       reminder.other_recipients = []
+      reminder.cleaned = true
       reminder.save!
 
       fetched_mail = reminder.fetched_mail

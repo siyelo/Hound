@@ -24,6 +24,7 @@ class Reminder < ActiveRecord::Base
 
   scope :old, lambda { where("send_at < ?", Time.now - 2.weeks) }
   scope :delivered, where(delivered: true)
+  scope :uncleaned, where(cleaned: false)
 
   def owner_recipient
     fetched_mail.from
