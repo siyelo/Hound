@@ -13,7 +13,7 @@ describe CleanMailJob do
                         message_id: 'message_id',
                         in_reply_to: 'in_repty_to@example.com') }
 
-  describe ".clean" do
+  describe ".perform" do
     it "cleans delivered reminders older than 2 weeks" do
       reminder = Factory(:reminder,
                          fetched_mail: mail,
@@ -22,7 +22,7 @@ describe CleanMailJob do
                          email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
-      CleanMailJob.clean
+      CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
@@ -38,7 +38,7 @@ describe CleanMailJob do
       fetched_mail.in_reply_to.should be_nil
     end
 
-    it "does not clean delivered reminders newer than 2 weeks" do
+    it "does not perform delivered reminders newer than 2 weeks" do
       reminder = Factory(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - minute_before_two_weeks,
@@ -46,7 +46,7 @@ describe CleanMailJob do
                          email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
-      CleanMailJob.clean
+      CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
@@ -62,7 +62,7 @@ describe CleanMailJob do
       fetched_mail.in_reply_to.should == 'in_repty_to@example.com'
     end
 
-    it "does not clean undelivered reminders" do
+    it "does not perform undelivered reminders" do
       reminder = Factory(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - two_weeks_and_minute,
@@ -70,7 +70,7 @@ describe CleanMailJob do
                          email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
-      CleanMailJob.clean
+      CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 

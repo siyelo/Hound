@@ -1,6 +1,6 @@
 class CleanMailJob
 
-  def self.clean
+  def self.perform
     Reminder.old.delivered.each do |reminder|
       clean_reminder(reminder)
     end
