@@ -33,17 +33,17 @@ $(document).ready ->
       theme_advanced_toolbar_location: "top",
       theme_advanced_toolbar_align: "left"
 
-  $(".subject_link").live "click", (event) ->
+  $(".reminder").live "click", (event) ->
     event.preventDefault()
-    element = $(this)
-    reminder = element.parents('tr.reminder')
+    reminder = $(this)
+    link     = reminder.find('td a:first')
     reminder_row = reminder.next("tr.reminder_row")
 
     $('tr.reminder').removeClass('active')
     reminder.addClass('active')
 
     if (reminder_row.hasClass('hidden'))
-      $.getScript(element.attr('href') + ".js")
+      $.getScript(link.attr('href') + ".js")
     else
       Reminder.hide_reminder_row(reminder_row)
 

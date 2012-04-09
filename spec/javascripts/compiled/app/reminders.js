@@ -48,16 +48,16 @@
         theme_advanced_toolbar_align: "left"
       });
     }
-    $(".subject_link").live("click", function(event) {
-      var element, reminder, reminder_row;
+    $(".reminder").live("click", function(event) {
+      var link, reminder, reminder_row;
       event.preventDefault();
-      element = $(this);
-      reminder = element.parents('tr.reminder');
+      reminder = $(this);
+      link = reminder.find('td a:first');
       reminder_row = reminder.next("tr.reminder_row");
       $('tr.reminder').removeClass('active');
       reminder.addClass('active');
       if (reminder_row.hasClass('hidden')) {
-        return $.getScript(element.attr('href') + ".js");
+        return $.getScript(link.attr('href') + ".js");
       } else {
         return Reminder.hide_reminder_row(reminder_row);
       }

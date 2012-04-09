@@ -1,6 +1,6 @@
 %tr.reminder{id: "reminder#{reminder.id}_row"}
   %td.large
-    = link_to reminder_subject(reminder), edit_reminder_path(reminder), class: 'subject_link'
+    = link_to reminder_subject(reminder), edit_reminder_path(reminder)
   %td.large= reminder.send_at.to_formatted_s(:short_with_day)
 
 %tr{id: dom_id(reminder), class: "hidden reminder_row"}
