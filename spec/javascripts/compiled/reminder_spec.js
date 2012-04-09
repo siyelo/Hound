@@ -19,7 +19,7 @@
       };
       return expect(Reminder.get_params_for_update_delivered('true')).toEqual(params);
     });
-    describe("validate_cc_emails", function() {
+    return describe("validate_cc_emails", function() {
       it("returns true if all emails in a comma seperated string are valid", function() {
         var email_string;
         email_string = '1@1.com, 2@2.com';
@@ -43,52 +43,6 @@
         var email_string;
         email_string = '1@1.com, 2@2.com; 3@3.com';
         return expect(Reminder.validate_cc_emails(email_string)).toEqual(true);
-      });
-    });
-    return describe("mark_as_complete", function() {
-      it("should make a correctly formed AJAX request to the form's URL", function() {
-        var element, form;
-        form = {};
-        form.attr = function(e, f) {
-          return 'form_action';
-        };
-        element = {};
-        element.is = function(e) {
-          return true;
-        };
-        element.attr = function(e, f) {
-          return true;
-        };
-        spyOn($, 'ajax');
-        Reminder.mark_as_complete(form, element);
-        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual('form_action');
-        expect($.ajax.mostRecentCall.args[0]["type"]).toEqual('PUT');
-        expect($.ajax.mostRecentCall.args[0]["dataType"]).toEqual('json');
-        return expect($.ajax.mostRecentCall.args[0]["data"]).toEqual({
-          reminder: {
-            'delivered': true
-          }
-        });
-      });
-      return it("should execute callback on successful completion of AJAX request", function() {
-        var element, form;
-        form = {};
-        form.attr = function(e, f) {
-          return 'form_action';
-        };
-        element = {};
-        element.is = function(e) {
-          return true;
-        };
-        element.attr = function(e, f) {
-          return true;
-        };
-        spyOn($, "ajax").andCallFake(function(options) {
-          return options.complete();
-        });
-        spyOn(Reminder, 'mark_as_complete_callback');
-        Reminder.mark_as_complete(form, element);
-        return expect(Reminder.mark_as_complete_callback).toHaveBeenCalled();
       });
     });
   });

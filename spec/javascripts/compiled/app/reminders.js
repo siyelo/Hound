@@ -25,29 +25,9 @@
       return valid;
     };
 
-    Reminder.mark_as_complete = function(form, element) {
-      element.attr("disabled", true);
-      return $.ajax({
-        type: 'PUT',
-        url: form.attr('action'),
-        data: Reminder.get_params_for_update_delivered(element.is(':checked')),
-        dataType: 'json',
-        complete: function() {
-          return Reminder.mark_as_complete_callback(element);
-        }
-      });
-    };
-
-    Reminder.mark_as_complete_callback = function(element) {
-      element.attr("disabled", false);
-      $('.status').show();
-      $('.status').text('Saving changes');
-      $('.status').fadeOut(2000);
-      if (element.closest("tr").hasClass("completed_row")) {
-        return element.closest("tr").removeClass("completed_row");
-      } else if (element.is(':checked')) {
-        return element.closest("tr").addClass("completed_row");
-      }
+    Reminder.hide_reminder_row = function(reminder_row) {
+      reminder_row.addClass('hidden');
+      return reminder_row.prev('tr.reminder').removeClass('active');
     };
 
     return Reminder;
@@ -68,25 +48,35 @@
         theme_advanced_toolbar_align: "left"
       });
     }
-    $(".subject_link").live("click", function() {
-      return $('.inline_reminder').hide();
-    });
-    $(".mark_as_complete").live("click", function() {
-      var element, form;
+    $(".subject_link").live("click", function(event) {
+      var element, reminder, reminder_row;
+      event.preventDefault();
       element = $(this);
-      form = element.parents("form:first");
-      return Reminder.mark_as_complete(form, element);
+      reminder = element.parents('tr.reminder');
+      reminder_row = reminder.next("tr.reminder_row");
+      $('tr.reminder').removeClass('active');
+      reminder.addClass('active');
+      if (reminder_row.hasClass('hidden')) {
+        return $.getScript(element.attr('href') + ".js");
+      } else {
+        return Reminder.hide_reminder_row(reminder_row);
+      }
     });
-    $('.js_submit').live("click", function() {
-      $('.errors').html('');
+    $('.js_submit').live("click", function(event) {
+      var element, error, errors_box;
+      element = $(this);
+      errors_box = element.parents('.reminder_row').find('.errors');
       if (!Reminder.validate_cc_emails($('#reminder_other_recipients').val())) {
-        $('.errors').html('<h3>Reminder could not be saved!</h3><p>Not all cc addresses are properly formed.</p><hr/>');
+        error = $('<li/>').text('Not all Cc addresses are well formatted');
+        errors_box.html('').append(error);
         return event.preventDefault();
       }
     });
-    return $('#js_cancel').live("click", function() {
-      $('.inline_reminder').hide();
-      return false;
+    return $('#js_cancel').live("click", function(event) {
+      var reminder_row;
+      event.preventDefault();
+      reminder_row = $(this).parents('tr.reminder_row');
+      return Reminder.hide_reminder_row(reminder_row);
     });
   });
 

@@ -4,7 +4,7 @@ class RemindersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @reminder_filter = ReminderFilter.new(current_user.reminders, params[:filter])
+    @reminder_filter = ReminderFilter.new(current_user.reminders.uncleaned, params[:filter])
   end
 
   def edit

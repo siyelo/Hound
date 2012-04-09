@@ -16,26 +16,6 @@ class Reminder
         valid = valid and regex.test(email)
     return valid
 
-  @mark_as_complete: (form, element) ->
-    element.attr("disabled", true)
-    $.ajax
-      type: 'PUT'
-      url: form.attr('action')
-      data: Reminder.get_params_for_update_delivered element.is(':checked')
-      dataType: 'json'
-      complete: ->
-        Reminder.mark_as_complete_callback(element)
-
-  @mark_as_complete_callback: (element) ->
-      element.attr("disabled", false)
-      $('.status').show()
-      $('.status').text('Saving changes')
-      $('.status').fadeOut(2000)
-      if element.closest("tr").hasClass("completed_row")
-        element.closest("tr").removeClass "completed_row"
-      else if element.is(':checked')
-        element.closest("tr").addClass "completed_row"
-
   @hide_reminder_row: (reminder_row) ->
     reminder_row.addClass('hidden')
     reminder_row.prev('tr.reminder').removeClass('active')
@@ -66,11 +46,6 @@ $(document).ready ->
       $.getScript(element.attr('href') + ".js")
     else
       Reminder.hide_reminder_row(reminder_row)
-
-  $(".mark_as_complete").live "click", ->
-    element = $(this)
-    form = element.parents("form:first")
-    Reminder.mark_as_complete(form, element)
 
   #Validate the form of the cc email addresses before submitting
   $('.js_submit').live "click", (event) ->
