@@ -3,8 +3,9 @@ module ScriptHelper
 
   def run(cmd)
     puts "=> "+ cmd + "\n"
-    result = system cmd
-    puts "   returned #{result}"
+    output = `#{cmd}`
+    result = $?.success?
+    puts output
     result
   end
 

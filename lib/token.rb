@@ -1,3 +1,5 @@
+require 'digest'
+
 class Token < String
   RANDOM_LIMIT = 1000
 

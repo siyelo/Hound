@@ -1,28 +1,24 @@
 require 'rake/testtask'
 require 'rspec/core/rake_task'
+require 'spec_finder'
+require 'script_helper'
 
-
+include ScriptHelper
 
 namespace 'test' do |ns|
-  test_files = FileList['spec/**/*_spec.rb']
-  integration_test_files = FileList['spec/**/*_integration_spec.rb']
-  acceptance_test_files = FileList['spec/**/*_acceptance_spec.rb'] + FileList['spec/**/*_functional_spec.rb']
-  unit_test_files = test_files - integration_test_files - acceptance_test_files
-
   desc "Run unit tests"
-  RSpec::Core::RakeTask.new('unit') do |t|
-    t.pattern = unit_test_files
+  task :unit do
+    run 'ruby script/test_unit.rb'
   end
-
 
   desc "Run integration tests"
   RSpec::Core::RakeTask.new('integration') do |t|
-    t.pattern = integration_test_files
+    t.pattern = SpecFinder::integration_test_files
   end
 
   desc "Run acceptance/functional tests"
   RSpec::Core::RakeTask.new('acceptance') do |t|
-    t.pattern = acceptance_test_files
+    t.pattern = SpecFinder::acceptance_test_files
   end
 end
 
