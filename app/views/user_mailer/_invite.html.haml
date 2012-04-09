@@ -1,22 +1,21 @@
 %tr
-  = render 'header'
-  %td
+  %td{ :width => "70%"}
     %h1{:style => "color:#582a00;margin:40px 0 10px;"} Welcome to Hound.cc!
 
-= render 'send_at'
+    = render 'send_at'
+  = render 'header'
 
-%tr
-  %td{ :width => "70%"}
-    %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
+= render 'hr'
 
 %tr
   %td
-    %p{:style => "line-height:1.4;"}
+    %p{:style => "line-height:1.4;font-size:11px;margin:10px 0 0;color:#999;"}
       Since this is the first time we've seen you on Hound,
       %br
       please verify your email address by opening the link below:
 
 %tr
   %td
-    %p=link_to "Yes it's me! Activate my account!", @activate_url, :style => "display: block;text-align:center;padding:10px;margin:10 0 20px;background:#EEE;border:1px solid #DDD;color:#E88300;font-weight:bold;font-size:14px;text-decoration:none;"
+    %p{:style => "margin: 5px 0 10px;"}
+      =link_to "Yes it's me! Activate my account!", @activate_url, :style => "display: block;text-align:center;padding:15px;margin:10 0 20px;background:#fffbef;border:1px solid #ead5c0;color:#6bbd00;font-weight:bold;font-size:13px;width:250px;"
 
