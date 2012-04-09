@@ -1,0 +1,7 @@
+= render 'hr'
+%tr
+  %td
+    %p{:style=>"margin: 0;"}
+      = link_to "Upcoming", reminders_url, :style => "color: #{@link_color}; margin-right:5px;"
+      = link_to "Settings", settings_url, :style => "color: #{@link_color}; margin-right:5px;"
+    %p{:style => "color:#999;font-style:italic;margin:3px 0 20px;font-size:11px"} © 2012 Siyelo Software. All rights reserved.

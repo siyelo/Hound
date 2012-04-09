@@ -1,7 +1,7 @@
-%tr
-  %td
-    %p
-      We'll send you a reminder for
-      %b= link_to @original_subject, @edit_reminder_url, :style => "color: #{@link_color}"
-      on
-      %b= link_to @send_at, @edit_reminder_url, :style => "color: #{@link_color}"
+
+%p
+  We'll send you a reminder for
+  %b= link_to @original_subject, @edit_reminder_url, :style => "color: #{@link_color}"
+  %br
+  on
+  %b= link_to @send_at, @edit_reminder_url, :style => "color: #{@link_color}"

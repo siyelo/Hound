@@ -2,14 +2,23 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;line-height:1.4;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
-        = render 'header'
+        
         %tr
-          %td
-            %h1{:style => "margin:40px 0 0;"}= "Snoozed: #{@original_subject}"
+          %td{ :width => "70%"}
+            %h1{:style => "color:#582a00;margin:40px 0 10px;"}= "Snoozed: #{@original_subject}"
 
-            %p== This reminder was snoozed by #{@owner} until #{@send_at}
-
+            %p
+              == This reminder was snoozed by
+              %br
+              %b #{@owner} 
+              %br
+              until
+              %b #{@send_at}
+          = render 'header'
+        = render 'hr'
         = render 'body', body: @body
+        
+        = render 'footer'

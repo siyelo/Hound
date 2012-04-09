@@ -1,3 +1,3 @@
 %td
   - options.map{ |i| i + type }.each do |format|
-    = link_to format, edit_snooze_url(@reminder, duration: format, token: @reminder.snooze_token), :style => "color: #{@link_color}"
+    = link_to format, edit_snooze_url(@reminder, duration: format, token: @reminder.snooze_token), :style => "color: #{@link_color};margin-right:8px;"

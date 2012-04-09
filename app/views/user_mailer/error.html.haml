@@ -4,13 +4,16 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;line-height:1.4;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
-        = render 'header'
+        
         %tr
-          %td
-            %h1{:style => "margin:40px 0 0;"} Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
+          %td{ :width => "70%"}
+            %h1{:style => "color:#582a00;margin:40px 0 10px;"} Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
+          = render 'header'
+        = render 'hr'
+          
         %tr
           %td
             %p
@@ -31,4 +34,4 @@
               We hope the above list helps. If you have a question that remains unanswered,
               please
               = link_to "contact us", 'https://hound.uservoice.com', :style => "color: #{@link_color}"
-
+        = render 'footer'

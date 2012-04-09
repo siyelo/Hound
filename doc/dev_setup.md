@@ -8,6 +8,10 @@ Run this in rails console to setup reminder for user@example.com
     service = ReminderCreationService.new
     service.create!(mail)
 
+## Start Redis
+
+* redis-server /usr/local/etc/redis.conf
+
 
 ## To test emails locally
 

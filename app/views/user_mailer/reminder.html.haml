@@ -4,28 +4,23 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;line-height:1.4;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
-        = render 'header'
         %tr
-          %td{:colspan=>"2"}
-            %h1{:style => "margin:40px 0 20px;"}= "Reminder: #{@original_subject}"
-
-        = render 'hr'
-
-        %tr
-          %td{:style => "width:50%; vertical-align: top;"}
-            %p{:style => "font-size:16px"}
+          %td{ :width => "70%"}
+            %h1{:style => "color:#582a00;margin:40px 0 10px;"}= "#{@original_subject}"
+            %p{:style => "font-size:12px;line-height:1.4;color:#777;margin:0 0 20px;"}
               == You created this reminder on #{@created_at}
               %br
-              == It has been snoozed #{@snoozed} times.
-            %p More options:
-            %ul
-              %li= link_to "Upcoming", reminders_url, :style => "color: #{@link_color}"
-              %li= link_to "Settings", settings_url, :style => "color: #{@link_color}"
+              == It has been snoozed 
+              %b #{@snoozed} times.
+          = render 'header'
 
-          %td{:style => "width:50%;"}
+        %tr
+          %td{:colspan => "2"}
             = render 'snooze_box'
 
         = render 'body', body: @body
+        
+        = render 'footer'

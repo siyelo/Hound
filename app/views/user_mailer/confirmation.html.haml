@@ -4,12 +4,14 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;line-height:1.4;"}
     -# this is a smell - TODO refactor into separate views
     %table{:style => 'margin: 0 auto;width:600px;'}
       %tbody
-        = render 'header'
+        
         - unless @user_active
           = render 'invite'
         - else
           = render 'confirmation'
+
+        = render 'footer'

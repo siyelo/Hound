@@ -2,13 +2,13 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png);font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:20px 0 0;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
         = render 'user_mailer/header'
         %tr
-          %td
-            %h1{:style => "margin:40px 0 0;"} Hello #{@resource.email}!
+          %td{ :width => "70%"}
+            %h1{:style => "color:#582a00;margin:40px 0 10px;"} Hello #{@resource.email}!
         %tr
           %td
             %p Someone has invited you to #{root_url}, you can accept it through the link below.

@@ -1,22 +1,13 @@
-%div{:style => "width:230px;background-color:#ffffcc;border:1px solid #cacaca;padding:5px"}
-  %table{:border => "0", :cellpadding => "4", :cellspacing => "0", :width => "230"}
+%div{:style => "background-color:#fffbef;border: 1px solid #ead5c0;padding:5px"}
+  %table{:border => "0", :cellpadding => "4", :cellspacing => "0", :width => "100%"}
     %tbody
       %tr
         %td{:colspan => "2", :style => "text-align:left"}
           %b Snooze for:
       %tr
-        %td{:style => "text-align:right;width:5%"}
         = render 'snooze_link', :options => ['15','30','45'], :type => 'min'
-      %tr
-        %td{:style => "text-align:right"}
         = render 'snooze_link', :options => ['1','3','6','12'], :type => 'hr'
-      %tr
-        %td{:style => "text-align:right"}
         = render 'snooze_link', :options => ['1','2','4','7'], :type => 'd'
+        = render 'snooze_link', :options => ['1','2','3','4'], :type => 'w'
       %tr
-        %td{:style => "text-align:right"}
-        = render 'snooze_link', :options => ['2','3','4'], :type => 'w'
-      %tr
-        %td
-        %td
-          = link_to 'other', edit_reminder_url(@reminder), :style => "color: #{@link_color}"
+        %td= link_to 'Choose another time', edit_reminder_url(@reminder), :style => "color:#{@link_color}; margin-top:5px;"
