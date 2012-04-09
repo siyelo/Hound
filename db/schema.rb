@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20120406132626) do
     t.integer  "snooze_count",     :default => 0
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
-    t.boolean  "cleaned",          :default => true
+    t.boolean  "cleaned",          :default => false
   end
 
   add_index "reminders", ["fetched_mail_id"], :name => "index_reminders_on_fetched_mail_id"
