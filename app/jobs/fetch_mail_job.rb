@@ -55,6 +55,8 @@ class FetchMailJob
 
       logger.info "#{Time.now} Mail saved UID: #{message_id}"
     end
+  rescue IOError, EOFError
+    retry
   end
 
   def wait_for_messages
