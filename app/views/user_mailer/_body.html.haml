@@ -1,6 +1,14 @@
 %tr
-  %td{:colspan=>"2", :style => "font-size:12px;padding: 20px;"}
-    - unless body.empty?
-      = body
-    - else
-      %div The message body is empty.
+  %td{:colspan=>"2"}
+
+    %table
+      %tbody
+        %tr
+          %td{:width=>"10%"}
+            %span{:style=>"font-size:50px;color:#f1decb;font-family:arial, sans-serif;line-height:1;"} "
+          %td{:width=>"90%", :style => "font-size:12px;padding: 20px 20px 20px 7px;"}
+            - unless body.empty?
+      
+              = body
+            - else
+              %div The message body is empty.
