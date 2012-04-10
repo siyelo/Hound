@@ -1,4 +1,4 @@
-module EmailParser
+module TimeParser
   require 'active_support/core_ext/numeric/time'
   require 'active_support/core_ext/integer/time'
   require 'active_support/core_ext/date_time/calculations'
@@ -37,16 +37,16 @@ module EmailParser
 
     ### Instance Methods
     class << self
-      def parse(email, zone = 'UTC')
-        matches = match_key_words(email)
+      def parse(time, zone = 'UTC')
+        matches = match_key_words(time)
         unless matches.empty?
           match = self.send(matches.first)
           return utc_offset(match, zone)
         end
       end
 
-      def match_key_words(email)
-        MATCHERS.keys.inject([]) { |result, m| result << email.scan(MATCHERS[m]) }.flatten
+      def match_key_words(time)
+        MATCHERS.keys.inject([]) { |result, m| result << time.scan(MATCHERS[m]) }.flatten
       end
 
       def tomorrow

@@ -5,7 +5,7 @@
     $("#add_alias").live("click", function() {
       return $(this).disabled;
     });
-    return $(".delete_link").live("click", function() {
+    return $(".delete_link").live("click", function(event) {
       var element;
       event.preventDefault();
       element = $(this).parent('li');

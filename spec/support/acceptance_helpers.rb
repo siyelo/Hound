@@ -25,12 +25,6 @@ module HelperMethods
   def should_not_be_on(path)
     page.current_url.should_not match(Regexp.new(path))
   end
-
-  #email-spec helpers
-
-  def email_should_have_body(text)
-    current_email.default_part_body.to_s.should =~ Regexp.new(text)
-  end
 end
 
 RSpec.configuration.include HelperMethods, :type => :request

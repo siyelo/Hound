@@ -20,14 +20,12 @@ describe CleanMailJob do
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: true,
                          cleaned: false,
-                         email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
       CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
-      reminder.email.should be_nil
       reminder.other_recipients.should be_empty
       reminder.cleaned.should be_true
       fetched_mail.from.should == 'user@example.com'
@@ -46,14 +44,12 @@ describe CleanMailJob do
                          send_at: Time.now - minute_before_two_weeks,
                          delivered: true,
                          cleaned: false,
-                         email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
       CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
-      reminder.email.should == 'user@example.com'
       reminder.other_recipients.should == ['other_recipient@example.com']
       fetched_mail.from.should == 'user@example.com'
       fetched_mail.message_id.should == 'message_id'
@@ -71,14 +67,12 @@ describe CleanMailJob do
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: false,
                          cleaned: false,
-                         email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
       CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
-      reminder.email.should == 'user@example.com'
       reminder.other_recipients.should == ['other_recipient@example.com']
       fetched_mail.from.should == 'user@example.com'
       fetched_mail.message_id.should == 'message_id'
@@ -96,14 +90,12 @@ describe CleanMailJob do
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: true,
                          cleaned: true,
-                         email: 'user@example.com',
                          other_recipients: ['other_recipient@example.com'])
 
       CleanMailJob.perform
       reminder.reload
       fetched_mail = reminder.fetched_mail
 
-      reminder.email.should == 'user@example.com'
       reminder.other_recipients.should == ['other_recipient@example.com']
       fetched_mail.from.should == 'user@example.com'
       fetched_mail.message_id.should == 'message_id'

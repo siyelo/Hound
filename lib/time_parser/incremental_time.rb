@@ -1,10 +1,10 @@
-module EmailParser
+module TimeParser
   require 'active_support/core_ext/numeric/time'
   require 'active_support/core_ext/integer/time'
   require 'active_support/core_ext/date_time/calculations'
   require 'active_support/core_ext/date/calculations'
 
-  # Parses email addresses with the following keywords;
+  # Parses time with the following keywords;
   # year y
   # month mo
   # week w
@@ -24,20 +24,20 @@ module EmailParser
     }
 
     class << self
-      def parse(email)
-        increment = match_and_return_time(email.downcase)
+      def parse(time)
+        increment = match_and_return_time(time.downcase)
         increment == 0.seconds ? nil : increment.from_now
       end
 
-      def match_and_return_time(email)
+      def match_and_return_time(time)
         MATCHERS.keys.inject(0.seconds) do |result, m|
-          result += scan_increments(email, m)
+          result += scan_increments(time, m)
         end
       end
 
-      def scan_increments(email, unit)
-        time = email.scan MATCHERS[unit]
-        time.empty? ? 0.seconds : time.first[0].to_i.send(unit.to_sym)
+      def scan_increments(time, unit)
+        increments = time.scan MATCHERS[unit]
+        increments.empty? ? 0.seconds : increments.first[0].to_i.send(unit.to_sym)
       end
     end
   end

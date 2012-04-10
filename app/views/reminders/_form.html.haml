@@ -1,23 +1,24 @@
-= form_tag reminder_path(@reminder.id), remote: true, method: :put do
+= form_for @reminder, remote: true, method: :put do |f|
 
   %ul.errors
 
-  .text-editor.right
-    = label_tag "Content:"
-    = text_area_tag 'reminder[body]', @reminder.body, class: 'reminder_body', style: "width: 100%;"
-  %p
-    = label_tag :subject, 'Subject:'
-    = text_field_tag 'reminder[subject]',  @reminder.subject
-  %p
-    = label_tag :other_recipients, 'Cc:'
-    = text_field_tag 'reminder[other_recipients]', @reminder.other_recipients.join(',')
-  %p
-    = label_tag 'Reminder Date:'
-    = text_field_tag 'formatted_date', @reminder.send_at.strftime('%Y-%m-%d'), id: 'reminder_formatted_date', class: 'reminder_formatted_date'
-  %p
-    = label_tag 'Reminder Time:'
-    = text_field_tag 'formatted_time', @reminder.send_at.strftime('%R'), id: 'reminder_formatted_time', class: 'reminder_formatted_time'
-  = label_tag Time.zone
+  %p.clear
+    .half
+      = f.fields_for :fetched_mail do |fm|
+        = fm.label :subject, 'Subject:'
+        = fm.text_field :subject
+    .half
+      = label_tag 'Scheduled for:'
+      %span.send_at= "#{@reminder.send_at.strftime('%Y-%m-%d %R')} (#{Time.zone.name})"
+
+  %p.clear
+    .half
+      = f.label :other_recipients, 'Cc:'
+      = f.text_field :other_recipients, value: @reminder.other_recipients.join(',')
+    .half
+      = f.label :time, 'Reminder time:'
+      = f.text_field :time
+      %span @hound.cc
 
   %br
   %hr

@@ -28,7 +28,7 @@ describe UserMailer do
     end
 
     it "says its a reminder" do
-      mail.body.should match /Reminder: orig subject/
+      mail.body.should have_content('orig subject')
     end
 
     it "shows when the reminder was scheduled" do
@@ -37,7 +37,7 @@ describe UserMailer do
     end
 
     it "shows the snooze count" do
-      mail.body.should match /It has been snoozed 0 times/
+      mail.body.should have_content('It has been snoozed 0 times')
     end
 
     it "shows the snooze links" do
@@ -79,7 +79,7 @@ describe UserMailer do
 
     it "shows when the reminder was scheduled" do
       now =  Time.now.strftime('%d-%b')
-      mail.body.should match /sender@a.com created this reminder for you on 01-Jan/
+      mail.body.should have_content('sender@a.com created this reminder for you on 01-Jan')
     end
 
     it 'attaches original email body' do
@@ -196,7 +196,7 @@ describe UserMailer do
     end
 
     it "shows the snooze count" do
-      mail.body.should match /This reminder was snoozed by sender@a.com until Sun, 01 January 2012 10:00 AM EET/
+      mail.body.should have_content('This reminder was snoozed by sender@a.com until Sun, 01 January 2012 10:00 AM EET')
     end
 
     it 'attaches original email body' do

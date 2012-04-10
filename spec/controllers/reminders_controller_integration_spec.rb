@@ -34,51 +34,16 @@ describe RemindersController do
         should raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it "should update a reminder as delivered" do
-      put 'update', id: reminder.id, reminder: { delivered: "true" }
+    it "can update reminder" do
+      put 'update', id: reminder.id, reminder: { time: "3days" }
       flash[:notice].should == "You have successfully updated your reminder"
       response.should redirect_to(reminders_path)
     end
 
-    describe "ReminderMailUpdater" do
-      before :each do
-        @params = { "id" => "1", "reminder" => { "send_at" => 'some date' },
-          "controller"=>"reminders", "action"=>"update" }
-        @updater = mock perform: true, reminder: mock(errors: [])
-        Hound::ReminderMailUpdater.stub(:new).and_return @updater
-      end
-
-      it "should instantiate new service using passed params" do
-        Hound::ReminderMailUpdater.should_receive(:new)
-        put :update, @params
-      end
-
-      it "should call the update service" do
-        @updater.should_receive(:perform).with(user, @params).and_return true
-        put :update, @params
-        assigns[:reminder].should_not be_nil
-      end
-
-      it "should populate a ReminderMail object with any errors" do
-        @updater.stub(:perform).and_return false
-        put :update, @params
-        assigns[:reminder].should_not be_nil
-      end
-
-      # some csrf weirdness with devise.
-      # moving to an acceptance spec instead
-      #
-      # it "should render js on update" do
-      #   @updater.should_receive(:perform).with(user, @params).and_return true
-      #   xhr :put, :update, @params, :format => 'js'
-      #   assigns[:reminder_mail].should_not be_nil
-      # end
-
-      # it "should render js on failed update" do
-      #   @updater.stub(:perform).and_return false
-      #   xhr :put, :update, @params, :format => 'js'
-      #   assigns[:reminder_mail].should_not be_nil
-      # end
+    it "cannot update reminder when errors" do
+      put 'update', id: reminder.id, reminder: { time: "error" }
+      flash[:alert].should == "We have failed to update your reminder"
+      response.should render_template('edit')
     end
 
     it 'should destroy a reminder' do

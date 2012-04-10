@@ -13,7 +13,7 @@ describe "User", type: :request do
     Hound::Notifier.send_reminders(reminder)
     unread_emails_for(user.email).size.should == parse_email_count(1)
     open_email(user.email)
-    email_should_have_body("Snooze for:")
+    current_email.should have_content("Snooze for:")
   end
 
   it "receives a reminder email with cc explanation" do
@@ -22,7 +22,7 @@ describe "User", type: :request do
     Hound::Notifier.send_reminders(reminder)
     unread_emails_for('cc@cc.yo').size.should == parse_email_count(1)
     open_email('cc@cc.yo')
-    email_should_have_body("pimp@macdaddy.yo created this reminder for you on")
+    current_email.should have_content("pimp@macdaddy.yo created this reminder for you on")
   end
 end
 

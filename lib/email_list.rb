@@ -7,6 +7,7 @@ class EmailList < Array
   end
 
   def process(string_or_array)
+    string_or_array.strip! if string_or_array.is_a?(String)
     string_or_array.split(/[,;]\s*/).flatten
   end
 end

@@ -1,26 +1,35 @@
 class Reminder < ActiveRecord::Base
   include ScopesReminders
 
+  EMAIL_REG_EXP = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+
   ### Associations
   belongs_to :fetched_mail
 
   ### Attributes
-  attr_accessible :fetched_mail, :sent_to, :send_at, :delivered, :other_recipients
+  attr_accessible :fetched_mail, :sent_to, :send_at, :delivered,
+    :other_recipients, :fetched_mail_attributes, :time
 
   ### Serialized attributes
-  serialize :other_recipients,  Array
+  serialize :other_recipients, Array
 
   ### Validations
   validates :send_at, presence: true
+  validates :time, presence: true
   validates :fetched_mail, presence: true
+  validate :validate_other_recipients
 
   ### Callbacks
   before_create :generate_snooze_token
+  before_validation :set_send_at_form_time, on: :update
 
   ### Delegate methods
   delegate :subject, :subject=, to: :fetched_mail
   delegate :body, :body=, to: :fetched_mail
   delegate :user, :user=, to: :fetched_mail
+
+  # Nested attributes
+  accepts_nested_attributes_for :fetched_mail
 
   scope :old, lambda { where("send_at < ?", Time.now - 2.weeks) }
   scope :delivered, where(delivered: true)
@@ -40,7 +49,7 @@ class Reminder < ActiveRecord::Base
 
   def snooze_for(duration, token)
     if duration && snooze_token == token
-      self.send_at = EmailParser.parse(duration)
+      self.send_at = TimeParser.parse(duration)
       self.snooze_count += 1
       self.delivered = false
       self.save!
@@ -54,6 +63,25 @@ class Reminder < ActiveRecord::Base
   private
     def generate_snooze_token
       self.snooze_token = Token.new(8)
+    end
+
+    def validate_other_recipients
+      other_recipients.each do |other_recipient|
+        unless other_recipient =~ EMAIL_REG_EXP
+          self.errors[:base] << 'Not all Cc addresses are well formatted'
+          break
+        end
+      end
+    end
+
+    def set_send_at_form_time
+      if time_changed?
+        begin
+          self.send_at = TimeParser.parse(time, fetched_mail.user.timezone)
+        rescue ArgumentError
+          self.errors[:base] = 'Invalid reminder time'
+        end
+      end
     end
 end
 

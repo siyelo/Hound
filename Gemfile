@@ -46,6 +46,7 @@ group :test do
   gem 'rspec-mocks'
   gem 'shoulda-matchers'
   gem 'turn', '0.8.2', :require => false
+  gem 'timecop'
 end
 
 group :development, :test do

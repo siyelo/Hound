@@ -12,7 +12,6 @@ class CleanMailJob
 
   private
     def self.clean_reminder(reminder)
-      reminder.email = nil
       reminder.other_recipients = []
       reminder.cleaned = true
       reminder.save!

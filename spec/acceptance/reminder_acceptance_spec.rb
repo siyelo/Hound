@@ -12,33 +12,26 @@ describe 'User', type: :request do
     end
 
     it 'can edit the reminder subject' do
-      fill_in 'reminder_subject', with: 'new subject'
+      fill_in 'Subject:', with: 'new subject'
       click_button 'submit'
+      page.should have_content('new subject')
       @reminder.reload
       @reminder.subject.should == 'new subject'
     end
 
     it 'can remove the reminder subject' do
-      fill_in 'reminder_subject', with: ""
+      fill_in 'Subject:', with: ""
       click_button 'submit'
+      page.should have_content('<No Subject>')
       @reminder.reload
       @reminder.subject.should == ''
-      page.should have_content('<No Subject>')
     end
 
     it 'can edit the reminder time' do
-      fill_in 'reminder_formatted_time', with: '20:30'
+      fill_in 'Reminder time:', with: '3days'
       click_button 'submit'
-      @reminder.reload
-      @reminder.send_at.min == '30'
-      @reminder.send_at.hour == '20'
-    end
-
-    it 'can edit the reminder body' do
-      fill_in 'reminder_body', with: 'new body'
-      click_button 'submit'
-      @reminder.reload
-      @reminder.body.should == 'new body'
+      click_link 'reminder1'
+      find_field('Reminder time:').value.should == '3days'
     end
   end
 
@@ -51,26 +44,26 @@ describe 'User', type: :request do
 
     it 'can add multiple comma or semi-colon seperated email addresses', js: true do
       click_link 'reminder1'
-      fill_in 'reminder_other_recipients', with: 'test@test1.com'
+      fill_in 'Cc:', with: 'test@test1.com'
       click_button 'submit'
       click_link 'reminder1'
-      find_field('reminder_other_recipients').value.should == 'test@test1.com'
+      find_field('Cc:').value.should == 'test@test1.com'
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_other_recipients', with: 'test@test1.com; test@test2.com, test@test3.com'
+      fill_in 'Cc:', with: 'test@test1.com; test@test2.com, test@test3.com'
       click_button 'submit'
       page.should_not have_content('Not all Cc addresses are well formatted')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_other_recipients', with: 'test'
+      fill_in 'Cc:', with: 'test'
       click_button 'submit'
       page.should have_content('Not all Cc addresses are well formatted')
 
       visit '/'
       click_link 'reminder1'
-      fill_in 'reminder_other_recipients', with: 'test@test1.com; test@sdva, test3.com'
+      fill_in 'Cc:', with: 'test@test1.com; test@sdva, test3.com'
       click_button 'submit'
       page.should have_content('Not all Cc addresses are well formatted')
     end

@@ -20,8 +20,10 @@ class ReminderCreationService
   # throws all other exceptions
   def create_or_notify!(to)
     begin
-      send_at = EmailParser.parse(to, @user.timezone)
-      Reminder.create!(send_at: send_at, fetched_mail: @fetched_mail,
+      time = to.split('@')[0]
+      send_at = TimeParser.parse(time, @user.timezone)
+      Reminder.create!(send_at: send_at, time: time,
+                       fetched_mail: @fetched_mail,
                        other_recipients: reminder_recipients(to))
     rescue ArgumentError
       Resque.enqueue(ErrorNotificationJob, @fetched_mail.id)

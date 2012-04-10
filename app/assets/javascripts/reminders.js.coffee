@@ -3,19 +3,6 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 class Reminder
-  @get_params_for_update_delivered: (is_checked) ->
-    { reminder: { 'delivered': is_checked } }
-
-  @validate_cc_emails: (value)   ->
-    regex = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-    emails = value.trim().split(/[,;]\s*/)
-    valid = true
-    for i of emails
-      email = emails[i]
-      unless email.trim() == ''
-        valid = valid and regex.test(email)
-    return valid
-
   @hide_reminder_row: (reminder_row) ->
     reminder_row.addClass('hidden')
     reminder_row.prev('tr.reminder').removeClass('active')
@@ -46,15 +33,6 @@ $(document).ready ->
       $.getScript(link.attr('href') + ".js")
     else
       Reminder.hide_reminder_row(reminder_row)
-
-  #Validate the form of the cc email addresses before submitting
-  $('.js_submit').live "click", (event) ->
-    element = $(this)
-    errors_box = element.parents('.reminder_row').find('.errors')
-    unless Reminder.validate_cc_emails($('#reminder_other_recipients').val())
-      error = $('<li/>').text('Not all Cc addresses are well formatted')
-      errors_box.html('').append(error)
-      event.preventDefault()
 
   $('#js_cancel').live "click", (event) ->
     event.preventDefault()

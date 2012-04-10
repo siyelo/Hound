@@ -1,5 +1,3 @@
-require 'hound/services/reminder_mail_updater'
-
 class RemindersController < ApplicationController
   before_filter :authenticate_user!
 
@@ -16,9 +14,9 @@ class RemindersController < ApplicationController
   end
 
   def update
-    updater = Hound::ReminderMailUpdater.new
-    updater.perform(current_user, params)
-    @reminder = updater.reminder
+    @reminder = current_user.reminders.find(params[:id])
+    @reminder.update_attributes(params[:reminder])
+
     respond_to do |format|
       format.js
       format.html do
