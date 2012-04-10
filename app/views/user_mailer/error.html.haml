@@ -10,13 +10,13 @@
         
         %tr
           %td{ :width => "70%"}
-            %h1{:style => "color:#582a00;margin:40px 0 10px;"} Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
+            %h1{:style => "color:#582a00;margin:40px 0 10px;font-size:24px;"} Sorry, we couldn't recognize all of the "...@hound.cc" date formats.
           = render 'header'
         = render 'hr'
           
         %tr
           %td
-            %p
+            %p{:style => "font-size:12px;line-height:1.4;color:#444;margin:0 0 15px;"}
               We've included a list of the date formats we currently recognize. If
               you have a suggestion for a new format that isn't included, please don't
               hesitate to
@@ -30,8 +30,7 @@
             %hr{:style => "background:none;border:none;border-top:2px dotted #ddd;"}
         %tr
           %td
-            %p
-              We hope the above list helps. If you have a question that remains unanswered,
-              please
+            %p{:style => "font-size:12px;line-height:1.4;color:#444;margin:0 0 15px;"}
+              We hope the above list helps. If you have a question that remains unanswered, please
               = link_to "contact us", 'https://hound.uservoice.com', :style => "color: #{@link_color}"
         = render 'footer'
