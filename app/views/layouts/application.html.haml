@@ -11,9 +11,7 @@
           = render 'layouts/flashes'
 
         .wrapper
-          %h1#logo
-            = link_to 'Hound.cc', '/'
-            %span beta
+          
           %nav#main-nav
             - unless user_signed_in?
               %li= link_to 'How To', '/how-to', :class => cp("how-to")
@@ -26,6 +24,10 @@
               %li= link_to 'Settings', settings_path
               %li= link_to 'Help', 'https://hound.uservoice.com/', :class => 'js_uservoice_link'
               %li= link_to 'Logout', destroy_user_session_path, :method => :delete
+          %h1#logo
+            = link_to '/' do
+              = image_tag "logo.png", :alt => "Hound.cc", :title => "Hound.cc"
+            %span beta
 
       - unless landing_page?
         = render 'layouts/flashes'
