@@ -55,7 +55,7 @@ class FetchMailJob
 
       logger.info "#{Time.now} Mail saved UID: #{message_id}"
     end
-  rescue IOError, EOFError
+  rescue IOError, EOFError, Errno::EPIPE
     retry
   end
 
