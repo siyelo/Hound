@@ -109,7 +109,56 @@
   #footer a
     font-size: 12px
 @media screen and (max-width:450px)
+  #featured
+    h2
+      font-size: 30px
+      padding: 35px 0 15px
+    h3
+      font-size: 14px
+  #main-nav
+    float: none
+    position: relative
+    z-index: 5
+    +pie-clearfix
+    li
+      display: inline
+      float: left
+      width: 25%
+    a
+      font-size: 14px
+      padding: 30px 9px 10px
+  #logo
+    display: block
+    float: none
+    margin: 0 auto
+    max-width: 150px
+    text-align: center
+    width: 100%
+    img
+      max-width: 150px
+      width: 100%
+  .signup-wrap
+    width: 70%
+    &.wide
+      padding: 40px 15%
+  #guide
+    padding: 30px 0 15px
+  .short-guide
+    li
+      clear: both
+      display: block
+      float: none
+      padding-bottom: 5px
+      text-align: left
+      width: 100%
+    img
+      float: left
+      margin-top: -10px
+      max-width: 50px
+      padding: 0 5% 0 10%
+  #benefits h2
+    font-size: 30px
+@media screen and (max-width:320px)
   #main-nav
     a
       font-size: 13px
-      padding: 50px 7px 20px
