@@ -59,6 +59,27 @@ describe FetchMailJob do
 
       @job.instance.fetch_messages
     end
+
+    it "can rescue from IOError exception" do
+      imap.stub(:uid_search).and_raise(IOError)
+      Airbrake.stub(:notify).and_return true
+      Airbrake.should_receive(:notify).exactly(5).times
+      -> {@job.instance.fetch_messages}.should raise_exception
+    end
+
+    it "can rescue from EOFError " do
+      imap.stub(:uid_search).and_raise(EOFError)
+      Airbrake.stub(:notify).and_return true
+      Airbrake.should_receive(:notify).exactly(5).times
+      -> {@job.instance.fetch_messages}.should raise_exception
+    end
+
+    it "can rescue from Errno::EPIPE" do
+      imap.stub(:uid_search).and_raise(Errno::EPIPE)
+      Airbrake.stub(:notify).and_return true
+      Airbrake.should_receive(:notify).exactly(5).times
+      -> {@job.instance.fetch_messages}.should raise_exception
+    end
   end
 
   describe "#wait_for_messages" do
@@ -73,8 +94,9 @@ describe FetchMailJob do
 
     it "can rescue from Net::IMAP::Error exception" do
       imap.stub(:idle).and_raise(Net::IMAP::Error)
-
-      @job.instance.wait_for_messages.should be_nil
+      Airbrake.stub(:notify).and_return true
+      Airbrake.should_receive(:notify)
+      @job.instance.wait_for_messages.should be_false
     end
   end
 end

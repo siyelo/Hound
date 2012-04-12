@@ -45,18 +45,23 @@ class FetchMailJob
   end
 
   def fetch_messages
-    imap.uid_search(["ALL"]).each do |message_id|
-      fetched_data = imap.uid_fetch(message_id, ['RFC822'])[0]
-      mail = Mail.new(fetched_data.attr['RFC822'])
+    tries = 0
+    begin
+      tries += 1
+      imap.uid_search(["ALL"]).each do |message_id|
+        fetched_data = imap.uid_fetch(message_id, ['RFC822'])[0]
+        mail = Mail.new(fetched_data.attr['RFC822'])
 
-      save_mail(mail)
+        save_mail(mail)
 
-      imap.uid_store(message_id, "+FLAGS", [:Deleted])
+        imap.uid_store(message_id, "+FLAGS", [:Deleted])
 
-      logger.info "#{Time.now} Mail saved UID: #{message_id}"
+        logger.info "#{Time.now} Mail saved UID: #{message_id}"
+      end
+    rescue IOError, EOFError, Errno::EPIPE => e
+      Airbrake.notify(e)
+      tries == 5 ? raise(e) : retry
     end
-  rescue IOError, EOFError, Errno::EPIPE
-    retry
   end
 
   def wait_for_messages
@@ -65,8 +70,10 @@ class FetchMailJob
         imap.idle_done
       end
     end
-  rescue Net::IMAP::Error
-    # do nothing
+  rescue Net::IMAP::Error => e
+    Airbrake.notify(e)
+    false
+    #do nothing
   end
 
   private
