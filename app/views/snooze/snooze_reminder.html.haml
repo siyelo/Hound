@@ -1,12 +1,14 @@
 #devise.wide
   %h2 We have snoozed '#{ @reminder.subject }'
-  %p New reminder is set for #{ @reminder.formatted_send_at}.
-  %br
-  %p= "That's #{distance_of_time_in_words_to_now(@reminder.send_at, true)} from now."
+  %p.snoozed
+    New reminder is set for
+    %b #{ @reminder.formatted_send_at}.
+    %br
+    = "That's #{distance_of_time_in_words_to_now(@reminder.send_at, true)} from now."
   -if @reminder.other_recipients.count > 0
     %br
     %hr
-    %p Would you like to notify the other recipients that you've snoozed the reminder?
+    %p.small Would you like to notify the other recipients that you've snoozed the reminder?
     %br
     %p= link_to 'Yes', snooze_url(@reminder), class: 'button medium alt inline'
     %br
