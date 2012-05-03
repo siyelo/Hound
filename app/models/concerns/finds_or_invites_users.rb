@@ -19,7 +19,7 @@ module FindsOrInvitesUsers
     end
 
     def from_address(email)
-      email.from.blank? ? nil : email.from.first.to_s
+      email.from.blank? ? nil : email.from.first.to_s.downcase
     end
 
     def invite_without_invitation!(email)
