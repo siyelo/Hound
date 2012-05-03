@@ -6,10 +6,18 @@
       %h3 How do I set a Hound reminder?
       %p ...
 
+      %h3 What if I go to Australia for a trip and I email Hound from there.  What happens then?  If my profile is set up for Cape Town but I’m in Brisbane?
+      %p Well any emails you schedule will be set/sent according the (SA) timezone.
+
+      %p All the relative time formats (1minute@hound.cc) will still work. i.e. You send an email to 1min@hound.cc at 9pm in Oz, Hound sets the reminder for 12:01pm SAST (-9hrs).
+
+      %p However absolute times wont make sense until you update your timezone settings. e.g. Friday10am@hound.cc would set a reminder for 10am SAST, and you'd receive the reminder at 7pm AEST.
+
+
       %h3 Do Hound reminders work with Gmail's Conversation View?
       %p Yes, just like with Mail.app's "Organize By Thread" feature, all related emails/reminders from Hound will appear in the same conversation thread as the original email(s).
     .sidebar.styled
       = image_tag('icon-help.png')
       %p
-        If you can't find the answer you're looking for don't hesitate to 
+        If you can't find the answer you're looking for don't hesitate to
         = mail_to "support@hound.cc", "ask."
