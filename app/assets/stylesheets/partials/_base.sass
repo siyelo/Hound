@@ -63,9 +63,7 @@ b
     +transition(background 0.3s ease)
     &:hover, &:focus
       background: url(image_path('paw.png')) no-repeat 92% 25% $two
-  &.medium
-    font-size: 18px
-    padding: 5px 40px
+  
   &:hover, &:focus
     background: $two + #111
     color: #000
@@ -80,6 +78,17 @@ b
     &:hover, &:focus
       background: $three + #222
       text-decoration: none
+  &.medium
+    font-size: 18px
+    padding: 5px 40px
+  &.small
+    font-size: 15px
+    padding: 4px 30px
+    width: auto
+    +box-shadow(rgba(0, 0, 0, 0.1) 0 2px 0)
+    &:active
+      top: 2px
+      +box-shadow(rgba(0, 0, 0, 0.1) 0 0 0)
   &:active
     position: relative
     top: 3px
@@ -94,10 +103,10 @@ b
   background: $red
   color: #fff
   display: inline-block
-  font: 14px Amaranth
+  font: 12px Amaranth
   margin-top: 5px
   opacity: 0.2
-  padding: 5px 15px
+  padding: 3px 15px
   +border-radius(3px)
   +box-shadow(rgba(0, 0, 0, 0.1) 0 0 3px inset)
   +text-shadow(rgba(0, 0, 0, 0.3) 0 1px 1px)

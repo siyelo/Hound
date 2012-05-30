@@ -1,6 +1,11 @@
 # Development setup
 
-## Basic Setup
+## First of all start Redis
+
+* redis-server /usr/local/etc/redis.conf
+
+
+## Run Basic Email Setup
 
 Run this in rails console to setup reminder for user@example.com
 
@@ -8,18 +13,17 @@ Run this in rails console to setup reminder for user@example.com
     service = ReminderCreationService.new
     service.create!(mail)
 
-## Start Redis
-
-* redis-server /usr/local/etc/redis.conf
-
-
-## To test emails locally
+## To test emails locally start Mailcatcher
 
 * Start mailcatcher locally
 
    $ mailcatcher
+   
+## It's running on:
 
 * Open http://localhost:1080
+
+## To send actual emails:
 
 * From your rails console;
 

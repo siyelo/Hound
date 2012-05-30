@@ -4,26 +4,29 @@
 
   %p.clear
     .half
-      = f.fields_for :fetched_mail do |fm|
-        = fm.label :subject, 'Subject:'
-        = fm.text_field :subject
-    .half
-      = label_tag 'Scheduled for:'
-      %span.send_at= "#{@reminder.send_at.strftime('%Y-%m-%d %R')} (#{Time.zone.name})"
-
-  %p.clear
-    .half
-      = f.label :other_recipients, 'Cc:'
-      = f.text_field :other_recipients, value: @reminder.other_recipients.join(',')
-    .half
-      = f.label :time, 'Reminder time:'
+      = f.label :time, 'Change the reminder time:'
       = f.text_field :time
       %span @hound.cc
+    .half
+      %label Sent to:
+      %p.sent-to#preview_emails
+        - recipient_addresses(@reminder)[0..2].each do |recipient|
+          = recipient
+
+        - if recipient_addresses(@reminder).size > 3
+          = link_to "Show all #{recipient_addresses(@reminder).size} recipients",
+            '#', id: "show_emails"
+        - elsif recipient_addresses(@reminder).empty?
+          No other recipients. This must be a personal reminder.
+
+      %p.sent-to#all_emails{style: "display: none"}
+        - recipient_addresses(@reminder).each do |recipient|
+          = recipient
 
   %br
   %hr
   %p.left
-    = submit_tag 'Submit', class:'js_submit button alt medium inline', disable_with: 'Processing...', id: 'submit'
+    = submit_tag 'Submit', class:'js_submit button alt small inline', disable_with: 'Processing...', id: 'submit'
     = link_to 'cancel', root_path, id: 'js_cancel', class: 'cancel'
 
   %p.right= link_to 'Delete this reminder', reminder_path(@reminder), method: 'delete', confirm: 'Are you sure?', class: 'delete'

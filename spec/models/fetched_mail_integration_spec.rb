@@ -20,7 +20,7 @@ describe FetchedMail do
   end
 
   describe "body" do
-    it "should save body with bad encoding" do
+    it "saves body with bad encoding" do
       fm = Factory :fetched_mail
       lambda do
         #note rspec barfs if this spec fails!
@@ -63,7 +63,7 @@ describe FetchedMail do
       @email.from_mail(@message)
     end
 
-    it "should create an email from a Mail::Message object" do
+    it "creates an email from a Mail::Message object" do
       @email.to.should == ['1d@hound.cc']
       @email.from.should == 'sachin@siyelo.com'
       @email.subject.should == 'email subject'
@@ -71,14 +71,14 @@ describe FetchedMail do
       @email.in_reply_to.should == '1111'
     end
 
-    it "should save multiple to/cc/bcc addresses" do
+    it "saves multiple to/cc/bcc addresses" do
       @message.to << 'frank@furter.com'
       fm = FetchedMail.create_from_mail!(@message, Factory(:user))
       fm.to.should == ['1d@hound.cc', 'frank@furter.com']
       FetchedMail.first.to.should == ['1d@hound.cc', 'frank@furter.com']
     end
 
-    it "should extract the html part of the message as the body" do
+    it "extracts the html part of the message as the body" do
       @message.html_part do
         content_type 'text/html; charset=UTF-8'
         body '<h1>This is HTML</h1>'
@@ -89,15 +89,15 @@ describe FetchedMail do
     end
 
     describe "email fields as strings or arrays" do
-      it "should return the cc's or an empty array" do
+      it "returns the cc's or an empty array" do
         @email.cc.should == []
       end
 
-      it "should return the bcc's or an empty array" do
+      it "returns the bcc's or an empty array" do
         @email.bcc.should == []
       end
 
-      it "should accept an array of cc's and return an array" do
+      it "accepts an array of cc's and return an array" do
         @email.cc = ['cc@example.com']
         @email.user = Factory :user
         @email.save!
@@ -105,7 +105,7 @@ describe FetchedMail do
         @email.cc.should == ['cc@example.com']
       end
 
-      it "should accept a cc as a string" do
+      it "accepts a cc as a string" do
         @email.cc = 'cc@example.com'
         @email.user = Factory :user
         lambda do
@@ -113,7 +113,7 @@ describe FetchedMail do
         end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
       end
 
-      it "should return an empty array if cc is nil" do
+      it "returns an empty array if cc is nil" do
         @email.cc = nil
         @email.user = Factory :user
         @email.save!
@@ -121,7 +121,7 @@ describe FetchedMail do
         @email.cc.should == []
       end
 
-      it "should allow multiple cc's to be created with a string" do
+      it "allows multiple cc's to be created with a string" do
         @email.cc = 'cc@abc.com, cc1@abc.com'
         @email.user = Factory :user
         lambda do
@@ -130,7 +130,7 @@ describe FetchedMail do
       end
     end
 
-    it "should extract the text part of the message as the body if there is not HTML" do
+    it "extracts the text part of the message as the body if there is not HTML" do
       @email.body.should == "This is plain text"
     end
   end
@@ -140,17 +140,17 @@ describe FetchedMail do
       @parent = Factory :fetched_mail, message_id: '123'
     end
 
-    it "should find no parent" do
+    it "finds no parent" do
       @parent.parent.should == nil
     end
 
-    it "should not match nil parents for nil reply ids" do
+    it "matches nil parents for nil reply ids" do
       @parent.message_id = nil
       @parent.save!
       @parent.parent.should == nil
     end
 
-    it "should find its parent by message_id" do
+    it "finds its parent by message_id" do
       @mail = Mail.new in_reply_to: '123'
       @child = FetchedMail.new
       @child.from_mail(@mail)
@@ -158,12 +158,12 @@ describe FetchedMail do
     end
   end
 
-  it "should return all addresses" do
+  it "#all_addresses returns all addresses" do
     mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
     mail.all_addresses.should == ['1d@hound.cc', '1@1.com', '2@2.com']
   end
 
-  it "should return true if a hound address is in the bcc" do
+  it "returns true if a hound address is in the bcc" do
     mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2d@hound.cc']
     mail.is_address_bcc?('2d@hound.cc').should == true
   end

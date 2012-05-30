@@ -11,7 +11,6 @@
           = render 'layouts/flashes'
 
         .wrapper
-          
           %nav#main-nav
             - unless user_signed_in?
               %li= link_to 'How To', '/how-to', :class => cp("how-to")

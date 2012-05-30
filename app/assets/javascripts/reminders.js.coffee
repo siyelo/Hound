@@ -38,3 +38,8 @@ $(document).ready ->
     event.preventDefault()
     reminder_row = $(this).parents('tr.reminder_row')
     Reminder.hide_reminder_row(reminder_row)
+
+  $('#show_emails').live "click", (event) ->
+    event.preventDefault()
+    $("#preview_emails").slideToggle()
+    $("#all_emails").slideToggle()
