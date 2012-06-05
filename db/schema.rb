@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120409143936) do
+ActiveRecord::Schema.define(:version => 20120605102456) do
 
   create_table "email_aliases", :force => true do |t|
     t.string   "email"
@@ -41,15 +41,15 @@ ActiveRecord::Schema.define(:version => 20120409143936) do
   add_index "fetched_mails", ["user_id"], :name => "index_fetched_mails_on_user_id"
 
   create_table "reminders", :force => true do |t|
-    t.string   "other_recipients"
+    t.text     "other_recipients", :limit => 255
     t.integer  "fetched_mail_id"
     t.datetime "send_at"
-    t.boolean  "delivered",        :default => false, :null => false
+    t.boolean  "delivered",                       :default => false, :null => false
     t.string   "snooze_token"
-    t.integer  "snooze_count",     :default => 0
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.boolean  "cleaned",          :default => false
+    t.integer  "snooze_count",                    :default => 0
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+    t.boolean  "cleaned",                         :default => false
     t.string   "time"
   end
 
