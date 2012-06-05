@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20120605102456) do
   add_index "fetched_mails", ["user_id"], :name => "index_fetched_mails_on_user_id"
 
   create_table "reminders", :force => true do |t|
-    t.text     "other_recipients", :limit => 255
+    t.text     "other_recipients"
     t.integer  "fetched_mail_id"
     t.datetime "send_at"
     t.boolean  "delivered",                       :default => false, :null => false
