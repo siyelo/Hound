@@ -11,10 +11,10 @@
 //= require chosen.jquery
 //= require jquery.timePicker
 //= require tinymce-jquery
+//= require jquery.fancybox-1.3.4.pack
 //= require_tree ./devise
 //= require ./reminders
 //= require ./uservoice
 //= require ./uservoice_contact_link
 //= require ./google_analytics
 //= require fancybox_load
-//= require ./fancybox/jquery.fancybox-1.3.4.pack
