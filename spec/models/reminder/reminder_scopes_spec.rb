@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ScopesReminders do
+describe Reminder::ReminderScopes do
   it "should fetch ready to send reminders" do
     now = Time.now
     past_unsent_reminder = Factory :reminder, send_at: now - 1.hour

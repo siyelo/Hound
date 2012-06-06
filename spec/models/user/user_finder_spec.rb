@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe User do #FindsOrInvitesUsers
+describe User::UserFinder do
   before :each do
     @mail = Mail.new from: 'Frank@1.com', date: Time.now.utc
   end

@@ -1,4 +1,4 @@
-module ScopesReminders
+module Reminder::ReminderScopes
   extend ActiveSupport::Concern
 
   LOOK_AHEAD_SECONDS = 59

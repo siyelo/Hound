@@ -1,5 +1,5 @@
 class Reminder < ActiveRecord::Base
-  include ScopesReminders
+  include Reminder::ReminderScopes
 
   EMAIL_REG_EXP = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
 
@@ -78,6 +78,8 @@ class Reminder < ActiveRecord::Base
       if time_changed?
         begin
           self.send_at = TimeParser.parse(time, fetched_mail.user.timezone)
+          self.delivered = false
+          true # make sure you don't return true from validation
         rescue ArgumentError
           self.errors[:base] = 'Invalid reminder time'
         end

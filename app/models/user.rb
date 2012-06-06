@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include FindsOrInvitesUsers
+  include User::UserFinder
 
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable

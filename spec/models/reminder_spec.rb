@@ -114,10 +114,11 @@ describe Reminder do
     end
 
     it "should snooze a reminder for a specified duration" do
-      now = Time.zone.now
-      reminder.send_at = now
-      reminder.snooze_for('2days', reminder.snooze_token)
-      reminder.send_at.to_i.should == (now + 2.days).to_i #Ruby times have greater precision
+      Timecop.freeze(Time.now) do
+        reminder.send_at = Time.now
+        reminder.snooze_for('2days', reminder.snooze_token)
+        reminder.send_at.to_i.should == (Time.now + 2.days).to_i #Ruby times have greater precision
+      end
     end
 
     it "should increment the snooze count as the user snoozes" do
@@ -129,7 +130,7 @@ describe Reminder do
   end
 
   describe "time" do
-    it "can does not change send_at if time is not changed" do
+    it "does not change send_at if time is not changed" do
       Timecop.freeze(Time.now) do
         mail     = Factory :fetched_mail
         reminder = Factory :reminder, fetched_mail: mail, send_at: Time.now
@@ -144,7 +145,7 @@ describe Reminder do
       end
     end
 
-    it "can changes send_at if time is changed" do
+    it "changes send_at unchecks delivered if time is changed" do
       Timecop.freeze(Time.now) do
         mail     = Factory :fetched_mail
         reminder = Factory :reminder, fetched_mail: mail, send_at: Time.now

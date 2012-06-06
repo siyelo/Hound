@@ -1,4 +1,4 @@
-module FindsOrInvitesUsers
+module User::UserFinder
   extend ActiveSupport::Concern
   UTC_ZONE = 0
 
