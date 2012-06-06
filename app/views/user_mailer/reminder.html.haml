@@ -11,16 +11,36 @@
           %td{ :width => "70%"}
             %h1{:style => "color:#582a00;margin:40px 0 10px;font-size:24px;"}= "#{@original_subject}"
             %p{:style => "font-size:12px;line-height:1.4;color:#444;margin:0 0 15px;"}
-              == You created this reminder on #{@created_at}
+              You created this
+              %b= @visibility
+              reminder on
+              %b= @created_at
               %br
-              == It has been snoozed 
-              %b #{@snoozed} times.
+              We have sent this reminder to
+              %b= pluralize(@reminder.other_recipients.count, 'other person')
+              %br
+              It has been snoozed
+              %b= pluralize(@snoozed,  'time.', 'times.')
+
           = render 'header'
 
         %tr
           %td{:colspan => "2"}
             = render 'snooze_box'
 
-        = render 'body', body: @body
-        
+        %tr
+          %td{:colspan => "2"}
+            %table{:style => "border: 1px solid #ead5c0;padding:10px 15px;margin-bottom:10px;"}
+              %tr
+                %td{:style => "text-align:left"}
+                  %b Original email:
+                %td{:style => "text-align:right"}
+                  - if (@to_addresses + @cc_addresses).present?
+                    %b= mail_to @to_addresses.join(','), 'Reply All', cc: @cc_addresses.join(','), subject: "Re: #{@original_subject}", style: "color:#{@link_color}"
+              %tr
+                %td{:colspan => "2"}
+                  = render 'recipients_box'
+
+              = render 'body', body: @body
+
         = render 'footer'

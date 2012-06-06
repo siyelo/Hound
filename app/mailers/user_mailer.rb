@@ -6,6 +6,11 @@ class UserMailer < ActionMailer::Base
   # reminder with snooze and admin links
   def reminder(reminder, to)
     setup_reminder(reminder, to)
+    hound_addresses = HoundAddressList.new(reminder.fetched_mail)
+
+    @to_addresses  = reminder.fetched_mail.to - hound_addresses
+    @cc_addresses  = reminder.fetched_mail.cc - hound_addresses
+
     mail(to: to, subject: "Re: #{reminder.subject}",
          in_reply_to: "<#{reminder.fetched_mail.message_id}>")
   end
@@ -63,5 +68,6 @@ class UserMailer < ActionMailer::Base
     @body = reminder.body.html_safe
     @created_at = reminder.created_at.strftime('%d-%b')
     @snoozed = reminder.snooze_count
+    @visibility = @reminder.other_recipients.empty? ? 'private' : 'shared'
   end
 end

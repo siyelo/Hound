@@ -7,15 +7,15 @@
   %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:0;padding:20px 0 0;line-height:1.4;border-top:4px dashed #f1decb;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
-        
+
         %tr
           %td{ :width => "70%"}
             %h1{:style => "color:#582a00;margin:40px 0 10px;font-size:24px;"}= "Reminder: #{@original_subject}"
 
             %p{:style => "font-size:12px;line-height:1.4;color:#444;margin:0 0 15px;"}
               %b== #{@owner}
-              created this reminder for you on
-              %b==#{@created_at}
+              created this reminder on
+              %b== #{@created_at}
           = render 'header'
 
         = render 'body', body: @body

@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe UserMailer do
   let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
-    :subject => 'orig subject', cc: ['cc@a.com'], message_id: '42' }
+    :subject => 'orig subject', cc: ['cc@a.com'], to: ['1d@hound.cc'], message_id: '42' }
   let(:in_1_hour) { Time.now.in_time_zone(orig_mail.user.timezone) + 1.hour }
   let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: orig_mail.user,
    created_at: '2012-01-01', send_at: in_1_hour}
   let(:recipient) { 'sender@a.com' }
 
-  describe '#reminder' do
+  describe 'shared reminder' do
     let(:mail) { UserMailer.reminder(reminder, recipient) }
 
     it 'renders the subject' do
@@ -33,7 +33,7 @@ describe UserMailer do
 
     it "shows when the reminder was scheduled" do
       now =  Time.now.strftime('%d-%b')
-      mail.body.should match /You created this reminder on 01-Jan/
+      mail.body.should match /You created this.<b>shared<\/b>.reminder on.<b>01-Jan<\/b>/m
     end
 
     it "shows the snooze count" do
@@ -46,6 +46,34 @@ describe UserMailer do
 
     it 'attaches original email body' do
       mail.body.encoded.should match(orig_mail.body)
+    end
+
+    it 'contains the original to addresses without hound' do
+      mail.body.should_not match /mailto:1d@hound.cc/
+    end
+
+    it 'contains the original cc addresses without hound' do
+      mail.body.should match /mailto:cc@a.com/
+    end
+
+    it 'contains a reply all link for shared reminders' do
+      mail.body.should match /mailto:\?cc=cc%40a\.com&amp;subject=Re%3A%20orig%20subject/
+    end
+  end
+
+  describe 'private reminder' do
+    let (:private_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
+      subject: 'orig subject', cc: [], bcc: ['1d@hound.cc'], message_id: '43' }
+    let(:private_reminder) { Factory :reminder, user: private_mail.user,
+      created_at: '2012-01-01', send_at: in_1_hour, other_recipients: []}
+    let(:mail) { UserMailer.reminder(private_reminder, recipient) }
+
+    it "shows that the reminder is private" do
+      mail.body.should match /You created this.<b>private<\/b>.reminder/m
+    end
+
+    it 'contains the original to addresses without hound' do
+      mail.body.should_not match /mailto:1d@hound.cc/
     end
   end
 
@@ -79,7 +107,7 @@ describe UserMailer do
 
     it "shows when the reminder was scheduled" do
       now =  Time.now.strftime('%d-%b')
-      mail.body.should have_content('sender@a.com created this reminder for you on 01-Jan')
+      mail.body.should have_content('sender@a.com created this reminder on 01-Jan')
     end
 
     it 'attaches original email body' do

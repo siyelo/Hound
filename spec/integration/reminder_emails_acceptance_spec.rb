@@ -22,7 +22,7 @@ describe "User", type: :request do
     Hound::Notifier.send_reminders(reminder)
     unread_emails_for('cc@cc.yo').size.should == parse_email_count(1)
     open_email('cc@cc.yo')
-    current_email.should have_content("pimp@macdaddy.yo created this reminder for you on")
+    current_email.should have_content("pimp@macdaddy.yo created this reminder on")
   end
 end
 

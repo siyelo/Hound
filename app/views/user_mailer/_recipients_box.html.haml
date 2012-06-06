@@ -1,0 +1,15 @@
+%table{:border => "0", :cellpadding => "4", :cellspacing => "0", :width => "100%"}
+  %tbody
+    - unless @to_addresses.empty?
+      %tr
+        %td To:
+        %td
+          -
+          - @to_addresses.each do |address|
+            = mail_to address, address, :style => "color: #{@link_color};margin-right:8px;font-size:12px;"
+    - unless @cc_addresses.empty?
+      %tr
+        %td Cc:
+        %td
+          - @cc_addresses.each.each do |address|
+            = mail_to address, address, :style => "color: #{@link_color};margin-right:8px;font-size:12px;"

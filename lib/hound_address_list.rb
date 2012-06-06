@@ -1,8 +1,8 @@
 class HoundAddressList < Array
   DOMAIN = 'hound.cc'
 
-  def initialize(mail)
-    super hound_addresses(mail || FetchedMail.new)
+  def initialize(fetched_mail)
+    super hound_addresses(fetched_mail || FetchedMail.new)
   end
 
   def ignore_existing_hound_addresses_in_reply!(fetched_mail)
@@ -16,13 +16,13 @@ class HoundAddressList < Array
 
   private
 
-  def hound_addresses(mail)
-    mail.all_addresses.select { |a| a.include? "@#{DOMAIN}" }
+  def hound_addresses(fetched_mail)
+    fetched_mail.all_addresses.select { |a| a.include? "@#{DOMAIN}" }
   end
 end
 
 class ParentHoundAddressList < HoundAddressList
-  def initialize(mail)
-    super mail.parent
+  def initialize(fetched_mail)
+    super fetched_mail.parent
   end
 end
