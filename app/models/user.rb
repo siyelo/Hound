@@ -67,6 +67,11 @@ class User < ActiveRecord::Base
   def all_email_addresses
     aliases.map { |a| a.email } << email
   end
+
+  # Devise callback to accept invitation if user was invited
+  def after_password_reset
+    accept_invitation! if invitation_token.present?
+  end
 end
 
 # == Schema Information
