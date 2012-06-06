@@ -15,6 +15,7 @@
 %h4 Weekdays
 %ul
   %li= mail_to 'friday@hound.cc', 'friday@hound.cc', :style => "color: #{@link_color}"
+  %li= mail_to 'monday9am@hound.cc', 'monday9am@hound.cc', :style => "color: #{@link_color}"
   %li= mail_to 'nexttuesday@hound.cc', 'nexttuesday@hound.cc', :style => "color: #{@link_color}"
   %li= mail_to 'nextweek@hound.cc', 'nextweek@hound.cc', :style => "color: #{@link_color}"
 
@@ -23,6 +24,9 @@
   %li
     = mail_to 'tomorrow@hound.cc', 'tomorrow@hound.cc', :style => "color: #{@link_color}"
     (8am tomorrow)
+  %li
+    = mail_to 'tomorrow1030am@hound.cc', 'tomorrow1030am@hound.cc', :style => "color: #{@link_color}"
+    (10:30am tomorrow)
   %li
     = mail_to 'endofday@hound.cc', 'endofday@hound.cc', :style => "color: #{@link_color}"
     (5pm today)
@@ -35,6 +39,21 @@
   %li
     = mail_to 'aug-10@hound.cc', 'aug-10@hound.cc', :style => "color: #{@link_color}"
     (August 10)
+  %li
+    = mail_to '16sept1030am@hound.cc', '16sept1030am@hound.cc', :style => "color: #{@link_color}"
+    (16th September at 10:30am)
+
+%h4 Actual Time
+%ul
+  %li
+    = mail_to '1030@hound.cc', '1030@hound.cc', :style => "color: #{@link_color}"
+    (10:30am)
+  %li
+    = mail_to '22@hound.cc', '22@hound.cc', :style => "color: #{@link_color}"
+    (22:00pm)
+  %li
+    = mail_to '1030am@hound.cc', '1030am@hound.cc', :style => "color: #{@link_color}"
+    (10:30am)
 
 %h4 Abbreviations
 %ul
@@ -42,8 +61,8 @@
     = mail_to '2m@hound.cc', '2m@hound.cc', :style => "color: #{@link_color}"
     (2 minutes)
   %li
+    = mail_to '5d@hound.cc', '5d@hound.cc', :style => "color: #{@link_color}"
+    (5 days)
+  %li
     = mail_to '1mo@hound.cc', '1mo@hound.cc', :style => "color: #{@link_color}"
     (1 month)
-  %li
-    = mail_to 'tom@hound.cc', 'tom@hound.cc', :style => "color: #{@link_color}"
-    (tomorrow)

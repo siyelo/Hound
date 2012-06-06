@@ -21,16 +21,16 @@ class ReminderCreationService
   def create_or_notify!(to)
     begin
       time = to.split('@')[0]
-      send_at = TimeParser.parse(time, @user.timezone)
-      Reminder.create!(send_at: send_at, time: time,
-                       fetched_mail: @fetched_mail,
-                       other_recipients: reminder_recipients(to))
+      send_at = IntervalParser.parse(time, @user.timezone)
+      if send_at
+        Reminder.create!(send_at: send_at, time: time,
+                         fetched_mail: @fetched_mail,
+                         other_recipients: reminder_recipients(to))
+      else
+        enqueue_error(to)
+      end
     rescue ArgumentError
-      Resque.enqueue(ErrorNotificationJob, @fetched_mail.id)
-      Airbrake.notify(
-        :error_class   => to,
-        :error_message => "Invalid email format: #{to}"
-      )
+      enqueue_error(to)
     end
   end
 
@@ -40,5 +40,13 @@ class ReminderCreationService
     else
       []
     end
+  end
+
+  def enqueue_error(to)
+    Resque.enqueue(ErrorNotificationJob, @fetched_mail.id)
+    Airbrake.notify(
+      :error_class   => to,
+      :error_message => "Invalid email format: #{to}"
+    )
   end
 end

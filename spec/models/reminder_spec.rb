@@ -135,7 +135,7 @@ describe Reminder do
         mail     = Factory :fetched_mail
         reminder = Factory :reminder, fetched_mail: mail, send_at: Time.now
         send_at  = reminder.send_at
-        TimeParser.should_not_receive(:parse)
+        IntervalParser.should_not_receive(:parse)
 
         reminder.other_recipients = 'other@example.com'
         reminder.save!

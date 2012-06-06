@@ -49,7 +49,7 @@ class Reminder < ActiveRecord::Base
 
   def snooze_for(duration, token)
     if duration && snooze_token == token
-      self.send_at = TimeParser.parse(duration)
+      self.send_at = IntervalParser.parse(duration)
       self.snooze_count += 1
       self.delivered = false
       self.save!
@@ -77,7 +77,7 @@ class Reminder < ActiveRecord::Base
     def set_send_at_form_time
       if time_changed?
         begin
-          self.send_at = TimeParser.parse(time, fetched_mail.user.timezone)
+          self.send_at = IntervalParser.parse(time, fetched_mail.user.timezone)
           self.delivered = false
           true # make sure you don't return true from validation
         rescue ArgumentError
