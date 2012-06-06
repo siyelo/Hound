@@ -37,12 +37,32 @@ module TimeParser
 
     ### Instance Methods
     class << self
-      def parse(time, zone = 'UTC')
-        matches = match_key_words(time)
+      def parse(parsable, zone = 'UTC')
+        matches = match_key_words(parsable)
         unless matches.empty?
+          time = parse_time(parsable, matches.first)
+          if time
+            hour = time.hour
+            min = time.min
+          end
+
           match = self.send(matches.first)
-          return utc_offset(match, zone)
+          return utc_offset(match, zone, hour, min)
         end
+      end
+
+      def parse_time(parsable, matcher)
+        parsable_parts = parsable.partition(matcher)
+        time_part = nil
+        [0, 2].each do |index|
+          if parsable_parts[index].match(/\d{1,4}(a|p)m/)
+            time_part = parsable_parts[index]
+          end
+        end
+        return nil unless time_part
+        time_part = time_part.insert(2,':') if time_part.length == 6
+
+        DateTime.parse(time_part)
       end
 
       def match_key_words(time)
@@ -80,14 +100,15 @@ module TimeParser
       def date_of_next(day)
         date  = DateTime.parse(day).to_time
         delta = date > Date.today ? 0 : 7
-        (date + delta).change hour: STARTOFDAY
+        (date + delta.days).change hour: STARTOFDAY
       end
 
       private
 
-      def utc_offset(utc_time, zone)
+      def utc_offset(utc_time, zone, hour, min)
         tz_time = utc_time.in_time_zone(ActiveSupport::TimeZone[zone])
-        tz_time = tz_time.change hour: utc_time.hour
+        tz_time = tz_time.change hour: hour || utc_time.hour
+        tz_time = tz_time.change min: min || 0
         tz_time.utc
       end
     end

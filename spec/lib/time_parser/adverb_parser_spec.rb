@@ -54,7 +54,22 @@ describe TimeParser::AdverbParser do
   end
 
   it "should return nil if not parseable" do
-    time = 'tom10am'
+    time = 'eeee10am'
     TimeParser::AdverbParser.parse(time).should == nil
+  end
+
+  it "should parse trailing 12-hour time with period" do
+    time = "tomorrow10am"
+    TimeParser::AdverbParser.parse(time).should == 1.day.from_now.utc.change(hour: 10)
+  end
+
+  it "should parse leading 12-hour time with period" do
+    time = "10pmtomorrow"
+    TimeParser::AdverbParser.parse(time).should == 1.day.from_now.utc.change(hour: 22)
+  end
+
+  it "should parse 12-hour time with minutes and period" do
+    time = "1030amtomorrow"
+    TimeParser::AdverbParser.parse(time).should == 1.day.from_now.utc.change(hour: 10, min:30)
   end
 end
