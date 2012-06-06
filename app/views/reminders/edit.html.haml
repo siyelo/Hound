@@ -2,4 +2,4 @@
   #devise.wide
     .inline_reminder
       %h2 Edit Reminder
-      = render 'form'
+      = render 'form', reminder: @reminder, remote: false

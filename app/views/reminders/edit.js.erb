@@ -5,7 +5,7 @@ $('.reminder_row').addClass('hidden');
 $('.reminder_row').find('.inline_reminder').html('');
 
 reminder_row.removeClass('hidden');
-inline_reminder.html("<%=j render 'form' %>").fadeIn(300);
+inline_reminder.html("<%=j render 'form', reminder: @reminder, remote: true %>").fadeIn(300);
 
 reminder_row.find('.reminder_body').tinymce({
   theme: "advanced",

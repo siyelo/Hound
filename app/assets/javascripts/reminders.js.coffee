@@ -3,9 +3,9 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 class Reminder
-  @hide_reminder_row: (reminder_row) ->
-    reminder_row.addClass('hidden')
-    reminder_row.prev('tr.reminder').removeClass('active')
+  @hide_reminder_body: (reminderBody) ->
+    reminderBody.addClass('hidden')
+    reminderBody.prev('tr.js_reminder_title').removeClass('active')
 
 (exports ? this).Reminder = Reminder
 
@@ -20,24 +20,24 @@ $(document).ready ->
       theme_advanced_toolbar_location: "top",
       theme_advanced_toolbar_align: "left"
 
-  $(".reminder").live "click", (event) ->
+  $(".js_reminder_title").live "click", (event) ->
     event.preventDefault()
     reminder = $(this)
     link     = reminder.find('td a:first')
-    reminder_row = reminder.next("tr.reminder_row")
+    reminderBody = reminder.next("tr.js_reminder_body")
 
-    $('tr.reminder').removeClass('active')
+    $('tr.js_reminder_title').removeClass('active')
     reminder.addClass('active')
 
-    if (reminder_row.hasClass('hidden'))
+    if (reminderBody.hasClass('hidden'))
       $.getScript(link.attr('href') + ".js")
     else
-      Reminder.hide_reminder_row(reminder_row)
+      Reminder.hide_reminder_body(reminderBody)
 
   $('#js_cancel').live "click", (event) ->
     event.preventDefault()
-    reminder_row = $(this).parents('tr.reminder_row')
-    Reminder.hide_reminder_row(reminder_row)
+    reminderBody = $(this).parents('tr.js_reminder_body')
+    Reminder.hide_reminder_body(reminderBody)
 
   $('#show_emails').live "click", (event) ->
     event.preventDefault()

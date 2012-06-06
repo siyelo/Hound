@@ -50,9 +50,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'guard-coffeescript'
-  gem "guard-jasmine"
-  gem 'jasmine'
   gem "linecache19", "~> 0.5.13"
   gem 'ruby-debug19'
   gem 'ruby-debug-base19x'
