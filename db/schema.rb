@@ -44,12 +44,12 @@ ActiveRecord::Schema.define(:version => 20120605102456) do
     t.text     "other_recipients"
     t.integer  "fetched_mail_id"
     t.datetime "send_at"
-    t.boolean  "delivered",                       :default => false, :null => false
+    t.boolean  "delivered",        :default => false, :null => false
     t.string   "snooze_token"
-    t.integer  "snooze_count",                    :default => 0
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
-    t.boolean  "cleaned",                         :default => false
+    t.integer  "snooze_count",     :default => 0
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.boolean  "cleaned",          :default => false
     t.string   "time"
   end
 
