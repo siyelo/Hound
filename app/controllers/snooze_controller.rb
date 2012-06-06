@@ -2,9 +2,9 @@ class SnoozeController < ApplicationController
   def edit
     @reminder = Reminder.find_by_id(params[:id])
     if @reminder && @reminder.snooze_for(params[:duration], params[:token])
-      render action: 'snooze_reminder'
+      render :snooze_reminder
     else
-      render action: 'snooze_failed'
+      render :snooze_failed
     end
   end
 
@@ -14,6 +14,6 @@ class SnoozeController < ApplicationController
     unless reminder.other_recipients.empty?
       Resque.enqueue(NotificationJob, reminder.id)
     end
-    render action: 'informed_of_snooze'
+    render :informed_of_snooze
   end
 end
