@@ -17,6 +17,7 @@ gem 'tinymce-rails'
 gem 'unicorn'
 gem 'haml-rails'
 gem 'html5-rails'
+gem 'therubyracer'
 
 group :assets do
   gem 'sass-rails', "  ~> 3.2.3"
