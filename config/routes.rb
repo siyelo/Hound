@@ -24,6 +24,6 @@ Hound::Application.routes.draw do
     root :to => "reminders#index"
   end
 
-  root :to => 'static_page#index'
+  root :to => 'static_page#cookie_test'
   get '/:action(.html)' => 'static_page#:action', as: :static_page
 end
