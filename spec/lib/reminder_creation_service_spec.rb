@@ -88,9 +88,16 @@ describe ReminderCreationService do
     it "should queue an error notification for an invalid hound address" do
       ResqueSpec.reset!
       Reminder.count.should == 0 #sanity
+
       @mail = Mail.new(from: 'pimpboiwonder@vuvuzela.com',
                        to: 'aslkdjf@hound.cc',
                        subject: 'test', date: DateTime.now)
+
+      hound_address = @mail.to[0]
+      Airbrake.should_receive(:notify).
+        with({error_class: hound_address,
+              error_message: "Invalid email format: #{hound_address}"}).once
+
       @service.create! @mail
       ErrorNotificationJob.should have_queue_size_of(1)
     end

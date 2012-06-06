@@ -27,6 +27,10 @@ class ReminderCreationService
                        other_recipients: reminder_recipients(to))
     rescue ArgumentError
       Resque.enqueue(ErrorNotificationJob, @fetched_mail.id)
+      Airbrake.notify(
+        :error_class   => to,
+        :error_message => "Invalid email format: #{to}"
+      )
     end
   end
 
