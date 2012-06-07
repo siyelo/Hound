@@ -29,6 +29,7 @@ end
 
 def run_specs
   setup_specs
+  ENV['DISPLAY'] = ":0.0"
   run_or_die "xvfb-run bundle exec rspec spec"
 end
 
