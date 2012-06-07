@@ -4,7 +4,7 @@ configure do |c|
   c.path = '/home/deployer/apps/hound'
 
   stage :production do
-    c.host = 'mrpink.siyelo.com'
+    c.host = 'butch.siyelo.com'
     c.user = 'deployer'
   end
 end
@@ -34,6 +34,7 @@ deploy do
     run "rake db:migrate"
     run "bundle exec rake assets:precompile"
     run "rvmsudo foreman export upstart /etc/init -a hound -u deployer"
+    run "sudo sed -i \"1 i start on runlevel [2345]\" /etc/init/hound.conf"
     run "sudo service hound_unicorn restart"
     run "sudo restart hound"
     # run "touch tmp/restart.txt"
