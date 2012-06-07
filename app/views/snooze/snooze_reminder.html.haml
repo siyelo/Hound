@@ -8,7 +8,7 @@
   -if @reminder.other_recipients.count > 0
     %br
     %hr
-    %p.small Would you like to notify the other recipients that you've snoozed the reminder?
+    %p.small Would you like to notify the other recipients (#{@reminder.other_recipients.join(', ')}) that you've snoozed the reminder?
     %br
     %p= link_to 'Yes', snooze_url(@reminder), class: 'button medium alt inline'
     %br
