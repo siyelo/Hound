@@ -5,9 +5,9 @@ set -e
 
 # Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
-APP_ROOT=/home/deployer/apps/hound
+APP_ROOT=/home/hound/app
 PID=$APP_ROOT/tmp/pids/unicorn.pid
-CMD="bootup_unicorn_rails -D -c $APP_ROOT/config/unicorn.rb"
+CMD="$APP_ROOT/bin/unicorn -D -c $APP_ROOT/config/unicorn.rb -E production"
 action="$1"
 set -u
 
@@ -26,7 +26,7 @@ oldsig () {
 case $action in
 start)
 	sig 0 && echo >&2 "Already running" && exit 0
-	su -c "$CMD" - deployer
+	su -c "$CMD" - hound
 	;;
 stop)
 	sig QUIT && exit 0
@@ -39,7 +39,7 @@ force-stop)
 restart|reload)
 	sig HUP && echo reloaded OK && exit 0
 	echo >&2 "Couldn't reload, starting '$CMD' instead"
-	su -c "$CMD" - deployer
+	su -c "$CMD" - hound
 	;;
 upgrade)
 	if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
@@ -59,7 +59,7 @@ upgrade)
 		exit 0
 	fi
 	echo >&2 "Couldn't upgrade, starting '$CMD' instead"
-	su -c "$CMD" - deployer
+	su -c "$CMD" - hound
 	;;
 reopen-logs)
 	sig USR1

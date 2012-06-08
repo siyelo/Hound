@@ -27,6 +27,15 @@ and BAM. you're off to the racez.
     `ENV['HOUND_USERNAME']`
     `ENV['HOUND_PASSWORD']`
 
+  - As hound user generate the upstart scripts
+
+    $ bundle exec foreman export upstart hound_script -a hound -u hound
+    $ sed -i "1 i start on runlevel [2345]" hound_script/hound.conf
+
+  - Copy upstart scripts to /etc/init
+
+    $ sudo cp /home/hound/app/hound_script/* /etc/init/
+
 ## Deployment
 
     $ gitploy production

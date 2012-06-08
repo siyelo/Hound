@@ -1,11 +1,11 @@
 require 'gitploy/script'
 
 configure do |c|
-  c.path = '/home/deployer/apps/hound'
+  c.path = '/home/hound/app'
 
   stage :production do
     c.host = 'butch.siyelo.com'
-    c.user = 'deployer'
+    c.user = 'hound'
   end
 end
 
@@ -23,21 +23,14 @@ deploy do
   remote do
     run "cd #{config.path}"
     run "git reset --hard"
-    run "source /home/deployer/.bash_profile"
-    run "source /home/deployer/.rvm/scripts/rvm"
-    run "source #{config.path}/.rvmrc"
-    run "rvm use 1.9.3-p0@hound"
+    run 'export PATH="$HOME/.rbenv/bin:$PATH"'
+    run 'eval "$(rbenv init -)"'
     run "ruby -v"
-    run "rvm wrapper ruby-1.9.3-p0@hound bootup unicorn_rails"
     run "cp config/database.yml.pg config/database.yml"
     run "bundle install"
-    run "rake db:migrate"
-    run "bundle exec rake assets:precompile"
-    run "rvmsudo foreman export upstart /etc/init -a hound -u deployer"
-    run "sudo sed -i \"1 i start on runlevel [2345]\" /etc/init/hound.conf"
-    run "sudo service hound_unicorn restart"
-    run "sudo restart hound"
-    # run "touch tmp/restart.txt"
+    run "rake db:migrate RAILS_ENV=production"
+    run "bundle exec rake assets:precompile RAILS_ENV=production"
+    run "/etc/init.d/hound_app restart"
     run "echo FINISHED."
   end
 end
