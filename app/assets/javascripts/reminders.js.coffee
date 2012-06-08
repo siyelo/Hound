@@ -22,12 +22,12 @@ $(document).ready ->
 
   $(".js_reminder_title").live "click", (event) ->
     event.preventDefault()
-    reminder = $(this)
-    link     = reminder.find('td a:first')
-    reminderBody = reminder.next("tr.js_reminder_body")
+    reminderTitle = $(this)
+    link     = reminderTitle.find('td a:first')
+    reminderBody = reminderTitle.next("tr.js_reminder_body")
 
     $('tr.js_reminder_title').removeClass('active')
-    reminder.addClass('active')
+    reminderTitle.addClass('active')
 
     if (reminderBody.hasClass('hidden'))
       $.getScript(link.attr('href') + ".js")
