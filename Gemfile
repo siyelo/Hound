@@ -12,7 +12,7 @@ gem 'mail'
 gem 'pg'
 gem 'rails', '3.2.2'
 gem 'resque', '>= 1.20.0'
-gem 'resque-scheduler', require: "resque/server"
+gem 'resque-scheduler', :require => "resque/server"
 gem 'tinymce-rails'
 gem 'unicorn'
 gem 'haml-rails'
