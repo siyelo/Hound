@@ -24,8 +24,8 @@ and BAM. you're off to the racez.
 
   - Define email username and password as ENV variables
 
-    `ENV['HOUND_USERNAME']`
-    `ENV['HOUND_PASSWORD']`
+    `ENV['HOUND_EMAIL_USERNAME']`
+    `ENV['HOUND_EMAIL_PASSWORD']`
 
   - As hound user generate the upstart scripts
 

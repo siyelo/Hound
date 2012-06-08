@@ -29,7 +29,9 @@ deploy do
     run "bundle install"
     run "rake db:migrate RAILS_ENV=production"
     run "bundle exec rake assets:precompile RAILS_ENV=production"
-    run "/etc/init.d/hound_app restart"
+    run "sudo bundle exec foreman export upstart /etc/init/ -a hound -u hound"
+    run "sudo sed -i \"1 i start on runlevel [2345]\" /etc/init/hound.conf"
+    run "sudo /etc/init.d/hound_app restart"
     run "echo FINISHED."
   end
 end

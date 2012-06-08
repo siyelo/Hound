@@ -6,8 +6,8 @@ class FetchMailJob
   include Singleton
 
   SERVER   = 'imap.gmail.com'
-  USERNAME = ENV['HOUND_USERNAME']
-  PASSWORD = ENV['HOUND_PASSWORD']
+  USERNAME = ENV['HOUND_EMAIL_USERNAME']
+  PASSWORD = ENV['HOUND_EMAIL_PASSWORD']
   FOLDER   = 'INBOX'
 
   attr_accessor :imap, :logger
