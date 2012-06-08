@@ -26,7 +26,6 @@ deploy do
     run 'export PATH="$HOME/.rbenv/bin:$PATH"'
     run 'eval "$(rbenv init -)"'
     run "ruby -v"
-    run "cp config/database.yml.pg config/database.yml"
     run "bundle install"
     run "rake db:migrate RAILS_ENV=production"
     run "bundle exec rake assets:precompile RAILS_ENV=production"
