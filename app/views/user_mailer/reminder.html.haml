@@ -4,9 +4,10 @@
 %html
   %head
     %meta{ 'content' => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type" }
-  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:0;padding:20px 0 0;line-height:1.4;border-top:4px dashed #f1decb;"}
+  %body{:style => "background:url(http://hound.cc/assets/bg.png) #fef4e0;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin:0;padding:15px 0 0;line-height:1.4;border-top:4px dashed #f1decb;"}
     %table{:style => "margin: 0 auto;width:600px;"}
       %tbody
+        = render 'mail_nav'
         %tr
           %td{ :width => "70%"}
             %h1{:style => "color:#582a00;margin:40px 0 10px;font-size:24px;"}= "#{@original_subject}"
@@ -30,13 +31,16 @@
 
         %tr
           %td{:colspan => "2"}
-            %table{:style => "border: 1px solid #ead5c0;padding:10px 15px;margin-bottom:10px;"}
+            %table{:style => "margin-bottom:10px;"}
               %tr
-                %td{:style => "text-align:left"}
-                  %b Original email:
-                %td{:style => "text-align:right"}
-                  - if (@to_addresses + @cc_addresses).present?
-                    %b= mail_to @to_addresses.join(','), 'Reply All', cc: @cc_addresses.join(','), subject: "Re: #{@original_subject}", style: "color:#{@link_color}"
+                %td{:colspan => "2"}
+                  %table
+                    %tr
+                      %td{:style => "text-align:left;"}
+                        %b Original email:
+                      %td{:style => "text-align:right;"}
+                        - if (@to_addresses + @cc_addresses).present?
+                          %b= mail_to @to_addresses.join(','), 'Reply All', cc: @cc_addresses.join(','), subject: "Re: #{@original_subject}", style: "color:#{@link_color}"
               %tr
                 %td{:colspan => "2"}
                   = render 'recipients_box'

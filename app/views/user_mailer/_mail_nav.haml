@@ -1,0 +1,7 @@
+%tr
+  %td{:style=>"padding:0;vertical-align:top;", :colspan =>"2"}
+    %p{:style=>"margin:0;"}
+      = link_to "Upcoming", reminders_url, :style => "color: #{@link_color}; margin-right:5px;font-size:11px;"
+      = link_to "Settings", settings_url, :style => "color: #{@link_color}; margin-right:5px;font-size:11px;"
+      
+= render 'hr'
