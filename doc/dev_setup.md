@@ -29,15 +29,11 @@ Run this in rails console to setup reminder for user@example.com
 
    $ rails console
 
-    > UserMailer.confirmation(Reminder.last).deliver!
-
-    > UserMailer.error(FetchedMail.last).deliver!
-
-    > UserMailer.reminder(Reminder.last, 'g@g.com').deliver!
-
-    > UserMailer.recipient_reminder(Reminder.last, 'g@g.com').deliver!
-
-    > UserMailer.snooze(Reminder.last, 'g@g.com').deliver!
+UserMailer.confirmation(Reminder.last).deliver!
+UserMailer.error(FetchedMail.last).deliver!
+UserMailer.reminder(Reminder.last, 'g@g.com').deliver!
+UserMailer.recipient_reminder(Reminder.last, 'g@g.com').deliver!
+UserMailer.snooze(Reminder.last, 'g@g.com').deliver!
 
 * If you make changes to the mail views, don't forget to type;
 
