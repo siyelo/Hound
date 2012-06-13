@@ -61,7 +61,7 @@
       padding: 60px 15px 20px
   #logo
     height: auto
-    padding: 25px 0 0
+    padding: 15px 0 20px
     width: 30%
     a, img
       width: 100%
@@ -94,6 +94,12 @@
       width: 90%
     select#user_timezone
       width: 100%
+    &.wide
+      margin: 30px auto
+      width: 65%
+  .snoozed
+    background: none
+    padding-left: 0
   .sidenav
     display: block
     float: none
@@ -106,8 +112,12 @@
   .content
     padding-right: 0
     width: 100%
-  #footer a
-    font-size: 12px
+  #footer 
+    .twitter-follow-button
+      left: 0
+      top: 20px
+    a
+      font-size: 12px
 @media screen and (max-width:450px)
   #featured
     h2
