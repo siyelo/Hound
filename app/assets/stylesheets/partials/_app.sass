@@ -112,7 +112,7 @@
   hr
     margin: 4px 0 8px
   h2
-    margin: 40px 0 20px
+    margin: 30px 0 20px
   form
     position: relative
     +pie-clearfix
@@ -133,6 +133,14 @@
       +box-shadow(rgba(0, 0, 0, 0.1) 1px 1px 3px inset)
       &:hover, &:focus, &:active
         border-color: $one
+  &.edit
+    #reminder_time
+      width: 160px
+    span
+      font-size: 14px
+    .sent-to
+      color: #444 !important
+      font: 12px Arial, sans-serif !important
 
 .sent-to
   color: #666
