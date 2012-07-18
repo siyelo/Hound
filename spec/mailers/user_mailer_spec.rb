@@ -102,7 +102,7 @@ describe UserMailer do
     end
 
     it "says its a reminder" do
-      mail.body.should match /Reminder: orig subject/
+      mail.body.should match /Reminder:/
     end
 
     it "shows when the reminder was scheduled" do
