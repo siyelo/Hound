@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "airbrake"
+gem "airbrake", "3.0.9"
 gem 'chronic'
 gem 'devise'
 gem "devise_invitable"
