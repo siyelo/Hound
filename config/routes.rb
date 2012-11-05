@@ -9,6 +9,7 @@ Hound::Application.routes.draw do
   mount Resque::Server, :at => "/resque"
 
   resources :reminders, except: [:new, :create]
+  resources :inbound_email, only: [:index, :create]
 
   match 'confirmations/disable' => 'confirmations#disable', via: :get
 
