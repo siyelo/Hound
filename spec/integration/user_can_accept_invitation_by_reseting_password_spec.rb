@@ -21,7 +21,7 @@ describe "User", type: :request do
     unread_emails_for(user.email).size.should == parse_email_count(1)
     open_email(user.email)
     current_email.should have_subject('Welcome to Hound.cc')
-    current_email.should have_body_text("Yes it's me! Activate my account!")
+    current_email.should have_body_text("Yes it&#x27;s me! Activate my account!")
 
     reset_mailer
 
