@@ -2,15 +2,15 @@ source 'http://rubygems.org'
 
 gem "airbrake", "3.0.9"
 gem 'chronic'
-gem 'devise'
-gem "devise_invitable"
+gem 'devise', "~> 2.0.4"
+gem "devise_invitable", "~> 1.0.0"
 gem 'foreman'
 gem 'gitploy'
 gem 'haml', '~> 3.1.4'
 gem 'jquery-rails'
 gem 'mail'
 gem 'pg'
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.11'
 gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', :require => "resque/server"
 gem 'tinymce-rails'
@@ -36,9 +36,9 @@ end
 
 group :test do
   # Pretty printed test output
-  gem 'capybara-webkit'
+  gem 'capybara-webkit', "~> 0.10.1"
   gem 'database_cleaner'
-  gem "factory_girl_rails"
+  gem "factory_girl_rails", "~> 1.7.0"
   gem "guard-rspec"
   gem 'headless'
   gem 'launchy'
