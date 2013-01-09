@@ -7,8 +7,7 @@ describe MergeUsersController do
   describe "create" do
     before :each do
       sign_in user
-      @params = { secondary_email: secondary_user.email, secondary_password: 'testing',
-                  controller: :reminders, action: :create }
+      @params = { secondary_email: secondary_user.email, secondary_password: 'testing' }
       @merger = mock perform: true
       Hound::UserMerger.stub(:new).and_return @merger
     end

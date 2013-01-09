@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe "User", type: :request do
 
-  def send_email_and_confirmation
+  def send_email_and_confirmation(message_id = nil)
     # send mail to hound.cc
-    mail = Mail.new(from: 'user@hound.cc', to: '1d@hound.cc', subject: 'bug', body: 'bug')
+    mail = Mail.new(from: 'user@hound.cc', to: '1d@hound.cc', subject: 'bug',
+                    body: 'bug')
+    mail[:message_id] = message_id
     service = ReminderCreationService.new
     service.create!(mail)
 
@@ -39,7 +41,7 @@ describe "User", type: :request do
 
     reset_mailer
 
-    reminder = send_email_and_confirmation
+    reminder = send_email_and_confirmation('test_id')
     user     = reminder.user
     unread_emails_for(user.email).size.should == parse_email_count(1)
     open_email(user.email)

@@ -10,7 +10,7 @@ gem 'haml', '~> 3.1.4'
 gem 'jquery-rails'
 gem 'mail'
 gem 'pg'
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.11'
 gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', :require => "resque/server"
 gem 'tinymce-rails'
