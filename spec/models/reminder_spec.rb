@@ -23,23 +23,23 @@ describe Reminder do
 
     describe "other recipients" do
       it "is valid when empty" do
-        reminder = Factory.build(:reminder, other_recipients: '')
+        reminder = FactoryGirl.build(:reminder, other_recipients: '')
         reminder.should be_valid
       end
 
       it "is valid when 2 valid addresses" do
-        reminder = Factory.build(:reminder, other_recipients: 'a@example.com;b@example.com')
+        reminder = FactoryGirl.build(:reminder, other_recipients: 'a@example.com;b@example.com')
         reminder.should be_valid
       end
 
       it "is not valid when invalid address" do
-        reminder = Factory.build(:reminder, other_recipients: 'example.com')
+        reminder = FactoryGirl.build(:reminder, other_recipients: 'example.com')
         reminder.should_not be_valid
         reminder.errors[:base].should include("Not all Cc addresses are well formatted")
       end
 
       it "is valid when second email address is not valid" do
-        reminder = Factory.build(:reminder, other_recipients: 'a@example.com;example.com')
+        reminder = FactoryGirl.build(:reminder, other_recipients: 'a@example.com;example.com')
         reminder.should_not be_valid
         reminder.errors[:base].should include("Not all Cc addresses are well formatted")
       end
@@ -47,15 +47,15 @@ describe Reminder do
   end
 
   it "should delegate simple fields to the associated mail (reading)" do
-    mail = Factory :fetched_mail
-    r = Factory :reminder, fetched_mail: mail
+    mail = FactoryGirl.create :fetched_mail
+    r = FactoryGirl.create :reminder, fetched_mail: mail
     r.subject.should == mail.subject
     r.body.should == mail.body
   end
 
   it "should delegate simple fields to the associated mail (writing)" do
-    mail = Factory :fetched_mail
-    r = Factory :reminder, fetched_mail: mail
+    mail = FactoryGirl.create :fetched_mail
+    r = FactoryGirl.create :reminder, fetched_mail: mail
     r.subject = '123'
     r.subject.should == '123'
     r.body = '456'
@@ -63,13 +63,13 @@ describe Reminder do
   end
 
   it "should send reminders to the From address on the creation mail" do
-    mail = Factory :fetched_mail, from: 'sender@g.com'
-    r = Factory :reminder, fetched_mail: mail
+    mail = FactoryGirl.create :fetched_mail, from: 'sender@g.com'
+    r = FactoryGirl.create :reminder, fetched_mail: mail
     r.owner_recipient.should == 'sender@g.com'
   end
 
   describe 'other_recipients as string or array' do
-    let (:r) { Factory :reminder, other_recipients: nil }
+    let (:r) { FactoryGirl.create :reminder, other_recipients: nil }
 
     it "should return the other_recipients's or an empty array" do
       r.other_recipients.should == []
@@ -98,7 +98,7 @@ describe Reminder do
   end
 
   describe "snoozing" do
-    let(:reminder) { Factory.build :reminder, fetched_mail: Factory(:fetched_mail, to: ['recipient@g.com'], bcc: ['2h@hound.cc']) }
+    let(:reminder) { FactoryGirl.build :reminder, fetched_mail: FactoryGirl.create(:fetched_mail, to: ['recipient@g.com'], bcc: ['2h@hound.cc']) }
 
     it "should generate a snooze token when creating a reminder" do
       reminder.snooze_token.should be_nil
@@ -132,8 +132,8 @@ describe Reminder do
   describe "time" do
     it "does not change send_at if time is not changed" do
       Timecop.freeze(Time.now) do
-        mail     = Factory :fetched_mail
-        reminder = Factory :reminder, fetched_mail: mail, send_at: Time.now
+        mail     = FactoryGirl.create :fetched_mail
+        reminder = FactoryGirl.create :reminder, fetched_mail: mail, send_at: Time.now
         send_at  = reminder.send_at
         IntervalParser.should_not_receive(:parse)
 
@@ -147,8 +147,8 @@ describe Reminder do
 
     it "changes send_at unchecks delivered if time is changed" do
       Timecop.freeze(Time.now) do
-        mail     = Factory :fetched_mail
-        reminder = Factory :reminder, fetched_mail: mail, send_at: Time.now
+        mail     = FactoryGirl.create :fetched_mail
+        reminder = FactoryGirl.create :reminder, fetched_mail: mail, send_at: Time.now
         send_at  = reminder.send_at
 
         reminder.time = '1day'

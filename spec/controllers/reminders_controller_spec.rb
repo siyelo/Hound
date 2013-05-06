@@ -9,8 +9,8 @@ describe RemindersController do
   end
 
   context "signed in user" do
-    let(:user) { Factory.create(:user) }
-    let(:reminder) { Factory :reminder, fetched_mail: Factory(:fetched_mail, user: user) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:reminder) { FactoryGirl.create :reminder, fetched_mail: FactoryGirl.create(:fetched_mail, user: user) }
 
     before :each do
       sign_in user
@@ -28,7 +28,7 @@ describe RemindersController do
     end
 
     it "cannot edit anothers reminder" do
-      other_reminder = Factory :reminder
+      other_reminder = FactoryGirl.create :reminder
 
       lambda { get('edit', id: other_reminder.id) }.
         should raise_error(ActiveRecord::RecordNotFound)

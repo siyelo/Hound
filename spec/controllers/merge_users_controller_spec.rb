@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe MergeUsersController do
-  let(:user) { Factory.create(:user) }
-  let(:secondary_user) { Factory.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:secondary_user) { FactoryGirl.create(:user) }
 
   describe "create" do
     before :each do

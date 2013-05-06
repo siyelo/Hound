@@ -12,7 +12,7 @@ describe ApplicationController do
 
   describe "handling timezone" do
     before :each do
-      @user = Factory :user, timezone: 'Harare'
+      @user = FactoryGirl.create :user, timezone: 'Harare'
       sign_in @user
     end
 

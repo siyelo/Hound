@@ -15,13 +15,13 @@ describe FetchedMail do
   it { should_not validate_presence_of :subject}
 
   it "should validate unique messsage ids" do
-    Factory :fetched_mail
+    FactoryGirl.create :fetched_mail
     FetchedMail.new.should validate_uniqueness_of( :message_id )
   end
 
   describe "body" do
     it "saves body with bad encoding" do
-      fm = Factory :fetched_mail
+      fm = FactoryGirl.create :fetched_mail
       lambda do
         #note rspec barfs if this spec fails!
         fm.body = "\xA0bad encoding \xA0/"
@@ -34,7 +34,7 @@ describe FetchedMail do
 
   describe "#create_from_mail!" do
     before :each do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
     end
 
     it "should create from a Mail object" do
@@ -73,7 +73,7 @@ describe FetchedMail do
 
     it "saves multiple to/cc/bcc addresses" do
       @message.to << 'frank@furter.com'
-      fm = FetchedMail.create_from_mail!(@message, Factory(:user))
+      fm = FetchedMail.create_from_mail!(@message, FactoryGirl.create(:user))
       fm.to.should == ['1d@hound.cc', 'frank@furter.com']
       FetchedMail.first.to.should == ['1d@hound.cc', 'frank@furter.com']
     end
@@ -99,7 +99,7 @@ describe FetchedMail do
 
       it "accepts an array of cc's and return an array" do
         @email.cc = ['cc@example.com']
-        @email.user = Factory :user
+        @email.user = FactoryGirl.create :user
         @email.save!
         @email.reload
         @email.cc.should == ['cc@example.com']
@@ -107,7 +107,7 @@ describe FetchedMail do
 
       it "accepts a cc as a string" do
         @email.cc = 'cc@example.com'
-        @email.user = Factory :user
+        @email.user = FactoryGirl.create :user
         lambda do
           @email.save!
         end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
@@ -115,7 +115,7 @@ describe FetchedMail do
 
       it "returns an empty array if cc is nil" do
         @email.cc = nil
-        @email.user = Factory :user
+        @email.user = FactoryGirl.create :user
         @email.save!
         @email.reload
         @email.cc.should == []
@@ -123,7 +123,7 @@ describe FetchedMail do
 
       it "allows multiple cc's to be created with a string" do
         @email.cc = 'cc@abc.com, cc1@abc.com'
-        @email.user = Factory :user
+        @email.user = FactoryGirl.create :user
         lambda do
           @email.save!
         end.should_not raise_exception ActiveRecord::SerializationTypeMismatch
@@ -137,7 +137,7 @@ describe FetchedMail do
 
   describe "#parent" do
     before :each do
-      @parent = Factory :fetched_mail, message_id: '123'
+      @parent = FactoryGirl.create :fetched_mail, message_id: '123'
     end
 
     it "finds no parent" do
@@ -159,12 +159,12 @@ describe FetchedMail do
   end
 
   it "#all_addresses returns all addresses" do
-    mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
+    mail = FactoryGirl.create :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2@2.com']
     mail.all_addresses.should == ['1d@hound.cc', '1@1.com', '2@2.com']
   end
 
   it "returns true if a hound address is in the bcc" do
-    mail = Factory :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2d@hound.cc']
+    mail = FactoryGirl.create :fetched_mail, to: ['1d@hound.cc'], cc: ['1@1.com'], bcc: ['2d@hound.cc']
     mail.is_address_bcc?('2d@hound.cc').should == true
   end
 end

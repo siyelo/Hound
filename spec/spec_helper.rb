@@ -14,6 +14,7 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
   require 'capybara/rspec'
+  require 'capybara/poltergeist'
   require 'shoulda/matchers/integrations/rspec'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
@@ -44,7 +45,8 @@ Spork.prefork do
     config.include Devise::TestHelpers, :type => :controller
     config.extend ControllerHelper, :type => :controller
     config.include EmailSpec::Helpers
-    #config.include EmailSpec::Matcher
+    config.include(EmailSpec::Matchers)
+    config.include Capybara::DSL
 
     # Devise test helpers
     config.include Devise::TestHelpers, :type => :controller
@@ -57,7 +59,7 @@ Spork.prefork do
 
     config.before(:each) do
       if example.metadata[:js]
-        Capybara.current_driver = :webkit
+        Capybara.current_driver = :poltergeist
         DatabaseCleaner.strategy = :truncation
       else
         DatabaseCleaner.strategy = :transaction
@@ -88,4 +90,8 @@ Spork.each_run do
   # Dir["#{Rails.root}/app/models/**/*.rb"].each { |model| load model }
 
   load "Sporkfile.rb" if File.exists?("Sporkfile.rb")
+end
+
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, { js_errors: false })
 end

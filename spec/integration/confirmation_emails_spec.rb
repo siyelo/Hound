@@ -16,7 +16,7 @@ describe "confirmation emails", type: :request do
 
   context "existing users" do
     it "should receive a confirmation email" do
-      user = Factory :user, email: 'pimp@macdaddy.yo'
+      user = FactoryGirl.create :user, email: 'pimp@macdaddy.yo'
       store_fetched_mail
       Reminder.all.count.should == 1 #sanity
       SendConfirmationJob.should have_queue_size_of(1)
@@ -25,7 +25,7 @@ describe "confirmation emails", type: :request do
     end
 
     it "should not receive an email if the user has disabled that in their settings" do
-      user = Factory :user, email: 'pimp@macdaddy.yo', confirmation_email: false
+      user = FactoryGirl.create :user, email: 'pimp@macdaddy.yo', confirmation_email: false
       store_fetched_mail
       Reminder.all.count.should == 1 #sanity
       SendConfirmationJob.should have_queue_size_of(0)

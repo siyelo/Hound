@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'User sessions', type: :request do
   before :each do
-    @user = Factory(:user)
+    @user = FactoryGirl.create(:user)
   end
 
   it 'receives an email and successfully reset password' do
@@ -14,7 +14,7 @@ describe 'User sessions', type: :request do
 
     unread_emails_for(@user.email).size.should >= parse_email_count(1)
     open_email(@user.email)
-    current_email.should have_content("Someone has requested a link to change your password, and you can do this through the link below.")
+    current_email.should have_body_text("Someone has requested a link to change your password")
     visit_in_email("Change my password")
 
     within('body') do
@@ -38,7 +38,7 @@ describe 'User sessions', type: :request do
   end
 
   it 'is able to login with alias' do
-    alias_email = Factory :email_alias, user: @user, email: 't@test.com'
+    alias_email = FactoryGirl.create :email_alias, user: @user, email: 't@test.com'
     log_in_with @user
 
     within('body') do
@@ -56,7 +56,7 @@ describe 'User sessions', type: :request do
 
     unread_emails_for(@user.email).size.should >= parse_email_count(1)
     open_email(@user.email)
-    current_email.should have_content("Someone has requested a link to change your password, and you can do this through the link below.")
+    current_email.should have_body_text("Someone has requested a link to change your password,")
     visit_in_email("Change my password")
 
     within('body') do

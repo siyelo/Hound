@@ -18,25 +18,25 @@ describe User do
     it { should allow_mass_assignment_of :modify_token }
 
     context "existing record in db" do
-      subject { Factory(:user) }
+      subject { FactoryGirl.create(:user) }
       it { should validate_uniqueness_of(:email).case_insensitive }
     end
 
     it "password & confirmation don't match" do
-      user = Factory.build(:user, :password => '123456', :password_confirmation => '123')
+      user = FactoryGirl.build(:user, :password => '123456', :password_confirmation => '123')
       user.save
       user.errors.get(:password).should == ["doesn't match confirmation"]
     end
 
     it "password confirmation is blank" do
-      user = Factory.build(:user, :password => '123456', :password_confirmation => '')
+      user = FactoryGirl.build(:user, :password => '123456', :password_confirmation => '')
       user.save
       user.errors.get(:password).should == ["doesn't match confirmation"]
     end
 
     it 'should validate uniqueness of email across aliases' do
-      alias_email = Factory :email_alias, email: 'batman@gotham.com'
-      user = Factory.build :user, email: 'batman@gotham.com'
+      alias_email = FactoryGirl.create :email_alias, email: 'batman@gotham.com'
+      user = FactoryGirl.build :user, email: 'batman@gotham.com'
       user.valid?.should be_false
       user.errors[:email].should include 'is already registered'
     end
@@ -55,20 +55,19 @@ describe User do
       user = User.invite!(email: 'a@b.com', timezone: "+02:00") do |u|
         u.skip_invitation = true
       end
-      User.accept_invitation!(invitation_token: user.invitation_token,
-                              password: "password")
+      user.accept_invitation!
       user.reload
       user.active?.should be_true
     end
 
     it "returns true when user signed up themselves (was not invited)" do
-      user = Factory.build(:user)
+      user = FactoryGirl.build(:user)
       user.active?.should be_true
     end
   end
 
   describe '#disable_confirmation_emails' do
-    let (:user) { Factory :user }
+    let (:user) { FactoryGirl.create :user }
 
     it "modify token exists when user is created" do
       user.modify_token.should_not be_nil
@@ -96,7 +95,7 @@ describe User do
   end
 
   describe 'find_and_validate_password' do
-    let (:user) { Factory :user }
+    let (:user) { FactoryGirl.create :user }
 
     it "returns the user if the password is valid" do
       User.find_and_validate_password(user.email, 'testing').should == user

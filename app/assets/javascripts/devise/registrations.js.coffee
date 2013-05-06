@@ -11,5 +11,5 @@ $(document).ready ->
       $.ajax
         type: 'DELETE'
         url: $(this).attr('data-link')
-        success: (data, textStatus, data) ->
+        success: (data, textStatus) ->
           element.remove()

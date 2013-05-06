@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SettingsController do
   context "signed in user" do
-    let(:user) { Factory.create(:user) }
+    let(:user) { FactoryGirl.create(:user) }
 
     before :each do
       sign_in user

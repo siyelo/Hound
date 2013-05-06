@@ -2,9 +2,9 @@ require 'spec_helper'
 require 'hound/services/notifier'
 
 describe Hound::Notifier do
-  let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
+  let (:orig_mail) { FactoryGirl.create :fetched_mail, body: 'body', from: 'sender@a.com',
     :subject => 'orig subject', cc: ['cc@a.com', 'cc@b.com'] }
-  let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user:orig_mail.user,
+  let(:reminder) { FactoryGirl.create :reminder, fetched_mail: orig_mail, user:orig_mail.user,
     created_at: '2012-01-01', other_recipients: orig_mail.cc }
 
   describe'#send_reminders' do

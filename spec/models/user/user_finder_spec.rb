@@ -11,7 +11,7 @@ describe User::UserFinder do
   end
 
   it "should not create a user the account was found" do
-    user = Factory.build :user
+    user = FactoryGirl.build :user
     User.stub(:find_by_email_or_alias).and_return(user)
     user.should_not_receive(:invite!)
     User.find_or_invite!(@mail)
@@ -56,7 +56,7 @@ describe User::UserFinder do
   end
 
   it "should create a user if no account found" do
-    user = Factory.build :user
+    user = FactoryGirl.build :user
     user.stub(:valid?).and_return true
     user.stub(:invite!).and_return true
     User.stub(:new).and_return user

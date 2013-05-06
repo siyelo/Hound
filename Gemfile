@@ -7,10 +7,10 @@ gem "devise_invitable"
 gem 'foreman'
 gem 'gitploy'
 gem 'haml', '~> 3.1.4'
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.1.1'
 gem 'mail'
 gem 'pg'
-gem 'rails', '3.2.11'
+gem 'rails', '~> 3.2'
 gem 'resque', '>= 1.20.0'
 gem 'resque-scheduler', :require => "resque/server"
 gem 'tinymce-rails'
@@ -29,6 +29,7 @@ end
 
 group :development do
   gem 'annotate', '~> 2.4.1.beta'
+  gem "quiet_assets", "~> 1.0.2"
   gem 'guard-spork'
   gem "rspec-rails"
   gem 'mailcatcher'
@@ -36,7 +37,8 @@ end
 
 group :test do
   # Pretty printed test output
-  gem 'capybara-webkit'
+  gem 'capybara', '~> 2.0.1'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem "factory_girl_rails"
   gem "guard-rspec"

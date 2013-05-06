@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Hound::UserMerger do
   before :each do
-    @user1 = Factory :user
-    @user2 = Factory :user
-    fetched_mail1 = Factory :fetched_mail, user: @user1
-    fetched_mail2 = Factory :fetched_mail, user: @user2
-    reminder1 = Factory :reminder, fetched_mail: fetched_mail1
-    reminder2 = Factory :reminder, fetched_mail: fetched_mail2
-    email_alias1 = Factory :email_alias, user: @user1
-    email_alias2 = Factory :email_alias, user: @user2
+    @user1 = FactoryGirl.create :user
+    @user2 = FactoryGirl.create :user
+    fetched_mail1 = FactoryGirl.create :fetched_mail, user: @user1
+    fetched_mail2 = FactoryGirl.create :fetched_mail, user: @user2
+    reminder1 = FactoryGirl.create :reminder, fetched_mail: fetched_mail1
+    reminder2 = FactoryGirl.create :reminder, fetched_mail: fetched_mail2
+    email_alias1 = FactoryGirl.create :email_alias, user: @user1
+    email_alias2 = FactoryGirl.create :email_alias, user: @user2
 
     @merger_service = Hound::UserMerger.new
   end

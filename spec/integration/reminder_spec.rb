@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
 describe 'User', type: :request do
-  let(:user) { Factory :user }
+  let(:user) { FactoryGirl.create :user }
 
   context 'edit reminders' do
     before :each do
-      @reminder = Factory :reminder, user: user,  send_at: DateTime.now + 1.month,
-        fetched_mail: Factory(:fetched_mail, user: user, subject: 'reminder1')
+      @reminder = FactoryGirl.create :reminder, user: user,  send_at: DateTime.now + 1.month,
+        fetched_mail: FactoryGirl.create(:fetched_mail, user: user, subject: 'reminder1')
       log_in_with(user)
       click_link 'reminder1'
     end
@@ -21,10 +21,10 @@ describe 'User', type: :request do
 
   context 'filter reminders' do
     it 'can filter reminders' do
-      Factory :reminder, send_at: DateTime.now + 1.day,
-        fetched_mail: Factory(:fetched_mail, user: user, subject: 'reminder1')
-      Factory :reminder, delivered: true, send_at: DateTime.now - 1.day,
-        fetched_mail: Factory(:fetched_mail, user: user, subject: 'delivered reminder')
+      FactoryGirl.create :reminder, send_at: DateTime.now + 1.day,
+        fetched_mail: FactoryGirl.create(:fetched_mail, user: user, subject: 'reminder1')
+      FactoryGirl.create :reminder, delivered: true, send_at: DateTime.now - 1.day,
+        fetched_mail: FactoryGirl.create(:fetched_mail, user: user, subject: 'delivered reminder')
       log_in_with(user)
 
       page.should have_content('You have 1 upcoming reminder')
@@ -34,8 +34,8 @@ describe 'User', type: :request do
     end
 
     it 'does not display cleaned reminders' do
-      Factory :reminder, delivered: true, cleaned: true, send_at: DateTime.now - 1.day,
-        fetched_mail: Factory(:fetched_mail, user: user, subject: 'delivered reminder')
+      FactoryGirl.create :reminder, delivered: true, cleaned: true, send_at: DateTime.now - 1.day,
+        fetched_mail: FactoryGirl.create(:fetched_mail, user: user, subject: 'delivered reminder')
       log_in_with(user)
 
       page.should have_content('You have 0 upcoming reminder')

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Users::RegistrationsController do
-  let(:user) { Factory.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
 
   it "should override edit and redirect to settings edit page" do
     request.env["devise.mapping"] = Devise.mappings[:user]

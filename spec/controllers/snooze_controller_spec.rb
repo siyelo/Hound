@@ -5,7 +5,7 @@ describe SnoozeController do
   describe 'snoozing' do
     before :each do
       ResqueSpec.reset!
-      @reminder = Factory :reminder
+      @reminder = FactoryGirl.create :reminder
     end
 
     it "should inform the cc'd users that the reminder has been snoozed" do

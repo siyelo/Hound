@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'User Settings', type: :request do
   before :each do
-    @user = Factory(:user)
+    @user = FactoryGirl.create(:user)
   end
 
   def test_settings_page

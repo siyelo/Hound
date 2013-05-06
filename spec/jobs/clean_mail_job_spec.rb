@@ -3,7 +3,7 @@ require  'spec_helper'
 describe CleanMailJob do
   let (:two_weeks_and_minute) { 2.weeks + 1.minute }
   let (:minute_before_two_weeks) { 2.weeks - 1.minute }
-  let (:mail) { Factory(:fetched_mail,
+  let (:mail) { FactoryGirl.create(:fetched_mail,
                         to: ['1m@hound.cc'],
                         from: 'user@example.com',
                         cc: ['cc@example.com'],
@@ -15,7 +15,7 @@ describe CleanMailJob do
 
   describe ".perform" do
     it "cleans delivered reminders older than 2 weeks" do
-      reminder = Factory(:reminder,
+      reminder = FactoryGirl.create(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: true,
@@ -39,7 +39,7 @@ describe CleanMailJob do
     end
 
     it "does not clean delivered reminders newer than 2 weeks" do
-      reminder = Factory(:reminder,
+      reminder = FactoryGirl.create(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - minute_before_two_weeks,
                          delivered: true,
@@ -62,7 +62,7 @@ describe CleanMailJob do
     end
 
     it "does not clean undelivered reminders" do
-      reminder = Factory(:reminder,
+      reminder = FactoryGirl.create(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: false,
@@ -85,7 +85,7 @@ describe CleanMailJob do
     end
 
     it "does not clean already cleaned reminders" do
-      reminder = Factory(:reminder,
+      reminder = FactoryGirl.create(:reminder,
                          fetched_mail: mail,
                          send_at: Time.now - two_weeks_and_minute,
                          delivered: true,

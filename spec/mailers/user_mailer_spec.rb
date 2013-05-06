@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe UserMailer do
-  let (:orig_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
+  let (:orig_mail) { FactoryGirl.create :fetched_mail, body: 'body', from: 'sender@a.com',
     :subject => 'orig subject', cc: ['cc@a.com'], to: ['1d@hound.cc'], message_id: '42' }
   let(:in_1_hour) { Time.now.in_time_zone(orig_mail.user.timezone) + 1.hour }
-  let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: orig_mail.user,
+  let(:reminder) { FactoryGirl.create :reminder, fetched_mail: orig_mail, user: orig_mail.user,
    created_at: '2012-01-01', send_at: in_1_hour}
   let(:recipient) { 'sender@a.com' }
 
@@ -62,9 +62,9 @@ describe UserMailer do
   end
 
   describe 'private reminder' do
-    let (:private_mail) { Factory :fetched_mail, body: 'body', from: 'sender@a.com',
+    let (:private_mail) { FactoryGirl.create :fetched_mail, body: 'body', from: 'sender@a.com',
       subject: 'orig subject', cc: [], bcc: ['1d@hound.cc'], message_id: '43' }
-    let(:private_reminder) { Factory :reminder, user: private_mail.user,
+    let(:private_reminder) { FactoryGirl.create :reminder, user: private_mail.user,
       created_at: '2012-01-01', send_at: in_1_hour, other_recipients: []}
     let(:mail) { UserMailer.reminder(private_reminder, recipient) }
 
@@ -116,11 +116,11 @@ describe UserMailer do
   end
 
   describe '#confirmation - welcome emails' do
-    let(:user){ Factory :user, invitation_token: 'testtoken' }
+    let(:user){ FactoryGirl.create :user, invitation_token: 'testtoken' }
     let(:in_1_hour) { Time.now.in_time_zone(user.timezone) + 1.hour }
-    let (:orig_mail) { Factory :fetched_mail, from: 'sender@a.com',
+    let (:orig_mail) { FactoryGirl.create :fetched_mail, from: 'sender@a.com',
       :subject => 'orig subject', user: user, message_id: '42'}
-    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user: user,
+    let(:reminder) { FactoryGirl.create :reminder, fetched_mail: orig_mail, user: user,
       send_at: in_1_hour}
     let(:mail) { UserMailer.confirmation(reminder, orig_mail.from) }
 
@@ -195,7 +195,7 @@ describe UserMailer do
   end
 
   describe "#snooze" do
-    let(:reminder) { Factory :reminder, fetched_mail: orig_mail, user:orig_mail.user,
+    let(:reminder) { FactoryGirl.create :reminder, fetched_mail: orig_mail, user:orig_mail.user,
      created_at: '2012-01-01', send_at: DateTime.parse("2012-01-01 08:00:00"), snooze_count: 1}
     let(:mail) { UserMailer.snooze(reminder, 'cc@a.com') }
 

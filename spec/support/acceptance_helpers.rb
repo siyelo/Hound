@@ -5,6 +5,7 @@ module HelperMethods
     fill_in "user[email]", :with => user.email
     fill_in "user[password]", :with=> 'testing'
     click_button 'Sign in'
+    page.should have_content 'Signed in successfully'
   end
 
   [:notice, :error].each do |name|

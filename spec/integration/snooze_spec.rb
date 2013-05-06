@@ -4,13 +4,13 @@ describe "Snooze", type: :request do
   before :each do
     ResqueSpec.reset!
     reset_mailer
-    @user = Factory :user, email: 'pimp@macdaddy.yo'
+    @user = FactoryGirl.create :user, email: 'pimp@macdaddy.yo'
   end
 
   it "allows user to snooze and notify participants" do
-    reminder = Factory :reminder, user: @user,
+    reminder = FactoryGirl.create :reminder, user: @user,
       other_recipients: ['d@d.com', 'g@g.com'],
-      fetched_mail: Factory(:fetched_mail, from: 'pimp@macdaddy.yo')
+      fetched_mail: FactoryGirl.create(:fetched_mail, from: 'pimp@macdaddy.yo')
     Hound::Notifier.send_reminders(reminder)
     open_email(@user.email)
     visit_in_email('15min')
@@ -19,9 +19,9 @@ describe "Snooze", type: :request do
   end
 
   it "does not show option to notify if there are no other participants" do
-    reminder = Factory :reminder, user: @user, other_recipients: [],
+    reminder = FactoryGirl.create :reminder, user: @user, other_recipients: [],
       other_recipients: ['d@d.com'],
-      fetched_mail: Factory(:fetched_mail, from: 'pimp@macdaddy.yo')
+      fetched_mail: FactoryGirl.create(:fetched_mail, from: 'pimp@macdaddy.yo')
     Hound::Notifier.send_reminders(reminder)
     open_email(@user.email)
     visit_in_email('12h')
