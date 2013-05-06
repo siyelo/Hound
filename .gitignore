@@ -32,3 +32,6 @@ bin/
 .sass-cache
 
 Sporkfile.rb
+
+# Chef
+.chef/
