@@ -19,10 +19,9 @@ describe 'Email aliasing', type: :request do
   end
 
   it 'is able to delete alias addresses', js: true do
-    FactoryGirl.create(:email_alias, email: 'test', user: @user)
+    FactoryGirl.create(:email_alias, email: 'test@test.com', user: @user)
     click_link 'Settings'
-    page.save_screenshot('screenshot.png')
-    page.should have_content('test [delete]')
+    page.should have_content('test@test.com')
     click_link '[delete]'
     handle_js_confirm
     page.should_not have_content('test [delete]')
