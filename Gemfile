@@ -56,3 +56,7 @@ group :development, :test do
   gem 'interactive_editor'
   gem 'debugger'
 end
+
+group :production do
+  gem 'bigdecimal'
+end
