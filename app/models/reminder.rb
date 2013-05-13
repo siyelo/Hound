@@ -40,7 +40,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def other_recipients=(recipients_string_or_array)
-    write_attribute(:other_recipients, EmailList.new(recipients_string_or_array))
+    write_attribute(:other_recipients, EmailList.new(recipients_string_or_array).to_a)
   end
 
   def all_recipients

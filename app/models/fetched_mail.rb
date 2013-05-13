@@ -39,7 +39,7 @@ class FetchedMail < ActiveRecord::Base
   end
 
   def cc=(cc_string_or_array)
-    write_attribute(:cc, EmailList.new(cc_string_or_array))
+    write_attribute(:cc, EmailList.new(cc_string_or_array).to_a)
   end
 
   # this could be persisted with awesome_nested_set
