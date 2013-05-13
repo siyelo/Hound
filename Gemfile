@@ -59,4 +59,5 @@ end
 
 group :production do
   gem 'bigdecimal'
+  gem 'minitest'
 end
