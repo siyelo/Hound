@@ -26,12 +26,17 @@ deploy do
     run 'export PATH="$HOME/.rbenv/bin:$PATH"'
     run 'eval "$(rbenv init -)"'
     run "ruby -v"
+    run "gem install bundler"
+    run "rbenv rehash"
     run "bundle install --deployment --without development, testing"
-    run "bundle exec foreman export upstart hound_scripts -a hound -u ubuntu"
+    run "rbenv rehash"
+    run "rbenv sudo bundle exec foreman export upstart hound_scripts -a hound -u ubuntu"
     run "sudo cp hound_scripts/* /etc/init/"
-    run "rm -rf hound_scripts"
+    run "sudo rm -rf hound_scripts"
     run "sudo sed -i \"1 i start on runlevel [2345]\" /etc/init/hound.conf"
-    run "sudo /etc/init.d/hound_app restart"
+    # EC2 micro instance might not have enought RAM to run asset precompilation
+    # without stopping hound service first
+    run "sudo service hound restart"
     run "rbenv sudo rake db:migrate"
     run "rbenv sudo bundle exec rake assets:precompile"
     run "echo FINISHED."

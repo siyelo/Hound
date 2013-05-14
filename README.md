@@ -38,7 +38,25 @@ and BAM. you're off to the racez.
 
 ## Deployment
 
+    * Install Ruby, Unicorn, Nginx and Postgres
+
+    * Install Ruby, Unicorn, Nginx and Postgres
+
+    * Add your public key to ~/.ssh/authorized_keys
+
+    $ gitploy production setup
+
     $ gitploy production
+
+    * SSH into the server
+
+    `sudo ln -s /home/ubuntu/app/config/nginx.conf /etc/nginx/nginx.conf`
+
+    `sudo ln -s /home/ubuntu/app/config/unicorn.sh /etc/init.d/unicorn`
+
+    * Setup database.yml & run migrations
+
+    * Restart Nginx, Unicorn and Hound services
 
 ## Development
 
