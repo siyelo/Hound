@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates_with EmailValidator
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-    :timezone, :confirmation_email, :modify_token
+    :timezone, :confirmation_email, :modify_token, :invitation_sent_at
 
   ### Class methods
 

@@ -37,8 +37,8 @@ deploy do
     # EC2 micro instance might not have enought RAM to run asset precompilation
     # without stopping hound service first
     run "sudo service hound restart"
-    run "rbenv sudo rake db:migrate"
-    run "rbenv sudo bundle exec rake assets:precompile"
+    run "rbenv sudo RAILS_ENV=production rake db:migrate"
+    run "rbenv sudo RAILS_ENV=production bundle exec rake assets:precompile"
     run "echo FINISHED."
   end
 end
