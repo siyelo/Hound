@@ -24,9 +24,16 @@ module User::UserFinder
 
     def invite_without_invitation!(email)
       params = {email: from_address(email), timezone: email_time_zone(email),
-                modify_token: Token.new, invitation_sent_at: Time.now}
+                modify_token: Token.new}
       params_valid_for_user!(params)
-      User.invite!(params){ |u| u.skip_invitation = true }
+      set_invitation_sent_at(User.invite!(params){ |u| u.skip_invitation = true })
+    end
+
+    def set_invitation_sent_at(user)
+      user.invitation_sent_at = Time.now
+      user.save
+
+      user
     end
 
     def params_valid_for_user!(params)
